@@ -49,7 +49,7 @@ and ancient history.
 
 
 %prep
-%setup -q -n %{name}-%{version}-alpha
+%setup -q -n %{name}-r%{revision}-alpha
 
 %build
 export CFLAGS="%{optflags}"
