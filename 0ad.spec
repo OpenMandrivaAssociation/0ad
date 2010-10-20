@@ -18,6 +18,7 @@ BuildRequires:  libpng-devel
 BuildRequires:  libvorbis-devel
 BuildRequires:  libxml2-devel
 BuildRequires:  wxGTK-devel
+BuildRequires:  wxgtku-devel
 BuildRequires:  nasm
 BuildRequires:  python
 BuildRequires:  subversion
@@ -93,7 +94,6 @@ install -m 644 build/resources/0ad.desktop %{buildroot}%{_datadir}/applications/
 install -d -m 755 %{buildroot}%{_datadir}/pixmaps
 install -m 644 build/resources/0ad.png %{buildroot}%{_datadir}/pixmaps/%{name}.png
 
-
 %clean
 rm -rf %{buildroot}
 
@@ -105,5 +105,3 @@ rm -rf %{buildroot}
 %{_libdir}/%{name}
 %{_datadir}/pixmaps/%{name}.png
 %{_datadir}/applications/%{name}.desktop
-%{_datadir}/%{name}
-
