@@ -58,6 +58,8 @@ License:        GPLv2+ and CC-BY-SA
 BuildArch:      noarch
 Requires:       %{name} =  %{version}-%{release}
 
+%description data
+Data files for 0 A.D the RTS games such as sound, movies and images.
 
 %prep
 %setup -q -n %{name}-r%{revision}
