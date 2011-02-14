@@ -53,7 +53,7 @@ hobbyist game developers, since 2001.
 
 %package data
 Summary:        Data files for 0 A.D the RTS games
-Group:          Amusements/Games/Strategy/Real Time
+Group:          Games/Strategy
 License:        GPLv2+ and CC-BY-SA
 BuildArch:      noarch
 Requires:       %{name} =  %{version}-%{release}
