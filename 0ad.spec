@@ -8,7 +8,7 @@
 
 Name:           0ad
 Version:        1.0
-Release:        %mkrel 0.%{revision}.1
+Release:        %mkrel 0.%{revision}.2
 License:        GNU GPL v2 or later
 Group:          Games/Strategy
 Summary:        Cross-Platform RTS Game of Ancient Warfare
