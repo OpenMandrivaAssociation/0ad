@@ -1,4 +1,4 @@
-%define revision 8899
+%define revision 09786
 
 # The source for this package was pulled from upstream's subversion (svn).
 # Use the following commands to generate the tarball:
@@ -13,7 +13,8 @@ License:        GNU GPL v2 or later
 Group:          Games/Strategy
 Summary:        Cross-Platform RTS Game of Ancient Warfare
 Url:            http://wildfiregames.com/0ad/
-Source:         0ad-r%{revision}.tar.xz
+#Source:         0ad-r%{revision}.tar.xz
+Source:		http://releases.wildfiregames.com/0ad-r%{revision}-alpha-unix-build.tar.xz
 Requires:       0ad-data
 BuildRequires:  boost-devel
 BuildRequires:  devil-devel
@@ -34,7 +35,13 @@ BuildRequires:  desktop-file-utils
 BuildRequires:  pkgconfig
 BuildRequires:  SDL-devel
 BuildRequires:  wxGTK-devel
-BuildRequires:  enet1.2-devel
+
+%if %mdkversion >= 201100
+BuildRequires: enet1.2-devel
+%else
+BuildRequires: enet-devel
+%endif
+
 BuildRequires:  openal-devel
 BuildRoot:      %{_tmppath}/%{name}-%{version}
 
@@ -51,18 +58,20 @@ game engine.
 The game has been in development by Wildfire Games (WFG), a group of volunteer,
 hobbyist game developers, since 2001.
 
-%package data
-Summary:        Data files for 0 A.D the RTS games
-Group:          Games/Strategy
-License:        GPLv2+ and CC-BY-SA
-BuildArch:      noarch
-Requires:       %{name} =  %{version}-%{release}
+#%package data
+#Summary:        Data files for 0 A.D the RTS games
+#Group:          Games/Strategy
+#License:        GPLv2+ and CC-BY-SA
+#BuildArch:      noarch
+#Requires:       %{name} =  %{version}-%{release}
 
-%description data
-Data files for 0 A.D the RTS games such as sound, movies and images.
+#%description data
+#Data files for 0 A.D the RTS games such as sound, movies and images.
 
 %prep
-%setup -q -n %{name}-r%{revision}
+#%setup -q
+%setup -q -n %{name}-r%{revision}-alpha
+#cd %{name}-%{release}
 
 %build
 export CFLAGS="%{optflags}"
@@ -115,7 +124,8 @@ rm -rf %{buildroot}
 %{_libdir}/%{name}
 %{_datadir}/pixmaps/%{name}.png
 %{_datadir}/applications/%{name}.desktop
+%{_datadir}/%{name}
 
-%files data
-%defattr(-,root,root)
-%{_datadir}/0ad
+#%files data
+#%defattr(-,root,root)
+#%{_datadir}/0ad
