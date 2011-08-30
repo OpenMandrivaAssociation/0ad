@@ -35,11 +35,14 @@ BuildRequires:  desktop-file-utils
 BuildRequires:  pkgconfig
 BuildRequires:  SDL-devel
 BuildRequires:  wxGTK-devel
-#%if %mdkversion <= 201010
-#BuildRequires: enet1.2-devel
-#%else
-BuildRequires: enet-devel
-#%endif
+BuildRequires:	libxorg-x11-devel
+BuildRequires:	libdnet-devel
+BuildRequires:	games-compat
+%if %mdkversion <= 201010
+BuildRequires: enet1.2-devel
+%else
+BuildRequires: enet-devel >= 1.3
+%endif
 
 BuildRequires:  openal-devel
 BuildRoot:      %{_tmppath}/%{name}-%{version}
