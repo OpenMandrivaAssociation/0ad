@@ -35,12 +35,11 @@ BuildRequires:  desktop-file-utils
 BuildRequires:  pkgconfig
 BuildRequires:  SDL-devel
 BuildRequires:  wxGTK-devel
-
-%if %mdkversion <= 201010
-BuildRequires: enet1.2-devel
-%else
+#%if %mdkversion <= 201010
+#BuildRequires: enet1.2-devel
+#%else
 BuildRequires: enet-devel
-%endif
+#%endif
 
 BuildRequires:  openal-devel
 BuildRoot:      %{_tmppath}/%{name}-%{version}
