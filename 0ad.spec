@@ -36,7 +36,7 @@ BuildRequires:  pkgconfig
 BuildRequires:  SDL-devel
 BuildRequires:  wxGTK-devel
 
-%if %mdkversion >= 201100
+%if %mdkversion <= 201010
 BuildRequires: enet1.2-devel
 %else
 BuildRequires: enet-devel
