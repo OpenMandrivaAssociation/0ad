@@ -41,7 +41,7 @@ BuildRequires:	lib64xorg-x11-devel
 BuildRequires:	libxorg-x11-devel
 %endif
 BuildRequires:	libdnet-devel
-BuildRequires:	games-compat
+#BuildRequires:	games-compat
 %if %mdkversion <= 201010
 BuildRequires: enet1.2-devel
 %else
