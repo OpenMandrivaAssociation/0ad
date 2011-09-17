@@ -1,4 +1,4 @@
-%define revision 09786
+%define revision 10288
 
 # The source for this package was pulled from upstream's subversion (svn).
 # Use the following commands to generate the tarball:
