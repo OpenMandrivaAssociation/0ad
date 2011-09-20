@@ -42,11 +42,11 @@ BuildRequires:	libxorg-x11-devel
 %endif
 BuildRequires:	libdnet-devel
 #BuildRequires:	games-compat
-%if %mdkversion <= 201010
-BuildRequires: enet1.2-devel
-%else
-BuildRequires: enet-devel >= 1.3
-%endif
+#%if %mdkversion <= 201010
+#BuildRequires: enet1.2-devel
+#%else
+BuildRequires: enet-devel
+#%endif
 BuildRequires:  openal-devel
 BuildRoot:      %{_tmppath}/%{name}-%{version}
 
@@ -102,7 +102,7 @@ install -m 755 build/resources/0ad.sh %{buildroot}%{_bindir}/0ad
 install -d -m 755 %{buildroot}%{_libdir}/%{name}
 install -m 755 binaries/system/libCollada.so %{buildroot}%{_libdir}/%{name}/libCollada.so
 install -m 755 binaries/system/libAtlasUI.so %{buildroot}%{_libdir}/%{name}/libAtlasUI.so
-install -m 755 binaries/system/libmozjs-ps-release.so %{buildroot}%{_libdir}/%{name}/libmozjs-ps-release.so
+install -m 755 binaries/system/libmozjs185-ps-release.so.1.0 %{buildroot}%{_libdir}/%{name}/libmozjs185-ps-release.so.1.0
 install -m 755 binaries/system/libnvcore.so %{buildroot}%{_libdir}/%{name}/libnvcore.so
 install -m 755 binaries/system/libnvimage.so %{buildroot}%{_libdir}/%{name}/libnvimage.so
 install -m 755 binaries/system/libnvmath.so %{buildroot}%{_libdir}/%{name}/libnvmath.so
