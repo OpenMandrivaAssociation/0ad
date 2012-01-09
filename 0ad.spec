@@ -46,6 +46,7 @@ BuildRequires:	libdnet-devel
 #BuildRequires: enet1.2-devel
 #%else
 BuildRequires: enet-devel
+BuildRequires: enet
 #%endif
 BuildRequires:  openal-devel
 BuildRoot:      %{_tmppath}/%{name}-%{version}
