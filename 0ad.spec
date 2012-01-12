@@ -1,56 +1,62 @@
-%define revision 10803
+# http://trac.wildfiregames.com/wiki/BuildInstructions#Linux
 
-# The source for this package was pulled from upstream's subversion (svn).
-# Use the following commands to generate the tarball:
-# svn export -r 8899 http://svn.wildfiregames.com/public/ps/trunk/ 0ad-r8899
-# find 0ad-r8899 \( -name "*.dll" -or -name "*.exe" -or -name "*.lib" -or -name "*.bat" \) -delete
-# tar -cJvf 0ad-r8899.tar.xz 0ad-r8899
+%bcond_with	debug
+%if %{with debug}
+%define		config			debug
+%define		dbg			_dbg
+%undefine	_enable_debug_packages
+%undefine	debug_package
+%else
+%define		config			release
+%define		dbg			%{nil}
+%define		dont_strip		1
+# 0ad-debug is useless if 0ad is stripped
+# install gamin-debug to verify reason of patch0
+%define		_enable_debug_packages	%{nil}
+%define		debug_package		%{nil}
+%endif
 
 Name:           0ad
-Version:        1.0
-Release:        %mkrel 0.%{revision}.2
-License:        GNU GPL v2 or later
+Epoch:		1
+Version:        r10803
+Release:        0.1
+License:        GPLv2+
 Group:          Games/Strategy
 Summary:        Cross-Platform RTS Game of Ancient Warfare
 Url:            http://wildfiregames.com/0ad/
-#Source:         0ad-r%{revision}.tar.xz
-Source:		http://releases.wildfiregames.com/0ad-r%{revision}-alpha-unix-build.tar.xz
+Source:		http://releases.wildfiregames.com/0ad-%{version}-alpha-unix-build.tar.xz
 Requires:       0ad-data
 BuildRequires:  boost-devel
+BuildRequires:  cmake
+BuildRequires:  desktop-file-utils
 BuildRequires:  devil-devel
-BuildRequires:  fam-devel
+BuildRequires:  gamin-devel
 BuildRequires:  gcc-c++
+BuildRequires:	jpeg-devel
+BuildRequires:	libdnet-devel
 BuildRequires:  libjpeg-devel
 BuildRequires:  libpng-devel
 BuildRequires:  libvorbis-devel
 BuildRequires:  libxml2-devel
+BuildRequires:  nasm
+BuildRequires:  pkgconfig
+BuildRequires:	pkgconfig(libcurl)
+BuildRequires:	pkgconfig(libenet)
+BuildRequires:	pkgconfig(libpng)
+BuildRequires:	pkgconfig(libzip)
+BuildRequires:	pkgconfig(mozjs185)
+BuildRequires:	pkgconfig(openal)
+BuildRequires:  python
+BuildRequires:  SDL-devel
+BuildRequires:  subversion
 BuildRequires:  wxGTK-devel
 BuildRequires:  wxgtku-devel
-BuildRequires:  nasm
-BuildRequires:  python
-BuildRequires:  subversion
-BuildRequires:  zip
-BuildRequires:  cmake
-BuildRequires:  desktop-file-utils
-BuildRequires:  pkgconfig
-BuildRequires:  SDL-devel
-BuildRequires:  wxGTK-devel
-%ifarch x86_64
-BuildRequires:	lib64xorg-x11-devel
-%else
-BuildRequires:	libxorg-x11-devel
-%endif
-BuildRequires:	libdnet-devel
-#BuildRequires:	games-compat
-#%if %mdkversion <= 201010
-#BuildRequires: enet1.2-devel
-#%else
-BuildRequires: enet-devel
-BuildRequires: enet
-#%endif
-BuildRequires:  openal-devel
-BuildRoot:      %{_tmppath}/%{name}-%{version}
+BuildRequires:	X11-devel
 
+# FAMMonitorDirectory fails if passing a relative directory
+# Use FAMNoExists (gamin specific to speed up a little bit initialization
+# as commented in the source)
+Patch0:		0ad-r10803-gamin.patch
 
 %description
 0 A.D. (pronounced "zero ey-dee") is a free, open-source, cross-platform
@@ -64,74 +70,78 @@ game engine.
 The game has been in development by Wildfire Games (WFG), a group of volunteer,
 hobbyist game developers, since 2001.
 
-#%package data
-#Summary:        Data files for 0 A.D the RTS games
-#Group:          Games/Strategy
-#License:        GPLv2+ and CC-BY-SA
-#BuildArch:      noarch
-#Requires:       %{name} =  %{version}-%{release}
-
-#%description data
-#Data files for 0 A.D the RTS games such as sound, movies and images.
-
+#-----------------------------------------------------------------------
 %prep
-#%setup -q
-%setup -q -n %{name}-r%{revision}-alpha
-#cd %{name}-%{release}
+%setup -q -n %{name}-%{version}-alpha
 
+%patch0 -p1
+
+#-----------------------------------------------------------------------
 %build
 export CFLAGS="%{optflags}"
 export CPPFLAGS="%{optflags}"
-build/workspaces/update-workspaces.sh \
-    --verbose \
-    --bindir %{_bindir} \
-    --datadir %{_datadir}/%{name} \
-    --libdir %{_libdir}/%{name}
-pushd build/workspaces/gcc
-%make CONFIG=Release
-popd
+build/workspaces/update-workspaces.sh	\
+    --bindir %{_gamesbindir}		\
+    --datadir %{_gamesdatadir}/%{name}	\
+    --libdir %{_libdir}/%{name}		\
+    --with-system-enet			\
+    --with-system-mozjs185		\
+    %{_smp_mflags}
 
+%make -C build/workspaces/gcc config=%{config} verbose=1
+
+#-----------------------------------------------------------------------
 %check
-export LD_LIBRARY_PATH=%{buildroot}%{_libdir}/%{name}
-./binaries/system/test -libdir binaries/system
+LD_LIBRARY_PATH=binaries/system binaries/system/test%{dbg} -libdir binaries/system
 
+#-----------------------------------------------------------------------
 %install
-install -d -m 755 %{buildroot}%{_bindir}
-install -m 755 binaries/system/pyrogenesis %{buildroot}%{_bindir}/pyrogenesis
-install -m 755 build/resources/0ad.sh %{buildroot}%{_bindir}/0ad
+install -d -m 755 %{buildroot}%{_gamesbindir}
+install -m 755 binaries/system/pyrogenesis%{dbg} %{buildroot}%{_gamesbindir}/pyrogenesis%{dbg}
 
 install -d -m 755 %{buildroot}%{_libdir}/%{name}
-install -m 755 binaries/system/libCollada.so %{buildroot}%{_libdir}/%{name}/libCollada.so
-install -m 755 binaries/system/libAtlasUI.so %{buildroot}%{_libdir}/%{name}/libAtlasUI.so
-install -m 755 binaries/system/libmozjs185-ps-release.so.1.0 %{buildroot}%{_libdir}/%{name}/libmozjs185-ps-release.so.1.0
-install -m 755 binaries/system/libnvcore.so %{buildroot}%{_libdir}/%{name}/libnvcore.so
-install -m 755 binaries/system/libnvimage.so %{buildroot}%{_libdir}/%{name}/libnvimage.so
-install -m 755 binaries/system/libnvmath.so %{buildroot}%{_libdir}/%{name}/libnvmath.so
-install -m 755 binaries/system/libnvtt.so %{buildroot}%{_libdir}/%{name}/libnvtt.so
+for name in AtlasUI%{dbg} Collada%{dbg} nvcore nvimage nvmath nvtt; do
+    install -m 755 binaries/system/lib${name}.so  %{buildroot}%{_libdir}/%{name}/lib${name}.so
+done
 
-install -d -m 755 %{buildroot}%{_datadir}/applications
-install -m 644 build/resources/0ad.desktop %{buildroot}%{_datadir}/applications/%{name}.desktop
+install -d -m 755 %{buildroot}%{_gamesdatadir}/applications
+install -m 644 build/resources/0ad.desktop %{buildroot}%{_gamesdatadir}/applications/%{name}.desktop
 
-install -d -m 755 %{buildroot}%{_datadir}/pixmaps
-install -m 644 build/resources/0ad.png %{buildroot}%{_datadir}/pixmaps/%{name}.png
+install -d -m 755 %{buildroot}%{_gamesdatadir}/pixmaps
+install -m 644 build/resources/0ad.png %{buildroot}%{_gamesdatadir}/pixmaps/%{name}.png
 
-install -d -m 755 %{buildroot}%{_datadir}/%{name}
-cp -a binaries/data/* %{buildroot}%{_datadir}/%{name}
+install -d -m 755 %{buildroot}%{_gamesdatadir}/%{name}
+cp -a binaries/data/* %{buildroot}%{_gamesdatadir}/%{name}
 
-%clean
-rm -rf %{buildroot}
+mkdir -p %{buildroot}%{_sysconfdir}/ld.so.conf.d/
+echo %{_libdir}/%{name} > %{buildroot}%{_sysconfdir}/ld.so.conf.d/%{name}.conf
 
+# check first for proper datadir, then for older 0ad-data package installing
+# in datadir
+cat > %{buildroot}%{_gamesbindir}/0ad <<EOF
+#!/bin/sh
+
+if [ -d %{_gamesdatadir}/0ad ]; then
+    cd %{_gamesdatadir}/0ad
+else
+    cd %{_datadir}/0ad
+fi
+%{_gamesbindir}/pyrogenesis%{dbg} "\$@"
+EOF
+chmod +x %{buildroot}%{_gamesbindir}/0ad
+
+%if %{with debug}
+export EXCLUDE_FROM_FULL_STRIP="libAtlasUI_dbg.so libCollada_dbg.so pyrogenesis_dbg"
+%endif
+
+#-----------------------------------------------------------------------
 %files
-%defattr(-,root,root)
 %doc README.txt LICENSE.txt
 %doc license_gpl-2.0.txt license_lgpl-2.1.txt license_dbghelp.txt
-%{_bindir}/0ad
-%{_bindir}/pyrogenesis
+%{_gamesbindir}/0ad
+%{_gamesbindir}/pyrogenesis%{dbg}
 %{_libdir}/%{name}
-%{_datadir}/pixmaps/%{name}.png
-%{_datadir}/applications/%{name}.desktop
-%{_datadir}/%{name}
-
-#%files data
-#%defattr(-,root,root)
-#%{_datadir}/0ad
+%{_gamesdatadir}/pixmaps/%{name}.png
+%{_gamesdatadir}/applications/%{name}.desktop
+%{_gamesdatadir}/%{name}
+%{_sysconfdir}/ld.so.conf.d/%{name}.conf
