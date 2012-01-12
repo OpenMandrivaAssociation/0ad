@@ -9,11 +9,10 @@
 %else
 %define		config			release
 %define		dbg			%{nil}
-%define		dont_strip		1
 # 0ad-debug is useless if 0ad is stripped
 # install gamin-debug to verify reason of patch0
-#%#define		_enable_debug_packages	%{nil}
-#%#define		debug_package		%{nil}
+%define		_enable_debug_packages	%{nil}
+%define		debug_package		%{nil}
 %endif
 
 Name:           0ad
