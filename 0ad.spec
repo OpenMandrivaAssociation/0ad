@@ -18,7 +18,7 @@
 Name:           0ad
 Epoch:		1
 Version:        r10803
-Release:        0.1
+Release:        0.2
 License:        GPLv2+
 Group:          Games/Strategy
 Summary:        Cross-Platform RTS Game of Ancient Warfare
@@ -48,7 +48,7 @@ BuildRequires:	pkgconfig(openal)
 BuildRequires:  python
 BuildRequires:  SDL-devel
 BuildRequires:  subversion
-BuildRequires:  wxGTK-devel
+#BuildRequires:  wxGTK-devel
 BuildRequires:  wxgtku-devel
 BuildRequires:	X11-devel
 
@@ -112,20 +112,11 @@ install -m 644 build/resources/0ad.png %{buildroot}%{_gamesdatadir}/pixmaps/%{na
 install -d -m 755 %{buildroot}%{_gamesdatadir}/%{name}
 cp -a binaries/data/* %{buildroot}%{_gamesdatadir}/%{name}
 
-mkdir -p %{buildroot}%{_sysconfdir}/ld.so.conf.d/
-echo %{_libdir}/%{name} > %{buildroot}%{_sysconfdir}/ld.so.conf.d/%{name}.conf
-
-# check first for proper datadir, then for older 0ad-data package installing
-# in datadir
 cat > %{buildroot}%{_gamesbindir}/0ad <<EOF
 #!/bin/sh
 
-if [ -d %{_gamesdatadir}/0ad ]; then
-    cd %{_gamesdatadir}/0ad
-else
-    cd %{_datadir}/0ad
-fi
-%{_gamesbindir}/pyrogenesis%{dbg} "\$@"
+cd %{_gamesdatadir}/0ad
+LD_LIBRARY_PATH=%{_libdir}/0ad %{_gamesbindir}/pyrogenesis%{dbg} "\$@"
 EOF
 chmod +x %{buildroot}%{_gamesbindir}/0ad
 
@@ -143,4 +134,3 @@ export EXCLUDE_FROM_FULL_STRIP="libAtlasUI_dbg.so libCollada_dbg.so pyrogenesis_
 %{_gamesdatadir}/pixmaps/%{name}.png
 %{_gamesdatadir}/applications/%{name}.desktop
 %{_gamesdatadir}/%{name}
-%{_sysconfdir}/ld.so.conf.d/%{name}.conf
