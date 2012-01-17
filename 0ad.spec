@@ -18,7 +18,11 @@
 Name:           0ad
 Epoch:		1
 Version:        r10803
+%if %mdkversion >= 201100
 Release:        0.2
+%else
+Release:	%mkrel 0.2
+%endif
 License:        GPLv2+
 Group:          Games/Strategy
 Summary:        Cross-Platform RTS Game of Ancient Warfare
