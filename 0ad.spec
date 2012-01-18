@@ -116,6 +116,9 @@ install -m 644 build/resources/0ad.png %{buildroot}%{_gamesdatadir}/pixmaps/%{na
 install -d -m 755 %{buildroot}%{_gamesdatadir}/%{name}
 cp -a binaries/data/* %{buildroot}%{_gamesdatadir}/%{name}
 
+mkdir -p %{buildroot}%{_datadir}
+mv -f %{buildroot}%{_gamesdatadir}/{pixmaps,applications} %{buildroot}%{_datadir}
+
 cat > %{buildroot}%{_gamesbindir}/0ad <<EOF
 #!/bin/sh
 
@@ -135,6 +138,6 @@ export EXCLUDE_FROM_FULL_STRIP="libAtlasUI_dbg.so libCollada_dbg.so pyrogenesis_
 %{_gamesbindir}/0ad
 %{_gamesbindir}/pyrogenesis%{dbg}
 %{_libdir}/%{name}
-%{_gamesdatadir}/pixmaps/%{name}.png
-%{_gamesdatadir}/applications/%{name}.desktop
+%{_datadir}/pixmaps/%{name}.png
+%{_datadir}/applications/%{name}.desktop
 %{_gamesdatadir}/%{name}
