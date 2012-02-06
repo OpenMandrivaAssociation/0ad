@@ -109,6 +109,8 @@ done
 
 install -d -m 755 %{buildroot}%{_gamesdatadir}/applications
 install -m 644 build/resources/0ad.desktop %{buildroot}%{_gamesdatadir}/applications/%{name}.desktop
+perl -pi -e 's|%{_bindir}/0ad|%{_gamesbindir}/0ad|;'		\
+    %{buildroot}%{_gamesdatadir}/applications/%{name}.desktop    
 
 install -d -m 755 %{buildroot}%{_gamesdatadir}/pixmaps
 install -m 644 build/resources/0ad.png %{buildroot}%{_gamesdatadir}/pixmaps/%{name}.png
