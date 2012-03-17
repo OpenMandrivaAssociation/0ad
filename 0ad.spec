@@ -17,7 +17,7 @@
 
 Name:           0ad
 Epoch:		1
-Version:        r10803
+Version:        r11339
 %if %mdkversion >= 201100
 Release:        0.2
 %else
@@ -54,7 +54,6 @@ BuildRequires:  SDL-devel
 BuildRequires:  subversion
 #BuildRequires:  wxGTK-devel
 BuildRequires:  wxgtku-devel
-BuildRequires:	X11-devel
 
 # FAMMonitorDirectory fails if passing a relative directory
 # Use FAMNoExists (gamin specific to speed up a little bit initialization
