@@ -17,11 +17,11 @@
 
 Name:           0ad
 Epoch:		1
-Version:        r11339
+Version:        r11863
 %if %mdkversion >= 201100
-Release:        0.3
+Release:        0.4
 %else
-Release:	%mkrel 0.3
+Release:	%mkrel 0.4
 %endif
 License:        GPLv2+
 Group:          Games/Strategy
