@@ -1,0 +1,23 @@
+--- 0ad-r10803-alpha/source/lib/sysdep/os/linux/dir_watch_fam.cpp.orig	2012-01-12 03:19:47.575647830 -0200
++++ 0ad-r10803-alpha/source/lib/sysdep/os/linux/dir_watch_fam.cpp	2012-01-12 03:48:38.893574156 -0200
+@@ -156,6 +156,8 @@ static void* fam_event_loop(void*)
+ 
+ Status dir_watch_Add(const OsPath& path, PDirWatch& dirWatch)
+ {
++	char	resolved[PATH_MAX + 1];
++
+ 	// init already failed; don't try again or complain
+ 	if(initialized == -1)
+ 		return ERR::FAIL;	// NOWARN
+@@ -188,7 +190,10 @@ Status dir_watch_Add(const OsPath& path,
+ 	// not worthwhile
+ 
+ 	FAMRequest req;
+-	if(FAMMonitorDirectory(&fc, OsString(path).c_str(), &req, tmpDirWatch.get()) < 0)
++
++	FAMNoExists(&fc);
++
++	if(FAMMonitorDirectory(&fc, realpath(OsString(path).c_str(), resolved), &req, tmpDirWatch.get()) < 0)
+ 	{
+ 		debug_warn(L"res_watch_dir failed!");
+ 		WARN_RETURN(ERR::FAIL);	// no way of getting error code?

@@ -1,0 +1,19 @@
+diff -up 0ad-0.0.11-alpha/libraries/fcollada/src/FColladaPlugins/FArchiveXML/FArchiveXML.cpp.orig 0ad-0.0.11-alpha/libraries/fcollada/src/FColladaPlugins/FArchiveXML/FArchiveXML.cpp
+--- 0ad-0.0.11-alpha/libraries/fcollada/src/FColladaPlugins/FArchiveXML/FArchiveXML.cpp.orig	2012-09-08 09:56:56.532955316 -0300
++++ 0ad-0.0.11-alpha/libraries/fcollada/src/FColladaPlugins/FArchiveXML/FArchiveXML.cpp	2012-09-08 09:57:27.200987159 -0300
+@@ -523,8 +523,13 @@ bool FArchiveXML::EndExport(fm::vector<u
+ 	xmlOutputBufferPtr buf = xmlAllocOutputBuffer(NULL);
+ 	xmlNodeDumpOutput(buf, rootNode->doc, rootNode, 0, 0, NULL);
+ 
+-	outData.resize(buf->buffer->use * sizeof(xmlChar));
+-	memcpy(outData.begin(), buf->buffer->content, outData.size());
++#ifdef  LIBXML2_NEW_BUFFER
++	outData.resize(xmlOutputBufferGetSize(buf) * sizeof(xmlChar));
++	memcpy(outData.begin(), xmlOutputBufferGetContent(buf), outData.size());
++#else
++	outData.resize(buf->buffer->use * sizeof(xmlChar));
++	memcpy(outData.begin(), buf->buffer->content, outData.size());
++#endif
+ 
+ 	xmlOutputBufferClose(buf);
+ 	daeDocument.ReleaseXmlData();
