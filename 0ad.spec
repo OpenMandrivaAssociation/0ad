@@ -5,12 +5,6 @@
 %global		with_system_nvtt	0
 %global		without_nvtt		1
 
-%if 0%{?fedora} <= 16
-%global		with_system_enet	0
-%else
-%global		with_system_enet	1
-%endif
-
 %bcond_with	debug
 %if %{with debug}
 %define		config			debug
@@ -26,14 +20,10 @@
 %define		debug_package		%{nil}
 %endif
 
-Name:           0ad
+Name:		0ad
 Epoch:		1
-Version:        0.0.11
-%if %mdkversion >= 201100
-Release:        2
-%else
-Release:	%mkrel 2
-%endif
+Version:	0.0.11
+Release:	3
 # BSD License:
 #	build/premake/*
 #	libraries/valgrind/*		(not built/used)
@@ -50,9 +40,9 @@ Release:	%mkrel 2
 # MPL-1.1
 #	libraries/spidermonkey/*	(not built/used)
 License:	GPLv2+ and BSD and MIT and IBM
-Group:          Games/Strategy
-Summary:        Cross-Platform RTS Game of Ancient Warfare
-Url:            http://wildfiregames.com/0ad/
+Group:		Games/Strategy
+Summary:	Cross-Platform RTS Game of Ancient Warfare
+Url:		http://wildfiregames.com/0ad/
 
 %if %{without_nvtt}
 # wget http://releases.wildfiregames.com/%%{name}-%%{version}-alpha-unix-build.tar.xz
@@ -71,34 +61,32 @@ Source0:	http://releases.wildfiregames.com/%{name}-%{version}-alpha-unix-build.t
 # and disabled options were not added to the manual page.
 Source1:	%{name}.6
 Requires:	%{name}-data
-BuildRequires:  boost-devel
-BuildRequires:  cmake
-BuildRequires:  desktop-file-utils
-BuildRequires:  devil-devel
-BuildRequires:  gamin-devel
-BuildRequires:  gcc-c++
+BuildRequires:	boost-devel
+BuildRequires:	cmake
+BuildRequires:	desktop-file-utils
+BuildRequires:	devil-devel
+BuildRequires:	gamin-devel
+BuildRequires:	gcc-c++
 BuildRequires:	jpeg-devel
 BuildRequires:	libdnet-devel
-BuildRequires:  libjpeg-devel
-BuildRequires:  libpng-devel
-BuildRequires:  libvorbis-devel
-BuildRequires:  libxml2-devel
-BuildRequires:  nasm
+BuildRequires:	jpeg-devel
+BuildRequires:	pkgconfig(libpng)
+BuildRequires:	pkgconfig(vorbis)
+BuildRequires:	pkgconfig(libxml-2.0)
+BuildRequires:	nasm
 %if %{with_system_nvtt}
 BuildRequires:	nvidia-texture-tools
 %endif
-BuildRequires:  pkgconfig
 BuildRequires:	pkgconfig(libcurl)
 BuildRequires:	pkgconfig(libenet)
 BuildRequires:	pkgconfig(libpng)
 BuildRequires:	pkgconfig(libzip)
 BuildRequires:	pkgconfig(mozjs185)
 BuildRequires:	pkgconfig(openal)
-BuildRequires:  python
-BuildRequires:  SDL-devel
-BuildRequires:  subversion
-#BuildRequires:  wxGTK-devel
-BuildRequires:  wxgtku-devel
+BuildRequires:	python
+BuildRequires:	pkgconfig(sdl)
+BuildRequires:	subversion
+BuildRequires:	wxgtku-devel
 
 # FAMMonitorDirectory fails if passing a relative directory
 # Use FAMNoExists (gamin specific to speed up a little bit initialization
@@ -177,8 +165,8 @@ done
 
 install -d -m 755 %{buildroot}%{_gamesdatadir}/applications
 install -m 644 build/resources/0ad.desktop %{buildroot}%{_gamesdatadir}/applications/%{name}.desktop
-perl -pi -e 's|%{_bindir}/0ad|%{_gamesbindir}/0ad|;'		\
-    %{buildroot}%{_gamesdatadir}/applications/%{name}.desktop    
+perl -pi -e 's|%{_bindir}/0ad|%{_gamesbindir}/0ad|;' \
+    %{buildroot}%{_gamesdatadir}/applications/%{name}.desktop
 
 install -d -m 755 %{buildroot}%{_gamesdatadir}/pixmaps
 install -m 644 build/resources/0ad.png %{buildroot}%{_gamesdatadir}/pixmaps/%{name}.png
@@ -216,3 +204,69 @@ export EXCLUDE_FROM_FULL_STRIP="libAtlasUI_dbg.so libCollada_dbg.so pyrogenesis_
 %{_datadir}/applications/%{name}.desktop
 %{_gamesdatadir}/%{name}
 %{_mandir}/man6/*.6*
+
+
+%changelog
+* Fri Sep 28 2012 Paulo Andrade <pcpa@mandriva.com.br> 1:0.0.11-2
++ Revision: 817861
+- Do not build s3tc patent infringing code.
+- Remove s3tc from implementation from main tarball.
+- Sync with fedora package.
+- Add patch to allow rebuilding when updating to newer libxml2.
+
+  + Sergey Zhemoitel <serg@mandriva.org>
+    - update to 0.0.11 Alpha
+
+* Fri Jun 29 2012 Bernhard Rosenkraenzer <bero@bero.eu> 1:r11863-0.4
++ Revision: 807484
+- Update to alpha 10 (aka 11863)
+
+* Sat Mar 31 2012 Bernhard Rosenkraenzer <bero@bero.eu> 1:r11339-0.3
++ Revision: 788441
+- Rebuild for boost 1.49
+
+* Sat Mar 17 2012 Bernhard Rosenkraenzer <bero@bero.eu> 1:r11339-0.2
++ Revision: 785456
+- Update to alpha9
+
+  + Paulo Andrade <pcpa@mandriva.com.br>
+    - Correct 0ad.desktop binary path.
+    - Install desktop files in proper directory.
+
+* Sat Jan 14 2012 Paulo Andrade <pcpa@mandriva.com.br> 1:r10803-0.2
++ Revision: 760793
+- Assume latest 0ad-data is installed in _gamesdatadir.
+- Do not add 0ad libraries to ld library path.
+
+* Thu Jan 12 2012 Paulo Andrade <pcpa@mandriva.com.br> 1:r10803-0.1
++ Revision: 760257
+- Install binaries in gamesbindir.
+- Install data files in gamesdatadir.
+- Use upstream suggested versioning schema.
+- Use system libraries (but nvtt).
+- Add build mode to make it easier to debug failures.
+
+  + Sergey Zhemoitel <serg@mandriva.org>
+    - add new revision 10803
+    - new revision 10288
+    - fix x86_64 requires lib
+    - fix x86_64 requires lib
+    - add new requires
+    - fix enet
+    - fix requires
+    - imported package 0ad
+    - update revesion to 09786
+
+* Mon Mar 14 2011 Funda Wang <fwang@mandriva.org> 1.0-0.8899.2
++ Revision: 644467
+- rebuild for new boost
+
+* Mon Feb 14 2011 Guillaume Rousse <guillomovitch@mandriva.org> 1.0-0.8899.1
++ Revision: 637689
+- new snapshot
+- produce data package from the same snapshot
+
+* Wed Oct 20 2010 Guillaume Rousse <guillomovitch@mandriva.org> 1.0-0.08413.1mdv2011.0
++ Revision: 587053
+- import 0ad
+
