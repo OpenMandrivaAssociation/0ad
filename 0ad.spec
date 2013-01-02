@@ -2,11 +2,11 @@
 
 # conditionals left for the sake of users building from source, but
 # nvtt (due to s3tc patented code) is not supported and not built.
-%global		with_system_nvtt	0
-%global		without_nvtt		1
+%global		with_system_nvtt	1
+%global		without_nvtt		0
 
-%bcond_with	debug
-%if %{with debug}
+%global		with_debug		0
+%if %{with_debug}
 %define		config			debug
 %define		dbg			_dbg
 %undefine	_enable_debug_packages
@@ -22,8 +22,8 @@
 
 Name:		0ad
 Epoch:		1
-Version:	0.0.11
-Release:	3
+Version:	0.0.12
+Release:	1
 # BSD License:
 #	build/premake/*
 #	libraries/valgrind/*		(not built/used)
@@ -60,6 +60,7 @@ Source0:	http://releases.wildfiregames.com/%{name}-%{version}-alpha-unix-build.t
 # version field and check for extra options. Note that windows specific,
 # and disabled options were not added to the manual page.
 Source1:	%{name}.6
+#Requires:	%{name}-data = %{version}
 Requires:	%{name}-data
 BuildRequires:	boost-devel
 BuildRequires:	cmake
@@ -88,16 +89,21 @@ BuildRequires:	pkgconfig(sdl)
 BuildRequires:	subversion
 BuildRequires:	wxgtku-devel
 
-# FAMMonitorDirectory fails if passing a relative directory
-# Use FAMNoExists (gamin specific to speed up a little bit initialization
-# as commented in the source)
-Patch0:		%{name}-gamin.patch
-
 # http://trac.wildfiregames.com/ticket/1421
-Patch1:		%{name}-rpath.patch
+Patch0:		%{name}-rpath.patch
 
-# Build with newer libxml2
-Patch2:		%{name}-libxml2.patch
+# Display more clear error messages when creating custom scenarios
+# The suggested usage is:
+#	$ sudo mkdir /usr/share/0ad/public/maps
+#	$ sudo chmod 7777 /usr/share/0ad/public/maps
+#	$ 0ad -editor
+# Supposing saved the map as mymap, can test it with:
+#	$ 0ad -autostart=mymap
+Patch1:		%{name}-saveas.patch
+
+# Only do fcollada debug build with enabling debug maintainer mode
+# It also prevents assumption there that it is building in x86
+Patch2:		%{name}-debug.patch
 
 %description
 0 A.D. (pronounced "zero ey-dee") is a free, open-source, cross-platform
@@ -116,7 +122,10 @@ hobbyist game developers, since 2001.
 %setup -q -n %{name}-%{version}-alpha
 %patch0 -p1
 %patch1 -p1
+%if !%{with_debug}
+# disable debug build, and "int 0x3" to trap to debugger (x86 only)
 %patch2 -p1
+%endif
 
 #-----------------------------------------------------------------------
 %build
@@ -189,7 +198,7 @@ LD_LIBRARY_PATH=%{_libdir}/0ad %{_gamesbindir}/pyrogenesis%{dbg} "\$@"
 EOF
 chmod +x %{buildroot}%{_gamesbindir}/0ad
 
-%if %{with debug}
+%if %{with_debug}
 export EXCLUDE_FROM_FULL_STRIP="libAtlasUI_dbg.so libCollada_dbg.so pyrogenesis_dbg"
 %endif
 
@@ -207,6 +216,9 @@ export EXCLUDE_FROM_FULL_STRIP="libAtlasUI_dbg.so libCollada_dbg.so pyrogenesis_
 
 
 %changelog
+* Wed Jan 02 2013 pcpa <paulo.cesar.pereira.de.andrade@gmail.com> - 1:0.0.12-1
+- Update to latest upstream release.
+
 * Fri Sep 28 2012 Paulo Andrade <pcpa@mandriva.com.br> 1:0.0.11-2
 + Revision: 817861
 - Do not build s3tc patent infringing code.
