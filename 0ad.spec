@@ -76,7 +76,7 @@ BuildRequires:	pkgconfig(vorbis)
 BuildRequires:	pkgconfig(libxml-2.0)
 BuildRequires:	nasm
 %if %{with_system_nvtt}
-BuildRequires:	nvidia-texture-tools
+BuildRequires:	nvidia-texture-tools-devel
 %endif
 BuildRequires:	pkgconfig(libcurl)
 BuildRequires:	pkgconfig(libenet)
