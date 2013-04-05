@@ -22,7 +22,7 @@
 
 Name:		0ad
 Epoch:		1
-Version:	0.0.12
+Version:	0.0.13
 Release:	1
 # BSD License:
 #	build/premake/*
@@ -214,71 +214,4 @@ export EXCLUDE_FROM_FULL_STRIP="libAtlasUI_dbg.so libCollada_dbg.so pyrogenesis_
 %{_gamesdatadir}/%{name}
 %{_mandir}/man6/*.6*
 
-
-%changelog
-* Wed Jan 02 2013 pcpa <paulo.cesar.pereira.de.andrade@gmail.com> - 1:0.0.12-1
-- Update to latest upstream release.
-
-* Fri Sep 28 2012 Paulo Andrade <pcpa@mandriva.com.br> 1:0.0.11-2
-+ Revision: 817861
-- Do not build s3tc patent infringing code.
-- Remove s3tc from implementation from main tarball.
-- Sync with fedora package.
-- Add patch to allow rebuilding when updating to newer libxml2.
-
-  + Sergey Zhemoitel <serg@mandriva.org>
-    - update to 0.0.11 Alpha
-
-* Fri Jun 29 2012 Bernhard Rosenkraenzer <bero@bero.eu> 1:r11863-0.4
-+ Revision: 807484
-- Update to alpha 10 (aka 11863)
-
-* Sat Mar 31 2012 Bernhard Rosenkraenzer <bero@bero.eu> 1:r11339-0.3
-+ Revision: 788441
-- Rebuild for boost 1.49
-
-* Sat Mar 17 2012 Bernhard Rosenkraenzer <bero@bero.eu> 1:r11339-0.2
-+ Revision: 785456
-- Update to alpha9
-
-  + Paulo Andrade <pcpa@mandriva.com.br>
-    - Correct 0ad.desktop binary path.
-    - Install desktop files in proper directory.
-
-* Sat Jan 14 2012 Paulo Andrade <pcpa@mandriva.com.br> 1:r10803-0.2
-+ Revision: 760793
-- Assume latest 0ad-data is installed in _gamesdatadir.
-- Do not add 0ad libraries to ld library path.
-
-* Thu Jan 12 2012 Paulo Andrade <pcpa@mandriva.com.br> 1:r10803-0.1
-+ Revision: 760257
-- Install binaries in gamesbindir.
-- Install data files in gamesdatadir.
-- Use upstream suggested versioning schema.
-- Use system libraries (but nvtt).
-- Add build mode to make it easier to debug failures.
-
-  + Sergey Zhemoitel <serg@mandriva.org>
-    - add new revision 10803
-    - new revision 10288
-    - fix x86_64 requires lib
-    - fix x86_64 requires lib
-    - add new requires
-    - fix enet
-    - fix requires
-    - imported package 0ad
-    - update revesion to 09786
-
-* Mon Mar 14 2011 Funda Wang <fwang@mandriva.org> 1.0-0.8899.2
-+ Revision: 644467
-- rebuild for new boost
-
-* Mon Feb 14 2011 Guillaume Rousse <guillomovitch@mandriva.org> 1.0-0.8899.1
-+ Revision: 637689
-- new snapshot
-- produce data package from the same snapshot
-
-* Wed Oct 20 2010 Guillaume Rousse <guillomovitch@mandriva.org> 1.0-0.08413.1mdv2011.0
-+ Revision: 587053
-- import 0ad
 
