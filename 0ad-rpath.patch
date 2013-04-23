@@ -1,7 +1,7 @@
-diff -up 0ad-0.0.12-alpha/build/premake/premake4.lua.orig 0ad-0.0.12-alpha/build/premake/premake4.lua
---- 0ad-0.0.12-alpha/build/premake/premake4.lua.orig	2012-10-29 22:56:24.000000000 -0200
-+++ 0ad-0.0.12-alpha/build/premake/premake4.lua	2012-12-18 20:30:20.851551919 -0200
-@@ -303,26 +303,6 @@ function project_set_build_flags()
+diff -up 0ad-0.0.11-alpha/build/premake/premake4.lua.orig 0ad-0.0.11-alpha/build/premake/premake4.lua
+--- 0ad-0.0.11-alpha/build/premake/premake4.lua.orig	2012-09-08 10:11:31.662784857 -0300
++++ 0ad-0.0.11-alpha/build/premake/premake4.lua	2012-09-08 10:11:41.465795036 -0300
+@@ -308,26 +308,6 @@ function project_set_build_flags()
  			defines { "INSTALLED_LIBDIR=" .. _OPTIONS["libdir"] }
  		end
  

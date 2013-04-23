@@ -1,7 +1,7 @@
-.TH 0AD "1" "Dec 16 2012" "0ad 0.0.12" "User Commands"
+.TH 0AD "1" "Sep 8 2012" "0ad 0.0.11" "User Commands"
 
 .SH NAME
-0ad \- manual page for 0ad 0.0.12
+0ad \- manual page for 0ad 0.0.11
 .SH SYNOPSIS
 .B 0ad
 [\fIoptions\fR]
@@ -107,15 +107,6 @@ Advanced / diagnostic:
 creates a file entity.rng in the working directory, containing
 complete entity XML schema, used by various analysis tools
 .TP
-\fB\-entgraph\fR
-(disabled)
-.TP
-\fB\-listfiles\fR
-(disabled)
-.TP
-\fB\-profile\fR=\fINAME\fR
-(disabled)
-.TP
 \fB\-replay\fR=\fIPATH\fR
 non-visual replay of a previous game, used for analysis purposes
 \fIPATH\fR is system path to commands.txt containing simulation log
@@ -123,16 +114,6 @@ non-visual replay of a previous game, used for analysis purposes
 \fB\-writableRoot\fR
 store runtime game data in root data directory
 (only use if you have write permissions on that directory)
-.TP
-\fB\-ooslog\fR
-dumps simulation state in binary and ASCII representations each turn,
-files created in sim_log within the game's log folder. \fBNOTE\fR: game will
-run much slower with this option!
-.TP
-\fB-serializationtest\fR
-checks simulation state each turn for serialization errors; on test
-failure, error is displayed and logs created in oos_log within the
-game's log folder. \fBNOTE\fR: game will run much slower with this option!
 
 .PP
 Archive builder:
@@ -146,9 +127,6 @@ system \fIPATH\fR to output of the resulting .zip archive (use with archivebuild
 \fB\-archivebuild-compress\fR
 enable deflate compression in the .zip
 (no zip compression by default since it hurts compression of release packages)
-.TP
-\fB-buildarchive\fR
-(disabled)
 
 .SH "REPORTING BUGS"
 Bugs should be reported on Trac: http://trac.wildfiregames.com/
