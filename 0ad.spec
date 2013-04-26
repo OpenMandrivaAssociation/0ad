@@ -107,6 +107,8 @@ hobbyist game developers, since 2001.
 %prep
 %setup -q -n %{name}-%{version}-alpha
 %patch1 -p1
+sed -i 's/unix_names = { "boost_filesystem-mt", "boost_system-mt" },/unix_names = { "boost_filesystem", "boost_system" },/g' "build/premake/extern_libs4.lua"
+sed -i 's/unix_names = { "boost_signals-mt" },/unix_names = { "boost_signals" },/g' "build/premake/extern_libs4.lua"
 
 #-----------------------------------------------------------------------
 %build
