@@ -1,7 +1,7 @@
-.TH 0AD "1" "Sep 8 2012" "0ad 0.0.11" "User Commands"
+.TH 0AD "6" "Sep 6 2013" "0ad 0.0.14" "User Commands"
 
 .SH NAME
-0ad \- manual page for 0ad 0.0.11
+0ad \- manual page for 0ad 0.0.14
 .SH SYNOPSIS
 .B 0ad
 [\fIoptions\fR]
@@ -39,6 +39,9 @@ map \fINAME\fR for scenario, or rms name for random map
 .TP
 \fB\-autostart-ai\fR=\fIPLAYER\fR:\fIAI\fR
 adds named \fIAI\fR to the given \fIPLAYER\fR (e.g. 2:testbot)
+.TP
+\fB-autostart-aidiff\fR=\fIPLAYER\fR:\fIlevel\fR
+changes the difficulty setting for \fIAI PLAYER\fR (0: easy, 3: very hard)
 
 .PP
 Multiplayer:
@@ -72,6 +75,9 @@ random map \fISIZE\fR in tiles (default 192)
 .TP
 \fB\-autostart-players\fR=\fINUMBER\fI
 \fINUMBER\fR of players on random map
+.TP
+\fB-autostart-civ\fR=\fIPLAYER\fR:\fICIV\fR
+changes the civilisation of player \fIPLAYER\fR to \fICIV\fR (default athen)
 
 .PP
 Configuration:
@@ -85,8 +91,8 @@ set the gamma correction to '\fIF\fR' (default 1.0)
 \fB\-nosound\fR
 disable audio
 .TP
-\fB\-onlyPublicFiles\fR
-force game to use only the public (default) mod
+\fB-noUserMod\fR
+disable loading of the user mod
 .TP
 \fB\-shadows\fR
 enable shadows
@@ -104,8 +110,17 @@ set screen \fIY\fR resolution to '\fIN\fR'
 Advanced / diagnostic:
 .TP
 \fB\-dumpSchema\fR
-creates a file entity.rng in the working directory, containing
+creates a file \fIentity.rng\fR in the working directory, containing
 complete entity XML schema, used by various analysis tools
+.TP
+\fB\-entgraph\fR
+(disabled)
+.TP
+\fB\-listfiles\fR
+(disabled)
+.TP
+\fB\-profile\fR=\fINAME\fR
+(disabled)
 .TP
 \fB\-replay\fR=\fIPATH\fR
 non-visual replay of a previous game, used for analysis purposes
@@ -114,6 +129,16 @@ non-visual replay of a previous game, used for analysis purposes
 \fB\-writableRoot\fR
 store runtime game data in root data directory
 (only use if you have write permissions on that directory)
+.TP
+\fB\-ooslog\fR
+dumps simulation state in binary and ASCII representations each turn,
+files created in sim_log within the game's log folder. \fBNOTE\fR: game will
+run much slower with this option!
+.TP
+\fB-serializationtest\fR
+checks simulation state each turn for serialization errors; on test
+failure, error is displayed and logs created in oos_log within the
+game's log folder. \fBNOTE\fR: game will run much slower with this option!
 
 .PP
 Archive builder:
@@ -127,15 +152,13 @@ system \fIPATH\fR to output of the resulting .zip archive (use with archivebuild
 \fB\-archivebuild-compress\fR
 enable deflate compression in the .zip
 (no zip compression by default since it hurts compression of release packages)
+.TP
+\fB-buildarchive\fR
+(disabled)
 
 .SH "REPORTING BUGS"
-Bugs should be reported on Trac: http://trac.wildfiregames.com/
-.br
-On Linux / OS X: If the game detects an error, it should generate crashlog.txt
-in ~/.config/0ad/logs/ . If it doesn't, it should at least print some
-information on stdout. Attach crashlog.txt or the other information to the
-bug report. It might also help to run the game in gdb and copy the output of
-the "bt full" command, if possible.
+Bugs should be reported on Trac. For information on reporting problems
+and finding logs, see http://trac.wildfiregames.com/wiki/ReportingErrors
 
 .SH COPYRIGHT
 0 A.D. is released as open source: you can freely use, copy, modify and
