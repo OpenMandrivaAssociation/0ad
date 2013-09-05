@@ -1,28 +1,22 @@
 # http://trac.wildfiregames.com/wiki/BuildInstructions#Linux
 
-# conditionals left for the sake of users building from source, but
-# nvtt (due to s3tc patented code) is not supported and not built.
-%global		with_system_nvtt	0
-%global		without_nvtt		1
-
-%bcond_with	debug
-%if %{with debug}
+# enable special maintainer debug build ?
+%define		with_debug		0
+%if %{with_debug}
 %define		config			debug
 %define		dbg			_dbg
-%undefine	_enable_debug_packages
-%undefine	debug_package
 %else
 %define		config			release
 %define		dbg			%{nil}
-# 0ad-debug is useless if 0ad is stripped
-# install gamin-debug to verify reason of patch0
-%define		_enable_debug_packages	%{nil}
-%define		debug_package		%{nil}
 %endif
+
+%global		with_system_nvtt	1
+%global		without_nvtt		0
+%global		with_system_enet	1
 
 Name:		0ad
 Epoch:		1
-Version:	0.0.13
+Version:	0.0.14
 Release:	1
 # BSD License:
 #	build/premake/*
@@ -60,7 +54,7 @@ Source0:	http://releases.wildfiregames.com/%{name}-%{version}-alpha-unix-build.t
 # version field and check for extra options. Note that windows specific,
 # and disabled options were not added to the manual page.
 Source1:	%{name}.6
-Requires:	%{name}-data
+Requires:	%{name}-data = %{version}
 BuildRequires:	boost-devel
 BuildRequires:	cmake
 BuildRequires:	desktop-file-utils
@@ -75,7 +69,7 @@ BuildRequires:	pkgconfig(vorbis)
 BuildRequires:	pkgconfig(libxml-2.0)
 BuildRequires:	nasm
 %if %{with_system_nvtt}
-BuildRequires:	nvidia-texture-tools
+BuildRequires:	nvidia-texture-tools-devel
 %endif
 BuildRequires:	pkgconfig(libcurl)
 BuildRequires:	pkgconfig(libenet)
@@ -89,7 +83,20 @@ BuildRequires:	subversion
 BuildRequires:	wxgtku-devel
 
 # http://trac.wildfiregames.com/ticket/1421
-Patch1:		%{name}-rpath.patch
+Patch0:		%{name}-rpath.patch
+
+# Display more clear error messages when creating custom scenarios
+# The suggested usage is:
+#	$ sudo mkdir /usr/share/0ad/public/maps
+#	$ sudo chmod 7777 /usr/share/0ad/public/maps
+#	$ 0ad -editor
+# Supposing saved the map as mymap, can test it with:
+#	$ 0ad -autostart=mymap
+Patch1:		%{name}-saveas.patch
+
+# Only do fcollada debug build with enabling debug maintainer mode
+# It also prevents assumption there that it is building in x86
+Patch2:		%{name}-debug.patch
 
 %description
 0 A.D. (pronounced "zero ey-dee") is a free, open-source, cross-platform
@@ -106,9 +113,16 @@ hobbyist game developers, since 2001.
 #-----------------------------------------------------------------------
 %prep
 %setup -q -n %{name}-%{version}-alpha
+%patch0 -p1
 %patch1 -p1
-sed -i 's/unix_names = { "boost_filesystem-mt", "boost_system-mt" },/unix_names = { "boost_filesystem", "boost_system" },/g' "build/premake/extern_libs4.lua"
-sed -i 's/unix_names = { "boost_signals-mt" },/unix_names = { "boost_signals" },/g' "build/premake/extern_libs4.lua"
+%if !%{with_debug}
+# disable debug build, and "int 0x3" to trap to debugger (x86 only)
+%patch2 -p1
+%endif
+
+%if %{with_system_nvtt}
+rm -fr libraries/nvtt
+%endif
 
 #-----------------------------------------------------------------------
 %build
@@ -117,10 +131,12 @@ export CPPFLAGS="%{optflags}"
 # avoid warnings with gcc 4.7 due to _FORTIFY_SOURCE in CPPFLAGS
 export CPPFLAGS="`echo %{optflags} | sed -e 's/-Wp,-D_FORTIFY_SOURCE=2//'`"
 build/workspaces/update-workspaces.sh	\
-    --bindir %{_gamesbindir}		\
-    --datadir %{_gamesdatadir}/%{name}	\
+    --bindir %{_bindir}			\
+    --datadir %{_datadir}/%{name}	\
     --libdir %{_libdir}/%{name}		\
+%if %{with_system_enet}
     --with-system-enet			\
+%endif
     --with-system-mozjs185		\
 %if %{with_system_nvtt}
     --with-system-nvtt			\
@@ -128,7 +144,7 @@ build/workspaces/update-workspaces.sh	\
 %if %{without_nvtt}
     --without-nvtt			\
 %endif
-    %{_smp_mflags}
+    %{?_smp_mflags}
 
 %make -C build/workspaces/gcc config=%{config} verbose=1
 
@@ -196,5 +212,3 @@ export EXCLUDE_FROM_FULL_STRIP="libAtlasUI_dbg.so libCollada_dbg.so pyrogenesis_
 %{_datadir}/applications/%{name}.desktop
 %{_gamesdatadir}/%{name}
 %{_mandir}/man6/*.6*
-
-
