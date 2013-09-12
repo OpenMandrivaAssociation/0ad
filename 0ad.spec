@@ -17,7 +17,7 @@
 Name:		0ad
 Epoch:		1
 Version:	0.0.14
-Release:	1
+Release:	2
 # BSD License:
 #	build/premake/*
 #	libraries/valgrind/*		(not built/used)
@@ -54,7 +54,7 @@ Source0:	http://releases.wildfiregames.com/%{name}-%{version}-alpha-unix-build.t
 # version field and check for extra options. Note that windows specific,
 # and disabled options were not added to the manual page.
 Source1:	%{name}.6
-Requires:	%{name}-data = %{version}
+Requires:	%{name}-data = 1:%{version}
 BuildRequires:	boost-devel
 BuildRequires:	cmake
 BuildRequires:	desktop-file-utils
