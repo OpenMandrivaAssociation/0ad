@@ -1,10 +1,10 @@
-diff -up 0ad-0.0.14-alpha/libraries/source/fcollada/src/Makefile.orig 0ad-0.0.14-alpha/libraries/source/fcollada/src/Makefile
---- 0ad-0.0.14-alpha/libraries/source/fcollada/src/Makefile.orig	2013-09-05 11:06:14.192030546 -0300
-+++ 0ad-0.0.14-alpha/libraries/source/fcollada/src/Makefile	2013-09-05 11:09:01.894036968 -0300
-@@ -14,10 +14,7 @@ CXXFLAGS += -fvisibility=hidden -W -Wall
- ifeq ($(OS_CPU),armv7l)
- CXXFLAGS += -mtune=cortex-a15 -mfpu=neon-vfpv4 -mfloat-abi=hard
- endif
+diff -up 0ad-0.0.15-alpha/libraries/source/fcollada/src/Makefile.orig 0ad-0.0.15-alpha/libraries/source/fcollada/src/Makefile
+--- 0ad-0.0.15-alpha/libraries/source/fcollada/src/Makefile.orig	2013-12-27 17:28:17.825656505 -0200
++++ 0ad-0.0.15-alpha/libraries/source/fcollada/src/Makefile	2013-12-27 17:30:47.874662251 -0200
+@@ -9,10 +9,7 @@ endif
+ 
+ CXX ?= g++
+ CXXFLAGS += -fvisibility=hidden -W -Wall -Wno-unused-parameter -Wno-unused-function $(OS_DEFINE) $(PIC_FLAGS) $(CPPFLAGS)
 -CXXFLAGS_DEBUG := -O0 -g -D_DEBUG -DRETAIL
  CXXFLAGS_RELEASE := -O1 -DNDEBUG -DRETAIL
 -# (-O2 with gcc 4.3 causes linker errors when using this library, for unknown reasons, so stick with -O1 until gcc >4.3 is typical.)
@@ -12,7 +12,7 @@ diff -up 0ad-0.0.14-alpha/libraries/source/fcollada/src/Makefile.orig 0ad-0.0.14
  LIBS += `pkg-config libxml-2.0 --libs`
  INCLUDES += -IFCollada `pkg-config libxml-2.0 --cflags`
  INCLUDES_TEST := -IFCollada/FColladaTest $(INCLUDES)
-@@ -186,62 +183,13 @@ SOURCE = \
+@@ -181,72 +178,19 @@ SOURCE = \
  	FColladaPlugins/FArchiveXML/FAXSceneExport.cpp \
  	FColladaPlugins/FArchiveXML/FAXSceneImport.cpp \
  
@@ -78,17 +78,18 @@ diff -up 0ad-0.0.14-alpha/libraries/source/fcollada/src/Makefile.orig 0ad-0.0.14
  
  output/libFColladaSR.a: $(OBJECTS_RELEASE)
  	@echo "$@"
-@@ -250,8 +198,7 @@ output/libFColladaSR.a: $(OBJECTS_RELEAS
- output/FColladaTest: $(OBJECTS_TEST)
- 	$(CXX) -o $@ $(LDFLAGS) $(OBJECTS_TEST) $(LIBS)
+ 	@ar -cr $@ $(OBJECTS_RELEASE); ranlib $@
  
+-output/FColladaTest: $(OBJECTS_TEST)
+-	$(CXX) -o $@ $(LDFLAGS) $(OBJECTS_TEST) $(LIBS)
+-
 -install: output/libFColladaSD.a output/libFColladaSR.a
 -	cp output/libFColladaSD.a ../lib/libFColladaSD.a
 +install: output/libFColladaSR.a
  	cp output/libFColladaSR.a ../lib/libFColladaSR.a
  
  dfile = $(@:.o=.d)
-@@ -261,18 +208,10 @@ gendep = \
+@@ -256,18 +200,10 @@ gendep = \
  		sed -e 's/\#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$//' \
  		    -e '/^$$/ d' -e 's/$$/ :/' < $(dfile) >> $(Pfile) && \
  		rm -f $(dfile)
