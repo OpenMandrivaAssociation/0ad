@@ -157,7 +157,7 @@ build/workspaces/update-workspaces.sh	\
 %if !%{without_nvtt}
 %check
 export CC=%{__cc}
-LD_LIBRARY_PATH=binaries/system binaries/system/test%{dbg} -libdir binaries/system
+LD_LIBRARY_PATH=binaries/system binaries/system/test%{dbg}
 %endif
 
 #-----------------------------------------------------------------------
