@@ -70,7 +70,6 @@ BuildRequires:	pkgconfig(libpng)
 BuildRequires:	pkgconfig(vorbis)
 BuildRequires:	pkgconfig(libxml-2.0)
 BuildRequires:	miniupnpc-devel
-BuildRequires:	mozjs24-devel
 BuildRequires:	nasm
 %if %{with_system_nvtt}
 BuildRequires:	nvidia-texture-tools-devel
@@ -79,6 +78,7 @@ BuildRequires:	pkgconfig(libcurl)
 BuildRequires:	pkgconfig(libenet)
 BuildRequires:	pkgconfig(libpng)
 BuildRequires:	pkgconfig(libzip)
+BuildRequires:	pkgconfig(mozjs185)
 BuildRequires:	pkgconfig(openal)
 BuildRequires:	python
 BuildRequires:	pkgconfig(sdl)
@@ -140,7 +140,7 @@ build/workspaces/update-workspaces.sh	\
 %if %{with_system_enet}
     --with-system-enet			\
 %endif
-    --with-system-mozjs24		\
+    --with-system-mozjs185		\
     --with-system-miniupnpc		\
 %if %{with_system_nvtt}
     --with-system-nvtt			\
