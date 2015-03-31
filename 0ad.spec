@@ -17,7 +17,7 @@
 Name:		0ad
 Epoch:		1
 Version:	0.0.17
-Release:	2
+Release:	1
 # BSD License:
 #	build/premake/*
 #	libraries/valgrind/*		(not built/used)
@@ -70,7 +70,6 @@ BuildRequires:	pkgconfig(libpng)
 BuildRequires:	pkgconfig(vorbis)
 BuildRequires:	pkgconfig(libxml-2.0)
 BuildRequires:	miniupnpc-devel
-BuildRequires:	mozjs24-devel
 BuildRequires:	nasm
 %if %{with_system_nvtt}
 BuildRequires:	nvidia-texture-tools-devel
@@ -79,6 +78,7 @@ BuildRequires:	pkgconfig(libcurl)
 BuildRequires:	pkgconfig(libenet)
 BuildRequires:	pkgconfig(libpng)
 BuildRequires:	pkgconfig(libzip)
+BuildRequires:	pkgconfig(mozjs185)
 BuildRequires:	pkgconfig(openal)
 BuildRequires:	python
 BuildRequires:	pkgconfig(sdl)
@@ -92,7 +92,10 @@ Patch0:		%{name}-rpath.patch
 
 # Only do fcollada debug build with enabling debug maintainer mode
 # It also prevents assumption there that it is building in x86
-Patch1:		%{name}-debug.patch
+#Patch1:		%{name}-debug.patch
+
+# Build with miniupnpc-1.9
+Patch2:		%{name}-miniupnpc.patch
 
 # After some trial&error this corrects a %%check failure with gcc 4.9 on i686
 Patch3:		%{name}-check.patch
@@ -113,10 +116,11 @@ hobbyist game developers, since 2001.
 %prep
 %setup -q -n %{name}-%{version}-alpha
 %patch0 -p1
-%if !%{with_debug}
+#%if !%{with_debug}
 # disable debug build, and "int 0x3" to trap to debugger (x86 only)
-%patch1 -p1
-%endif
+#%patch1 -p1
+#%endif
+%patch2 -p1
 %patch3 -p1
 
 %if %{with_system_nvtt}
@@ -136,7 +140,7 @@ build/workspaces/update-workspaces.sh	\
 %if %{with_system_enet}
     --with-system-enet			\
 %endif
-    --with-system-mozjs24		\
+    --with-system-mozjs185		\
     --with-system-miniupnpc		\
 %if %{with_system_nvtt}
     --with-system-nvtt			\
