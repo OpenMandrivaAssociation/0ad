@@ -96,7 +96,7 @@ Patch0:		%{name}-rpath.patch
 #Patch1:		%{name}-debug.patch
 
 # Build with miniupnpc-1.9
-Patch2:		%{name}-miniupnpc.patch
+#Patch2:		%{name}-miniupnpc.patch
 
 # After some trial&error this corrects a %%check failure with gcc 4.9 on i686
 Patch3:		%{name}-check.patch
@@ -121,7 +121,7 @@ hobbyist game developers, since 2001.
 # disable debug build, and "int 0x3" to trap to debugger (x86 only)
 #%patch1 -p1
 #%endif
-%patch2 -p1
+#%patch2 -p1
 %patch3 -p1
 
 %if %{with_system_nvtt}
