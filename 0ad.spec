@@ -58,7 +58,7 @@ Requires:	%{name}-data = 1:%{version}
 BuildRequires:	boost-devel
 BuildRequires:	cmake
 BuildRequires:	desktop-file-utils
-BuidlRequires:	pkgconfig(IL)
+BuildRequires:	pkgconfig(IL)
 #BuildRequires:	devil-devel
 #BuildRequires:	gamin-devel
 BuildRequires:	gcc-c++
