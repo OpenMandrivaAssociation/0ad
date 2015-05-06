@@ -54,37 +54,38 @@ Source0:	http://releases.wildfiregames.com/%{name}-%{version}-alpha-unix-build.t
 # and disabled options were not added to the manual page.
 Source1:	%{name}.6
 Requires:	%{name}-data = 1:%{version}
-BuildRequires:	boost-devel
-BuildRequires:	cmake
 BuildRequires:	desktop-file-utils
-BuildRequires:	pkgconfig(IL)
+BuildRequires:	subversion
 #BuildRequires:	devil-devel
 #BuildRequires:	gamin-devel
 BuildRequires:	gcc-c++
-BuildRequires: 	gloox-devel
-BuildRequires:	jpeg-devel
 BuildRequires:	icu-devel
-BuildRequires:	jpeg-devel
 BuildRequires:	libdnet-devel
-BuildRequires:	pkgconfig(libpng)
-BuildRequires:	pkgconfig(vorbis)
-BuildRequires:	pkgconfig(libxml-2.0)
-BuildRequires:	miniupnpc-devel
 BuildRequires:	nasm
 %if %{with_system_nvtt}
 BuildRequires:	nvidia-texture-tools-devel
 %endif
+BuildRequires:	boost-devel
+BuildRequires:	cmake
+BuildRequires:	jpeg-devel
+BuildRequires:	miniupnpc-devel
+BuildRequires:	pkgconfig(IL)
+BuildRequires:	pkgconfig(libzip)
+BuildRequires:	pkgconfig(mozjs-24)
+BuildRequires:	pkgconfig(gloox)
 BuildRequires:	pkgconfig(libcurl)
 BuildRequires:	pkgconfig(libenet)
 BuildRequires:	pkgconfig(libpng)
-BuildRequires:	pkgconfig(libzip)
-BuildRequires:	pkgconfig(mozjs-24)
+BuildRequires:	pkgconfig(libxml-2.0)
+BuildRequires:	pkgconfig(nspr)
 BuildRequires:	pkgconfig(openal)
+BuildRequires:	pkgconfig(sdl)
+BuildRequires:	pkgconfig(valgrind)
+BuildRequires:	pkgconfig(vorbisfile)
+BuildRequires:	pkgconfig(xcursor)
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	python
-BuildRequires:	pkgconfig(sdl)
-BuildRequires:	subversion
-BuildRequires:	wxgtku3.0-devel
+BuildRequires:	wxgtk2.8-devel
 
 ExclusiveArch:	%{ix86} x86_64
 
@@ -128,16 +129,19 @@ hobbyist game developers, since 2001.
 rm -fr libraries/nvtt
 %endif
 
+build/workspaces/clean-workspaces.sh
+
 #-----------------------------------------------------------------------
 %build
+%setup_compile_flags
 export CC=%{__cc}
 export CFLAGS="%{optflags}"
 # avoid warnings with gcc 4.7 due to _FORTIFY_SOURCE in CPPFLAGS
 export CPPFLAGS="`echo %{optflags} | sed -e 's/-Wp,-D_FORTIFY_SOURCE=2//'`"
-build/workspaces/update-workspaces.sh	\
-    --bindir %{_bindir}			\
-    --datadir %{_datadir}/%{name}	\
-    --libdir %{_libdir}/%{name}		\
+build/workspaces/update-workspaces.sh \
+	--bindir=%{_gamesbindir} \
+    --datadir=%{_gamesdatadir}/%{name} \
+    --libdir=%{_libdir}/%{name} \
     --with-system-mozjs-24		\
     --with-system-miniupnpc		\
 %if %{with_system_nvtt}
