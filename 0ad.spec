@@ -85,7 +85,7 @@ BuildRequires:	pkgconfig(vorbisfile)
 BuildRequires:	pkgconfig(xcursor)
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	python
-BuildRequires:	wxgtk2.8-devel
+BuildRequires:	wxgtku3.0-devel
 
 ExclusiveArch:	%{ix86} x86_64
 
