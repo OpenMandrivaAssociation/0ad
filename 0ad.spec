@@ -1,17 +1,17 @@
 # http://trac.wildfiregames.com/wiki/BuildInstructions#Linux
 
 # enable special maintainer debug build ?
-%define		with_debug		0
+%define with_debug 0
 %if %{with_debug}
-%define		config			debug
-%define		dbg			_dbg
+%define config debug
+%define dbg _dbg
 %else
-%define		config			release
-%define		dbg			%{nil}
+%define config release
+%define dbg %{nil}
 %endif
 
-%global		with_system_nvtt	1
-%global		without_nvtt		0
+%global with_system_nvtt 1
+%global without_nvtt 0
 
 Name:		0ad
 Epoch:		1
@@ -61,7 +61,7 @@ BuildRequires:	pkgconfig(IL)
 #BuildRequires:	devil-devel
 #BuildRequires:	gamin-devel
 BuildRequires:	gcc-c++
-BuildRequires:  gloox-devel
+BuildRequires: 	gloox-devel
 BuildRequires:	jpeg-devel
 BuildRequires:	icu-devel
 BuildRequires:	jpeg-devel
@@ -80,6 +80,7 @@ BuildRequires:	pkgconfig(libpng)
 BuildRequires:	pkgconfig(libzip)
 BuildRequires:	pkgconfig(mozjs-24)
 BuildRequires:	pkgconfig(openal)
+BuildRequires:	pkgconfig(zlib)
 BuildRequires:	python
 BuildRequires:	pkgconfig(sdl)
 BuildRequires:	subversion
@@ -88,7 +89,7 @@ BuildRequires:	wxgtku3.0-devel
 ExclusiveArch:	%{ix86} x86_64
 
 # http://trac.wildfiregames.com/ticket/1421
-Patch0:		%{name}-rpath.patch
+Patch0:			%{name}-rpath.patch
 
 # Only do fcollada debug build with enabling debug maintainer mode
 # It also prevents assumption there that it is building in x86
@@ -98,7 +99,7 @@ Patch0:		%{name}-rpath.patch
 #Patch2:		%{name}-miniupnpc.patch
 
 # After some trial&error this corrects a %%check failure with gcc 4.9 on i686
-Patch3:		%{name}-check.patch
+Patch3:			%{name}-check.patch
 
 %description
 0 A.D. (pronounced "zero ey-dee") is a free, open-source, cross-platform
