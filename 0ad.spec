@@ -12,7 +12,6 @@
 
 %global		with_system_nvtt	1
 %global		without_nvtt		0
-%global		with_system_enet	1
 
 Name:		0ad
 Epoch:		1
@@ -79,12 +78,12 @@ BuildRequires:	pkgconfig(libcurl)
 BuildRequires:	pkgconfig(libenet)
 BuildRequires:	pkgconfig(libpng)
 BuildRequires:	pkgconfig(libzip)
-BuildRequires:	pkgconfig(mozjs185)
+BuildRequires:	pkgconfig(mozjs-24)
 BuildRequires:	pkgconfig(openal)
 BuildRequires:	python
 BuildRequires:	pkgconfig(sdl)
 BuildRequires:	subversion
-BuildRequires:	wxgtku-devel
+BuildRequires:	wxgtku3.0-devel
 
 ExclusiveArch:	%{ix86} x86_64
 
@@ -138,10 +137,7 @@ build/workspaces/update-workspaces.sh	\
     --bindir %{_bindir}			\
     --datadir %{_datadir}/%{name}	\
     --libdir %{_libdir}/%{name}		\
-%if %{with_system_enet}
-    --with-system-enet			\
-%endif
-    --with-system-mozjs185		\
+    --with-system-mozjs-24		\
     --with-system-miniupnpc		\
 %if %{with_system_nvtt}
     --with-system-nvtt			\
@@ -171,10 +167,6 @@ install -d -m 755 %{buildroot}%{_libdir}/%{name}
 for name in AtlasUI%{dbg} Collada%{dbg}; do
     install -m 755 binaries/system/lib${name}.so  %{buildroot}%{_libdir}/%{name}/lib${name}.so
 done
-
-%if !%{with_system_enet}
-    install -p -m 755 binaries/system/libenet.so.1 %{buildroot}%{_libdir}/%{name}/libenet.so.1
-%endif
 
 %if !%{without_nvtt} && !%{with_system_nvtt}
 for name in nvcore nvimage nvmath nvtt; do
