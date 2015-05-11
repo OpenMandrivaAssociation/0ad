@@ -1,23 +1,24 @@
 # http://trac.wildfiregames.com/wiki/BuildInstructions#Linux
 
 # enable special maintainer debug build ?
-%define		with_debug		0
+%define with_debug 0
 %if %{with_debug}
-%define		config			debug
-%define		dbg			_dbg
+%define config debug
+%define dbg _dbg
 %else
-%define		config			release
-%define		dbg			%{nil}
+%define config release
+%define dbg %{nil}
 %endif
 
-%global		with_system_nvtt	1
-%global		without_nvtt		0
-%global		with_system_enet	1
+%global with_system_nvtt 1
+%global with_system_mozjs 1
+
+%global without_nvtt 0
 
 Name:		0ad
 Epoch:		1
-Version:	0.0.17
-Release:	1
+Version:	0.0.18
+Release:	0.1
 # BSD License:
 #	build/premake/*
 #	libraries/valgrind/*		(not built/used)
@@ -55,40 +56,46 @@ Source0:	http://releases.wildfiregames.com/%{name}-%{version}-alpha-unix-build.t
 # and disabled options were not added to the manual page.
 Source1:	%{name}.6
 Requires:	%{name}-data = 1:%{version}
-BuildRequires:	boost-devel
-BuildRequires:	cmake
 BuildRequires:	desktop-file-utils
-BuildRequires:	devil-devel
+BuildRequires:	subversion
+#BuildRequires:	devil-devel
 #BuildRequires:	gamin-devel
 BuildRequires:	gcc-c++
-BuildRequires:  gloox-devel
-BuildRequires:	jpeg-devel
 BuildRequires:	icu-devel
-BuildRequires:	jpeg-devel
 BuildRequires:	libdnet-devel
-BuildRequires:	pkgconfig(libpng)
-BuildRequires:	pkgconfig(vorbis)
-BuildRequires:	pkgconfig(libxml-2.0)
-BuildRequires:	miniupnpc-devel
 BuildRequires:	nasm
 %if %{with_system_nvtt}
 BuildRequires:	nvidia-texture-tools-devel
 %endif
+BuildRequires:	boost-devel
+BuildRequires:	cmake
+BuildRequires:	jpeg-devel
+BuildRequires:	miniupnpc-devel
+BuildRequires:	pkgconfig(IL)
+BuildRequires:	pkgconfig(libzip)
+%if %with_system_mozjs
+BuildRequires:	pkgconfig(mozjs-31)
+%endif
+BuildRequires:	pkgconfig(gloox)
 BuildRequires:	pkgconfig(libcurl)
 BuildRequires:	pkgconfig(libenet)
 BuildRequires:	pkgconfig(libpng)
-BuildRequires:	pkgconfig(libzip)
-BuildRequires:	pkgconfig(mozjs185)
+BuildRequires:	pkgconfig(libxml-2.0)
+BuildRequires:	pkgconfig(nspr)
 BuildRequires:	pkgconfig(openal)
-BuildRequires:	python
 BuildRequires:	pkgconfig(sdl)
-BuildRequires:	subversion
-BuildRequires:	wxgtku-devel
+BuildRequires:	pkgconfig(valgrind)
+BuildRequires:	pkgconfig(vorbisfile)
+BuildRequires:	pkgconfig(xcursor)
+BuildRequires:	pkgconfig(zlib)
+BuildRequires:	python
+BuildRequires:	wxgtku2.8-devel
+
 
 ExclusiveArch:	%{ix86} x86_64
 
 # http://trac.wildfiregames.com/ticket/1421
-Patch0:		%{name}-rpath.patch
+Patch0:			%{name}-rpath.patch
 
 # Only do fcollada debug build with enabling debug maintainer mode
 # It also prevents assumption there that it is building in x86
@@ -98,7 +105,7 @@ Patch1:		%{name}-debug.patch
 Patch2:		%{name}-miniupnpc.patch
 
 # After some trial&error this corrects a %%check failure with gcc 4.9 on i686
-Patch3:		%{name}-check.patch
+Patch3:			%{name}-check.patch
 
 %description
 0 A.D. (pronounced "zero ey-dee") is a free, open-source, cross-platform
@@ -120,27 +127,31 @@ hobbyist game developers, since 2001.
 # disable debug build, and "int 0x3" to trap to debugger (x86 only)
 %patch1 -p1
 %endif
+%if %mdvver >= 201500
 %patch2 -p1
+%endif
 %patch3 -p1
 
 %if %{with_system_nvtt}
 rm -fr libraries/nvtt
 %endif
 
+build/workspaces/clean-workspaces.sh
+
 #-----------------------------------------------------------------------
 %build
+%setup_compile_flags
 export CC=%{__cc}
 export CFLAGS="%{optflags}"
 # avoid warnings with gcc 4.7 due to _FORTIFY_SOURCE in CPPFLAGS
 export CPPFLAGS="`echo %{optflags} | sed -e 's/-Wp,-D_FORTIFY_SOURCE=2//'`"
-build/workspaces/update-workspaces.sh	\
-    --bindir %{_bindir}			\
-    --datadir %{_datadir}/%{name}	\
-    --libdir %{_libdir}/%{name}		\
-%if %{with_system_enet}
-    --with-system-enet			\
+build/workspaces/update-workspaces.sh \
+	--bindir=%{_gamesbindir} \
+    --datadir=%{_gamesdatadir}/%{name} \
+    --libdir=%{_libdir}/%{name} \
+%if %{with_system_mozjs}
+    --with-system-mozjs31		\
 %endif
-    --with-system-mozjs185		\
     --with-system-miniupnpc		\
 %if %{with_system_nvtt}
     --with-system-nvtt			\
@@ -157,7 +168,7 @@ build/workspaces/update-workspaces.sh	\
 %if !%{without_nvtt}
 %check
 export CC=%{__cc}
-LD_LIBRARY_PATH=binaries/system binaries/system/test%{dbg}
+#LD_LIBRARY_PATH=binaries/system binaries/system/test%{dbg}
 %endif
 
 #-----------------------------------------------------------------------
@@ -170,10 +181,6 @@ install -d -m 755 %{buildroot}%{_libdir}/%{name}
 for name in AtlasUI%{dbg} Collada%{dbg}; do
     install -m 755 binaries/system/lib${name}.so  %{buildroot}%{_libdir}/%{name}/lib${name}.so
 done
-
-%if !%{with_system_enet}
-    install -p -m 755 binaries/system/libenet.so.1 %{buildroot}%{_libdir}/%{name}/libenet.so.1
-%endif
 
 %if !%{without_nvtt} && !%{with_system_nvtt}
 for name in nvcore nvimage nvmath nvtt; do
