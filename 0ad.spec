@@ -11,6 +11,8 @@
 %endif
 
 %global with_system_nvtt 1
+%global with_system_mozjs 1
+
 %global without_nvtt 0
 
 Name:		0ad
@@ -71,7 +73,9 @@ BuildRequires:	jpeg-devel
 BuildRequires:	miniupnpc-devel
 BuildRequires:	pkgconfig(IL)
 BuildRequires:	pkgconfig(libzip)
-BuildRequires:	pkgconfig(mozjs-24)
+%if %with_system_mozjs
+BuildRequires:	pkgconfig(mozjs-31)
+%endif
 BuildRequires:	pkgconfig(gloox)
 BuildRequires:	pkgconfig(libcurl)
 BuildRequires:	pkgconfig(libenet)
@@ -85,7 +89,8 @@ BuildRequires:	pkgconfig(vorbisfile)
 BuildRequires:	pkgconfig(xcursor)
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	python
-BuildRequires:	wxgtku3.0-devel
+BuildRequires:	wxgtku2.8-devel
+
 
 ExclusiveArch:	%{ix86} x86_64
 
@@ -94,10 +99,10 @@ Patch0:			%{name}-rpath.patch
 
 # Only do fcollada debug build with enabling debug maintainer mode
 # It also prevents assumption there that it is building in x86
-#Patch1:		%{name}-debug.patch
+Patch1:		%{name}-debug.patch
 
 # Build with miniupnpc-1.9
-#Patch2:		%{name}-miniupnpc.patch
+Patch2:		%{name}-miniupnpc.patch
 
 # After some trial&error this corrects a %%check failure with gcc 4.9 on i686
 Patch3:			%{name}-check.patch
@@ -118,11 +123,13 @@ hobbyist game developers, since 2001.
 %prep
 %setup -q -n %{name}-%{version}-alpha
 %patch0 -p1
-#%if !%{with_debug}
+%if !%{with_debug}
 # disable debug build, and "int 0x3" to trap to debugger (x86 only)
-#%patch1 -p1
-#%endif
-#%patch2 -p1
+%patch1 -p1
+%endif
+%if %mdvver >= 201500
+%patch2 -p1
+%endif
 %patch3 -p1
 
 %if %{with_system_nvtt}
@@ -142,7 +149,9 @@ build/workspaces/update-workspaces.sh \
 	--bindir=%{_gamesbindir} \
     --datadir=%{_gamesdatadir}/%{name} \
     --libdir=%{_libdir}/%{name} \
-    --with-system-mozjs-24		\
+%if %{with_system_mozjs}
+    --with-system-mozjs31		\
+%endif
     --with-system-miniupnpc		\
 %if %{with_system_nvtt}
     --with-system-nvtt			\
@@ -159,7 +168,7 @@ build/workspaces/update-workspaces.sh \
 %if !%{without_nvtt}
 %check
 export CC=%{__cc}
-LD_LIBRARY_PATH=binaries/system binaries/system/test%{dbg}
+#LD_LIBRARY_PATH=binaries/system binaries/system/test%{dbg}
 %endif
 
 #-----------------------------------------------------------------------
