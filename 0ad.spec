@@ -17,7 +17,7 @@
 
 Name:		0ad
 Epoch:		1
-Version:	0.0.18
+Version:	0.0.20
 Release:	1
 # BSD License:
 #	build/premake/*
@@ -83,13 +83,13 @@ BuildRequires:	pkgconfig(libpng)
 BuildRequires:	pkgconfig(libxml-2.0)
 BuildRequires:	pkgconfig(nspr)
 BuildRequires:	pkgconfig(openal)
-BuildRequires:	pkgconfig(sdl)
+BuildRequires:	pkgconfig(sdl2)
 BuildRequires:	pkgconfig(valgrind)
 BuildRequires:	pkgconfig(vorbisfile)
 BuildRequires:	pkgconfig(xcursor)
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	python
-BuildRequires:	wxgtku2.8-devel
+BuildRequires:	wxgtku3.0-devel
 
 
 ExclusiveArch:	%{ix86} x86_64
@@ -102,7 +102,7 @@ Patch0:			%{name}-rpath.patch
 Patch1:		%{name}-debug.patch
 
 # Build with miniupnpc-1.9
-Patch2:		%{name}-miniupnpc.patch
+#Patch2:		%{name}-miniupnpc.patch
 
 # After some trial&error this corrects a %%check failure with gcc 4.9 on i686
 Patch3:			%{name}-check.patch
@@ -136,13 +136,17 @@ hobbyist game developers, since 2001.
 rm -fr libraries/nvtt
 %endif
 
+sed -i 's/"0"/"-1"/' build/workspaces/update-workspaces.sh
+sed -i 's/@ar/binutils-ar/' libraries/source/fcollada/src/Makefile
+
 build/workspaces/clean-workspaces.sh
 
 #-----------------------------------------------------------------------
 %build
 %setup_compile_flags
-export CC=%{__cc}
+export CC=gcc
 export CFLAGS="%{optflags}"
+export AR=binutils-ar
 # avoid warnings with gcc 4.7 due to _FORTIFY_SOURCE in CPPFLAGS
 export CPPFLAGS="`echo %{optflags} | sed -e 's/-Wp,-D_FORTIFY_SOURCE=2//'`"
 build/workspaces/update-workspaces.sh \
@@ -152,7 +156,6 @@ build/workspaces/update-workspaces.sh \
 %if %{with_system_mozjs}
     --with-system-mozjs31		\
 %endif
-    --with-system-miniupnpc		\
 %if %{with_system_nvtt}
     --with-system-nvtt			\
 %endif
@@ -167,13 +170,13 @@ build/workspaces/update-workspaces.sh \
 # Depends on availablity of nvtt
 %if !%{without_nvtt}
 %check
-export CC=%{__cc}
+export CC=gcc
 #LD_LIBRARY_PATH=binaries/system binaries/system/test%{dbg}
 %endif
 
 #-----------------------------------------------------------------------
 %install
-export CC=%{__cc}
+export CC=gcc
 install -d -m 755 %{buildroot}%{_gamesbindir}
 install -m 755 binaries/system/pyrogenesis%{dbg} %{buildroot}%{_gamesbindir}/pyrogenesis%{dbg}
 
