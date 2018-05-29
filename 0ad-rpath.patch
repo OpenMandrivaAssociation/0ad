@@ -1,9 +1,11 @@
---- 0ad-0.0.16-alpha/build/premake/premake4.lua.orig	2014-05-17 22:21:52.787713008 +0200
-+++ 0ad-0.0.16-alpha/build/premake/premake4.lua	2014-05-17 22:22:39.659845979 +0200
-@@ -356,26 +356,6 @@
+diff -up 0ad-0.0.23-alpha/build/premake/premake4.lua.orig 0ad-0.0.23-alpha/build/premake/premake4.lua
+--- 0ad-0.0.23-alpha/build/premake/premake4.lua.orig	2018-05-29 01:43:15.772881995 +0200
++++ 0ad-0.0.23-alpha/build/premake/premake4.lua	2018-05-29 01:43:56.262879764 +0200
+@@ -355,27 +355,6 @@ function project_set_build_flags()
+ 		if _OPTIONS["libdir"] then
  			defines { "INSTALLED_LIBDIR=" .. _OPTIONS["libdir"] }
  		end
- 
+-
 -		if os.is("linux") or os.is("bsd") then
 -			-- To use our local shared libraries, they need to be found in the
 -			-- runtime dynamic linker path. Add their path to -rpath.
@@ -17,7 +19,7 @@
 -
 -				-- Adding the executable path and taking care of correct escaping
 -				if _ACTION == "gmake" then
--					linkoptions { "-Wl,-rpath,'$$ORIGIN'" } 
+-					linkoptions { "-Wl,-rpath,'$$ORIGIN'" }
 -				elseif _ACTION == "codeblocks" then
 -					linkoptions { "-Wl,-R\\\\$$$ORIGIN" }
 -				end

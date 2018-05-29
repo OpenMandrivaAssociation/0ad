@@ -1,0 +1,299 @@
+diff -up 0ad-0.0.23-alpha/build/premake/extern_libs4.lua.omv~ 0ad-0.0.23-alpha/build/premake/extern_libs4.lua
+--- 0ad-0.0.23-alpha/build/premake/extern_libs4.lua.omv~	2018-05-29 02:44:40.283678963 +0200
++++ 0ad-0.0.23-alpha/build/premake/extern_libs4.lua	2018-05-29 02:44:49.631678448 +0200
+@@ -607,9 +607,9 @@ extern_lib_defs = {
+ 	},
+ 	spidermonkey = {
+ 		compile_settings = function()
+-			if _OPTIONS["with-system-mozjs38"] then
++			if _OPTIONS["with-system-mozjs52"] then
+ 				if not _OPTIONS["android"] then
+-					pkgconfig_cflags("mozjs-38")
++					pkgconfig_cflags("mozjs-52")
+ 				end
+ 			else
+ 				if os.is("windows") then
+@@ -627,12 +627,12 @@ extern_lib_defs = {
+ 			end
+ 		end,
+ 		link_settings = function()
+-			if _OPTIONS["with-system-mozjs38"] then
++			if _OPTIONS["with-system-mozjs52"] then
+ 				if _OPTIONS["android"] then
+-					links { "mozjs-38" }
++					links { "mozjs-52" }
+ 				else
+ 					pkgconfig_libs("nspr")
+-					pkgconfig_libs("mozjs-38")
++					pkgconfig_libs("mozjs-52")
+ 				end
+ 			else
+ 				if os.is("macosx") then
+@@ -640,9 +640,9 @@ extern_lib_defs = {
+ 					links { "nspr4", "plc4", "plds4" }
+ 				end
+ 				configuration "Debug"
+-					links { "mozjs38-ps-debug" }
++					links { "mozjs52-ps-debug" }
+ 				configuration "Release"
+-					links { "mozjs38-ps-release" }
++					links { "mozjs52-ps-release" }
+ 				configuration { }
+ 				add_source_lib_paths("spidermonkey")
+ 			end
+diff -up 0ad-0.0.23-alpha/build/premake/extern_libs5.lua.omv~ 0ad-0.0.23-alpha/build/premake/extern_libs5.lua
+--- 0ad-0.0.23-alpha/build/premake/extern_libs5.lua.omv~	2018-05-29 02:44:55.683678114 +0200
++++ 0ad-0.0.23-alpha/build/premake/extern_libs5.lua	2018-05-29 02:44:59.070677928 +0200
+@@ -563,9 +563,9 @@ extern_lib_defs = {
+ 	},
+ 	spidermonkey = {
+ 		compile_settings = function()
+-			if _OPTIONS["with-system-mozjs38"] then
++			if _OPTIONS["with-system-mozjs52"] then
+ 				if not _OPTIONS["android"] then
+-					pkgconfig.add_includes("mozjs-38")
++					pkgconfig.add_includes("mozjs-52")
+ 				end
+ 			else
+ 				if os.istarget("windows") then
+@@ -583,12 +583,12 @@ extern_lib_defs = {
+ 			end
+ 		end,
+ 		link_settings = function()
+-			if _OPTIONS["with-system-mozjs38"] then
++			if _OPTIONS["with-system-mozjs52"] then
+ 				if _OPTIONS["android"] then
+-					links { "mozjs-38" }
++					links { "mozjs-52" }
+ 				else
+ 					pkgconfig.add_links("nspr")
+-					pkgconfig.add_links("mozjs-38")
++					pkgconfig.add_links("mozjs-52")
+ 				end
+ 			else
+ 				if os.istarget("macosx") then
+@@ -597,17 +597,17 @@ extern_lib_defs = {
+ 				end
+ 
+ 				filter { "Debug", "action:vs2013" }
+-					links { "mozjs38-ps-debug-vc120" }
++					links { "mozjs52-ps-debug-vc120" }
+ 				filter { "Release", "action:vs2013" }
+-					links { "mozjs38-ps-release-vc120" }
++					links { "mozjs52-ps-release-vc120" }
+ 				filter { "Debug", "action:vs2015" }
+-					links { "mozjs38-ps-debug-vc140" }
++					links { "mozjs52-ps-debug-vc140" }
+ 				filter { "Release", "action:vs2015" }
+-					links { "mozjs38-ps-release-vc140" }
++					links { "mozjs52-ps-release-vc140" }
+ 				filter { "Debug", "action:not vs*" }
+-					links { "mozjs38-ps-debug" }
++					links { "mozjs52-ps-debug" }
+ 				filter { "Release", "action:not vs*" }
+-					links { "mozjs38-ps-release" }
++					links { "mozjs52-ps-release" }
+ 				filter { }
+ 				add_source_lib_paths("spidermonkey")
+ 			end
+diff -up 0ad-0.0.23-alpha/build/premake/premake4.lua.omv~ 0ad-0.0.23-alpha/build/premake/premake4.lua
+--- 0ad-0.0.23-alpha/build/premake/premake4.lua.omv~	2018-05-29 02:45:17.524676911 +0200
++++ 0ad-0.0.23-alpha/build/premake/premake4.lua	2018-05-29 02:45:21.159676711 +0200
+@@ -7,7 +7,7 @@ newoption { trigger = "icc", description
+ newoption { trigger = "jenkins-tests", description = "Configure CxxTest to use the XmlPrinter runner which produces Jenkins-compatible output" }
+ newoption { trigger = "minimal-flags", description = "Only set compiler/linker flags that are really needed. Has no effect on Windows builds" }
+ newoption { trigger = "outpath", description = "Location for generated project files" }
+-newoption { trigger = "with-system-mozjs38", description = "Search standard paths for libmozjs38, instead of using bundled copy" }
++newoption { trigger = "with-system-mozjs52", description = "Search standard paths for libmozjs52, instead of using bundled copy" }
+ newoption { trigger = "with-system-nvtt", description = "Search standard paths for nvidia-texture-tools library, instead of using bundled copy" }
+ newoption { trigger = "without-audio", description = "Disable use of OpenAL/Ogg/Vorbis APIs" }
+ newoption { trigger = "without-lobby", description = "Disable the use of gloox and the multiplayer lobby" }
+diff -up 0ad-0.0.23-alpha/build/premake/premake5.lua.omv~ 0ad-0.0.23-alpha/build/premake/premake5.lua
+--- 0ad-0.0.23-alpha/build/premake/premake5.lua.omv~	2018-05-29 02:45:22.883676616 +0200
++++ 0ad-0.0.23-alpha/build/premake/premake5.lua	2018-05-29 02:45:26.727676404 +0200
+@@ -6,7 +6,7 @@ newoption { trigger = "icc", description
+ newoption { trigger = "jenkins-tests", description = "Configure CxxTest to use the XmlPrinter runner which produces Jenkins-compatible output" }
+ newoption { trigger = "minimal-flags", description = "Only set compiler/linker flags that are really needed. Has no effect on Windows builds" }
+ newoption { trigger = "outpath", description = "Location for generated project files" }
+-newoption { trigger = "with-system-mozjs38", description = "Search standard paths for libmozjs38, instead of using bundled copy" }
++newoption { trigger = "with-system-mozjs52", description = "Search standard paths for libmozjs52, instead of using bundled copy" }
+ newoption { trigger = "with-system-nvtt", description = "Search standard paths for nvidia-texture-tools library, instead of using bundled copy" }
+ newoption { trigger = "without-audio", description = "Disable use of OpenAL/Ogg/Vorbis APIs" }
+ newoption { trigger = "without-lobby", description = "Disable the use of gloox and the multiplayer lobby" }
+diff -up 0ad-0.0.23-alpha/build/workspaces/update-workspaces.sh.omv~ 0ad-0.0.23-alpha/build/workspaces/update-workspaces.sh
+--- 0ad-0.0.23-alpha/build/workspaces/update-workspaces.sh.omv~	2018-05-29 02:45:04.099677651 +0200
++++ 0ad-0.0.23-alpha/build/workspaces/update-workspaces.sh	2018-05-29 02:45:07.966677438 +0200
+@@ -41,7 +41,7 @@ premake_args=""
+ 
+ without_nvtt=false
+ with_system_nvtt=false
+-with_system_mozjs38=false
++with_system_mozjs52=false
+ enable_atlas=true
+ 
+ for i in "$@"
+@@ -49,7 +49,7 @@ do
+   case $i in
+     --without-nvtt ) without_nvtt=true; premake_args="${premake_args} --without-nvtt" ;;
+     --with-system-nvtt ) with_system_nvtt=true; premake_args="${premake_args} --with-system-nvtt" ;;
+-    --with-system-mozjs38 ) with_system_mozjs38=true; premake_args="${premake_args} --with-system-mozjs38" ;;
++    --with-system-mozjs52 ) with_system_mozjs52=true; premake_args="${premake_args} --with-system-mozjs52" ;;
+     --enable-atlas ) enable_atlas=true ;;
+     --disable-atlas ) enable_atlas=false ;;
+     --premake4 ) premake_version="premake4"; premake_args="${premake_args} --collada" ;;
+@@ -84,7 +84,7 @@ if [ "`uname -s`" != "Darwin" ]; then
+   # Build/update bundled external libraries
+   (cd ../../libraries/source/fcollada/src && ${MAKE} ${JOBS}) || die "FCollada build failed"
+   echo
+-  if [ "$with_system_mozjs38" = "false" ]; then
++  if [ "$with_system_mozjs52" = "false" ]; then
+     (cd ../../libraries/source/spidermonkey && MAKE=${MAKE} JOBS=${JOBS} ./build.sh) || die "SpiderMonkey build failed"
+   fi
+   echo
+diff -up 0ad-0.0.23-alpha/source/gui/IGUIObject.cpp.omv~ 0ad-0.0.23-alpha/source/gui/IGUIObject.cpp
+--- 0ad-0.0.23-alpha/source/gui/IGUIObject.cpp.omv~	2018-05-29 02:48:58.195664751 +0200
++++ 0ad-0.0.23-alpha/source/gui/IGUIObject.cpp	2018-05-29 02:50:20.222660231 +0200
+@@ -64,7 +64,7 @@ IGUIObject::~IGUIObject()
+ 		}
+ 
+ 	if (m_pGUI)
+-		JS_RemoveExtraGCRootsTracer(m_pGUI->GetScriptInterface()->GetJSRuntime(), Trace, this);
++		JS_RemoveExtraGCRootsTracer(m_pGUI->GetScriptInterface()->GetContext(), Trace, this);
+ }
+ 
+ //-------------------------------------------------------------------
+@@ -73,7 +73,7 @@ IGUIObject::~IGUIObject()
+ void IGUIObject::SetGUI(CGUI* const& pGUI)
+ {
+ 	if (!m_pGUI)
+-		JS_AddExtraGCRootsTracer(pGUI->GetScriptInterface()->GetJSRuntime(), Trace, this);
++		JS_AddExtraGCRootsTracer(pGUI->GetScriptInterface()->GetContext(), Trace, this);
+ 	m_pGUI = pGUI;
+ }
+ 
+@@ -543,7 +543,7 @@ bool IGUIObject::IsRootObject() const
+ void IGUIObject::TraceMember(JSTracer* trc)
+ {
+ 	for (std::pair<const CStr, JS::Heap<JSObject*>>& handler : m_ScriptHandlers)
+-		JS_CallObjectTracer(trc, &handler.second, "IGUIObject::m_ScriptHandlers");
++		JS::TraceEdge(trc, &handler.second, "IGUIObject::m_ScriptHandlers");
+ }
+ 
+ PSRETURN IGUIObject::LogInvalidSettings(const CStr8& Setting) const
+diff -up 0ad-0.0.23-alpha/source/network/NetClient.cpp.omv~ 0ad-0.0.23-alpha/source/network/NetClient.cpp
+--- 0ad-0.0.23-alpha/source/network/NetClient.cpp.omv~	2018-05-29 02:45:59.267674611 +0200
++++ 0ad-0.0.23-alpha/source/network/NetClient.cpp	2018-05-29 02:47:33.270669431 +0200
+@@ -80,7 +80,7 @@ CNetClient::CNetClient(CGame* game, bool
+ 
+ 	void* context = this;
+ 
+-	JS_AddExtraGCRootsTracer(GetScriptInterface().GetJSRuntime(), CNetClient::Trace, this);
++	JS_AddExtraGCRootsTracer(GetScriptInterface().GetContext(), CNetClient::Trace, this);
+ 
+ 	// Set up transitions for session
+ 	AddTransition(NCS_UNCONNECTED, (uint)NMT_CONNECT_COMPLETE, NCS_CONNECT, (void*)&OnConnect, context);
+@@ -144,13 +144,13 @@ CNetClient::CNetClient(CGame* game, bool
+ CNetClient::~CNetClient()
+ {
+ 	DestroyConnection();
+-	JS_RemoveExtraGCRootsTracer(GetScriptInterface().GetJSRuntime(), CNetClient::Trace, this);
++	JS_RemoveExtraGCRootsTracer(GetScriptInterface().GetContext(), CNetClient::Trace, this);
+ }
+ 
+ void CNetClient::TraceMember(JSTracer *trc)
+ {
+ 	for (JS::Heap<JS::Value>& guiMessage : m_GuiMessageQueue)
+-		JS_CallValueTracer(trc, &guiMessage, "m_GuiMessageQueue");
++		JS::TraceEdge(trc, &guiMessage, "m_GuiMessageQueue");
+ }
+ 
+ void CNetClient::SetUserName(const CStrW& username)
+diff -up 0ad-0.0.23-alpha/source/scriptinterface/ScriptTypes.h.omv~ 0ad-0.0.23-alpha/source/scriptinterface/ScriptTypes.h
+--- 0ad-0.0.23-alpha/source/scriptinterface/ScriptTypes.h.omv~	2018-05-29 02:45:37.620675803 +0200
++++ 0ad-0.0.23-alpha/source/scriptinterface/ScriptTypes.h	2018-05-29 02:45:48.222675219 +0200
+@@ -71,7 +71,7 @@
+ # pragma GCC diagnostic pop
+ #endif
+ 
+-#if MOZJS_MAJOR_VERSION != 38
++#if MOZJS_MAJOR_VERSION != 52
+ #error Your compiler is trying to use an incorrect major version of the \
+ SpiderMonkey library. The only version that works is the one in the \
+ libraries/spidermonkey/ directory, and it will not work with a typical \
+@@ -79,7 +79,7 @@ system-installed version. Make sure you
+ include paths.
+ #endif
+ 
+-#if MOZJS_MINOR_VERSION != 3
++#if MOZJS_MINOR_VERSION != 8
+ #error Your compiler is trying to use an untested minor version of the \
+ SpiderMonkey library. If you are a package maintainer, please make sure \
+ to check very carefully that this version does not change the behaviour \
+diff -up 0ad-0.0.23-alpha/source/scriptinterface/third_party/ObjectToIDMap.h.omv~ 0ad-0.0.23-alpha/source/scriptinterface/third_party/ObjectToIDMap.h
+diff -up 0ad-0.0.23-alpha/source/simulation2/components/CCmpAIManager.cpp.omv~ 0ad-0.0.23-alpha/source/simulation2/components/CCmpAIManager.cpp
+--- 0ad-0.0.23-alpha/source/simulation2/components/CCmpAIManager.cpp.omv~	2018-05-29 02:46:51.691671722 +0200
++++ 0ad-0.0.23-alpha/source/simulation2/components/CCmpAIManager.cpp	2018-05-29 02:50:59.175658084 +0200
+@@ -225,7 +225,7 @@ public:
+ 		m_ScriptInterface->SetCallbackData(static_cast<void*> (this));
+ 
+ 		m_SerializablePrototypes->init();
+-		JS_AddExtraGCRootsTracer(m_ScriptInterface->GetJSRuntime(), Trace, this);
++		JS_AddExtraGCRootsTracer(m_ScriptInterface->GetContext(), Trace, this);
+ 
+ 		m_ScriptInterface->RegisterFunction<void, int, JS::HandleValue, CAIWorker::PostCommand>("PostCommand");
+ 		m_ScriptInterface->RegisterFunction<void, std::wstring, CAIWorker::IncludeModule>("IncludeModule");
+@@ -244,7 +244,7 @@ public:
+ 
+ 	~CAIWorker()
+ 	{
+-		JS_RemoveExtraGCRootsTracer(m_ScriptInterface->GetJSRuntime(), Trace, this);
++		JS_RemoveExtraGCRootsTracer(m_ScriptInterface->GetContext(), Trace, this);
+ 	}
+ 
+ 	bool HasLoadedEntityTemplates() const { return m_HasLoadedEntityTemplates; }
+@@ -838,9 +838,9 @@ private:
+ 	void TraceMember(JSTracer *trc)
+ 	{
+ 		for (std::pair<const std::wstring, JS::Heap<JSObject*>>& prototype : m_DeserializablePrototypes)
+-			JS_CallObjectTracer(trc, &prototype.second, "CAIWorker::m_DeserializablePrototypes");
++			JS::TraceEdge(trc, &prototype.second, "CAIWorker::m_DeserializablePrototypes");
+ 		for (std::pair<const VfsPath, JS::Heap<JS::Value>>& metadata : m_PlayerMetadata)
+-			JS_CallValueTracer(trc, &metadata.second, "CAIWorker::m_PlayerMetadata");
++			JS::TraceEdge(trc, &metadata.second, "CAIWorker::m_PlayerMetadata");
+ 	}
+ 
+ 	void LoadMetadata(const VfsPath& path, JS::MutableHandleValue out)
+diff -up 0ad-0.0.23-alpha/source/simulation2/serialization/StdDeserializer.cpp.omv~ 0ad-0.0.23-alpha/source/simulation2/serialization/StdDeserializer.cpp
+--- 0ad-0.0.23-alpha/source/simulation2/serialization/StdDeserializer.cpp.omv~	2018-05-29 02:48:09.116667455 +0200
++++ 0ad-0.0.23-alpha/source/simulation2/serialization/StdDeserializer.cpp	2018-05-29 02:51:32.414656253 +0200
+@@ -34,7 +34,7 @@ CStdDeserializer::CStdDeserializer(const
+ 	JSContext* cx = m_ScriptInterface.GetContext();
+ 	JSAutoRequest rq(cx);
+ 
+-	JS_AddExtraGCRootsTracer(m_ScriptInterface.GetJSRuntime(), CStdDeserializer::Trace, this);
++	JS_AddExtraGCRootsTracer(m_ScriptInterface.GetContext(), CStdDeserializer::Trace, this);
+ 
+ 	// Add a dummy tag because the serializer uses the tag 0 to indicate that a value
+ 	// needs to be serialized and then tagged
+@@ -44,7 +44,7 @@ CStdDeserializer::CStdDeserializer(const
+ 
+ CStdDeserializer::~CStdDeserializer()
+ {
+-	JS_RemoveExtraGCRootsTracer(m_ScriptInterface.GetJSRuntime(), CStdDeserializer::Trace, this);
++	JS_RemoveExtraGCRootsTracer(m_ScriptInterface.GetContext(), CStdDeserializer::Trace, this);
+ }
+ 
+ void CStdDeserializer::Trace(JSTracer *trc, void *data)
+@@ -55,10 +55,10 @@ void CStdDeserializer::Trace(JSTracer *t
+ void CStdDeserializer::TraceMember(JSTracer *trc)
+ {
+ 	for (size_t i=0; i<m_ScriptBackrefs.size(); ++i)
+-		JS_CallObjectTracer(trc, &m_ScriptBackrefs[i], "StdDeserializer::m_ScriptBackrefs");
++		JS::TraceEdge(trc, &m_ScriptBackrefs[i], "StdDeserializer::m_ScriptBackrefs");
+ 
+ 	for (std::pair<const std::wstring, JS::Heap<JSObject*>>& proto : m_SerializablePrototypes)
+-		JS_CallObjectTracer(trc, &proto.second, "StdDeserializer::m_SerializablePrototypes");
++		JS::TraceEdge(trc, &proto.second, "StdDeserializer::m_SerializablePrototypes");
+ }
+ 
+ void CStdDeserializer::Get(const char* name, u8* data, size_t len)

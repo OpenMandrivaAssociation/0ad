@@ -10,14 +10,14 @@
 %define dbg %{nil}
 %endif
 
-%global with_system_nvtt 1
-%global with_system_mozjs 1
+%global with_system_nvtt 0
+%global with_system_mozjs 0
 
-%global without_nvtt 0
+%global without_nvtt 1
 
 Name:		0ad
 Epoch:		1
-Version:	0.0.20
+Version:	0.0.23
 Release:	1
 # BSD License:
 #	build/premake/*
@@ -74,7 +74,7 @@ BuildRequires:	miniupnpc-devel
 BuildRequires:	pkgconfig(IL)
 BuildRequires:	pkgconfig(libzip)
 %if %with_system_mozjs
-BuildRequires:	pkgconfig(mozjs-31)
+BuildRequires:	pkgconfig(mozjs-52)
 %endif
 BuildRequires:	pkgconfig(gloox)
 BuildRequires:	pkgconfig(libcurl)
@@ -99,10 +99,11 @@ Patch0:			%{name}-rpath.patch
 
 # Only do fcollada debug build with enabling debug maintainer mode
 # It also prevents assumption there that it is building in x86
-Patch1:		%{name}-debug.patch
+Patch1:			%{name}-debug.patch
 
-# Build with miniupnpc-1.9
-#Patch2:		%{name}-miniupnpc.patch
+# We want mozjs 52, not 38 with its known security bugs
+# Unfortunately, the port isn't complete yet.
+Patch2:			0ad-0.0.23-mozjs52.patch
 
 # After some trial&error this corrects a %%check failure with gcc 4.9 on i686
 Patch3:			%{name}-check.patch
@@ -127,7 +128,7 @@ hobbyist game developers, since 2001.
 # disable debug build, and "int 0x3" to trap to debugger (x86 only)
 %patch1 -p1
 %endif
-%if %mdvver >= 201500
+%if %{with_system_mozjs}
 %patch2 -p1
 %endif
 %patch3 -p1
@@ -145,24 +146,26 @@ build/workspaces/clean-workspaces.sh
 %build
 %setup_compile_flags
 export CC=gcc
+export CXX=g++
 export CFLAGS="%{optflags}"
 export AR=binutils-ar
 # avoid warnings with gcc 4.7 due to _FORTIFY_SOURCE in CPPFLAGS
+
 export CPPFLAGS="`echo %{optflags} | sed -e 's/-Wp,-D_FORTIFY_SOURCE=2//'`"
 build/workspaces/update-workspaces.sh \
 	--bindir=%{_gamesbindir} \
-    --datadir=%{_gamesdatadir}/%{name} \
-    --libdir=%{_libdir}/%{name} \
+	--datadir=%{_gamesdatadir}/%{name} \
+	--libdir=%{_libdir}/%{name} \
 %if %{with_system_mozjs}
-    --with-system-mozjs31		\
+	--with-system-mozjs52		\
 %endif
 %if %{with_system_nvtt}
-    --with-system-nvtt			\
+	--with-system-nvtt		\
 %endif
 %if %{without_nvtt}
-    --without-nvtt			\
+	--without-nvtt			\
 %endif
-    %{?_smp_mflags}
+	%{?_smp_mflags}
 
 %make -C build/workspaces/gcc config=%{config} verbose=1
 
@@ -171,12 +174,14 @@ build/workspaces/update-workspaces.sh \
 %if !%{without_nvtt}
 %check
 export CC=gcc
+export CXX=g++
 #LD_LIBRARY_PATH=binaries/system binaries/system/test%{dbg}
 %endif
 
 #-----------------------------------------------------------------------
 %install
 export CC=gcc
+export CXX=g++
 install -d -m 755 %{buildroot}%{_gamesbindir}
 install -m 755 binaries/system/pyrogenesis%{dbg} %{buildroot}%{_gamesbindir}/pyrogenesis%{dbg}
 
