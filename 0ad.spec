@@ -88,7 +88,7 @@ BuildRequires:	pkgconfig(valgrind)
 BuildRequires:	pkgconfig(vorbisfile)
 BuildRequires:	pkgconfig(xcursor)
 BuildRequires:	pkgconfig(zlib)
-BuildRequires:	python
+BuildRequires:	python2 pkgconfig(python2)
 BuildRequires:	wxgtku3.0-devel
 
 
