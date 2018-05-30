@@ -108,6 +108,13 @@ Patch2:			0ad-0.0.23-mozjs52.patch
 # After some trial&error this corrects a %%check failure with gcc 4.9 on i686
 Patch3:			%{name}-check.patch
 
+# Spidermonkey hates clang
+Patch4:			0ad-0.0.23-use-gcc-for-spidermonkey.patch
+
+# Adding include directories in the wrong order the way 0ad likes to do
+# results in cstdlib not finding stdlib.h with include_next
+Patch5:			0ad-0.0.23-dont-mess-with-include-dirs.patch
+
 %description
 0 A.D. (pronounced "zero ey-dee") is a free, open-source, cross-platform
 real-time strategy (RTS) game of ancient warfare. In short, it is a
@@ -129,33 +136,34 @@ hobbyist game developers, since 2001.
 %patch1 -p1
 %endif
 %if %{with_system_mozjs}
-%patch2 -p1
+#patch2 -p1
 %endif
 %patch3 -p1
+%patch4 -p1 -b .smgcc~
+%patch5 -p1 -b .includepaths~
 
 %if %{with_system_nvtt}
 rm -fr libraries/nvtt
 %endif
 
 sed -i 's/"0"/"-1"/' build/workspaces/update-workspaces.sh
-sed -i 's/@ar/binutils-ar/' libraries/source/fcollada/src/Makefile
+#sed -i 's/@ar/binutils-ar/' libraries/source/fcollada/src/Makefile
 
 build/workspaces/clean-workspaces.sh
 
 #-----------------------------------------------------------------------
 %build
 %setup_compile_flags
-export CC=gcc
-export CXX=g++
 export CFLAGS="%{optflags}"
-export AR=binutils-ar
+#export AR=binutils-ar
 # avoid warnings with gcc 4.7 due to _FORTIFY_SOURCE in CPPFLAGS
 
 export CPPFLAGS="`echo %{optflags} | sed -e 's/-Wp,-D_FORTIFY_SOURCE=2//'`"
-build/workspaces/update-workspaces.sh \
-	--bindir=%{_gamesbindir} \
+build/workspaces/update-workspaces.sh	\
+	--bindir=%{_gamesbindir}	\
 	--datadir=%{_gamesdatadir}/%{name} \
-	--libdir=%{_libdir}/%{name} \
+	--libdir=%{_libdir}/%{name}	\
+	--without-pch			\
 %if %{with_system_mozjs}
 	--with-system-mozjs52		\
 %endif
@@ -167,21 +175,24 @@ build/workspaces/update-workspaces.sh \
 %endif
 	%{?_smp_mflags}
 
+# 0ad does some very very very weird stuff to compiler flags...
+sed -i -e "s,-isystem.*,-I`pwd`/libraries/source/cxxtest-4.4 -I%{_includedir}/SDL2 -I%{_includedir}/X11 -I%{_includedir}/valgrind -I`pwd`/libraries/source/spidermonkey/include-unix-release -I`pwd`/source/third_party/tinygettext/include -I%{_includedir}/libxml2 -I%{_includedir}/wx-3.0 -I%{_libdir}/wx/include/gtk3-unicode-3.0 -I`pwd`/libraries/source/fcollada/include,g" build/workspaces/gcc/*.make
+
 %make -C build/workspaces/gcc config=%{config} verbose=1
 
 #-----------------------------------------------------------------------
 # Depends on availablity of nvtt
 %if !%{without_nvtt}
 %check
-export CC=gcc
-export CXX=g++
+#export CC=gcc
+#export CXX=g++
 #LD_LIBRARY_PATH=binaries/system binaries/system/test%{dbg}
 %endif
 
 #-----------------------------------------------------------------------
 %install
-export CC=gcc
-export CXX=g++
+#export CC=gcc
+#export CXX=g++
 install -d -m 755 %{buildroot}%{_gamesbindir}
 install -m 755 binaries/system/pyrogenesis%{dbg} %{buildroot}%{_gamesbindir}/pyrogenesis%{dbg}
 

@@ -1,0 +1,21 @@
+diff -up 0ad-0.0.23-alpha/build/workspaces/update-workspaces.sh.omv~ 0ad-0.0.23-alpha/build/workspaces/update-workspaces.sh
+diff -up 0ad-0.0.23-alpha/libraries/source/spidermonkey/build.sh.omv~ 0ad-0.0.23-alpha/libraries/source/spidermonkey/build.sh
+--- 0ad-0.0.23-alpha/libraries/source/spidermonkey/build.sh.omv~	2018-05-29 03:04:23.995613735 +0200
++++ 0ad-0.0.23-alpha/libraries/source/spidermonkey/build.sh	2018-05-29 03:05:59.894608451 +0200
+@@ -103,14 +103,14 @@ rm -rf build-release
+ perl -i.bak -pe 's/(SHARED_LIBRARY_NAME\s+=).*/$1 '\''mozjs38-ps-debug'\''/' moz.build
+ mkdir -p build-debug
+ cd build-debug
+-CXXFLAGS="${CXXFLAGS} ${TLCXXFLAGS}" ../configure ${CONF_OPTS} --with-nspr-libs="$NSPR_LIBS" --with-nspr-cflags="$NSPR_INCLUDES" --enable-debug --disable-optimize --enable-js-diagnostics --enable-gczeal
++CC=gcc CXX=g++ CXXFLAGS="${CXXFLAGS} ${TLCXXFLAGS}" ../configure ${CONF_OPTS} --with-nspr-libs="$NSPR_LIBS" --with-nspr-cflags="$NSPR_INCLUDES" --enable-debug --disable-optimize --enable-js-diagnostics --enable-gczeal
+ ${MAKE} ${MAKE_OPTS}
+ cd ..
+ 
+ perl -i.bak -pe 's/(SHARED_LIBRARY_NAME\s+=).*/$1 '\''mozjs38-ps-release'\''/' moz.build
+ mkdir -p build-release
+ cd build-release
+-CXXFLAGS="${CXXFLAGS} ${TLCXXFLAGS}" ../configure ${CONF_OPTS} --with-nspr-libs="$NSPR_LIBS" --with-nspr-cflags="$NSPR_INCLUDES" --enable-optimize  # --enable-gczeal --enable-debug-symbols
++CC=gcc CXX=g++ CXXFLAGS="${CXXFLAGS} ${TLCXXFLAGS}" ../configure ${CONF_OPTS} --with-nspr-libs="$NSPR_LIBS" --with-nspr-cflags="$NSPR_INCLUDES" --enable-optimize  # --enable-gczeal --enable-debug-symbols
+ ${MAKE} ${MAKE_OPTS}
+ cd ..
+ 

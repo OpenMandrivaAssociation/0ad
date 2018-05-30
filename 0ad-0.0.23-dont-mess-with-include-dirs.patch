@@ -1,0 +1,32 @@
+diff -up 0ad-0.0.23-alpha/build/premake/extern_libs4.lua.omv~ 0ad-0.0.23-alpha/build/premake/extern_libs4.lua
+diff -up 0ad-0.0.23-alpha/build/premake/extern_libs5.lua.omv~ 0ad-0.0.23-alpha/build/premake/extern_libs5.lua
+diff -up 0ad-0.0.23-alpha/build/premake/premake5.lua.omv~ 0ad-0.0.23-alpha/build/premake/premake5.lua
+diff -up 0ad-0.0.23-alpha/build/premake/premake5/src/tools/gcc.lua.omv~ 0ad-0.0.23-alpha/build/premake/premake5/src/tools/gcc.lua
+--- 0ad-0.0.23-alpha/build/premake/premake5/src/tools/gcc.lua.omv~	2018-05-29 10:18:23.332178857 +0200
++++ 0ad-0.0.23-alpha/build/premake/premake5/src/tools/gcc.lua	2018-05-29 10:19:13.222176108 +0200
+@@ -210,10 +210,6 @@
+ 			dir = project.getrelative(cfg.project, dir)
+ 			table.insert(result, '-I' .. p.quoted(dir))
+ 		end
+-		for _, dir in ipairs(sysdirs or {}) do
+-			dir = project.getrelative(cfg.project, dir)
+-			table.insert(result, '-isystem ' .. p.quoted(dir))
+-		end
+ 		return result
+ 	end
+ 
+diff -up 0ad-0.0.23-alpha/build/premake/premake5/tests/tools/test_gcc.lua.omv~ 0ad-0.0.23-alpha/build/premake/premake5/tests/tools/test_gcc.lua
+--- 0ad-0.0.23-alpha/build/premake/premake5/tests/tools/test_gcc.lua.omv~	2018-05-29 10:15:22.668188812 +0200
++++ 0ad-0.0.23-alpha/build/premake/premake5/tests/tools/test_gcc.lua	2018-05-29 10:18:07.518179729 +0200
+@@ -527,9 +527,9 @@
+ --
+ 
+ 	function suite.includeDirs_onSysIncludeDirs()
+-		sysincludedirs { "/usr/local/include" }
++		sysincludedirs { }
+ 		prepare()
+-		test.contains("-isystem /usr/local/include", gcc.getincludedirs(cfg, cfg.includedirs, cfg.sysincludedirs))
++		test.contains("-I", gcc.getincludedirs(cfg, cfg.includedirs, cfg.sysincludedirs))
+ 	end
+ 
+ 	function suite.libDirs_onSysLibDirs()
