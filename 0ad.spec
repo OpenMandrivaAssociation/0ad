@@ -92,9 +92,6 @@ BuildRequires:	pkgconfig(libsodium)
 BuildRequires:	python2 pkgconfig(python2)
 BuildRequires:	wxgtku3.0-devel
 
-
-ExclusiveArch:	%{ix86} x86_64
-
 # http://trac.wildfiregames.com/ticket/1421
 Patch0:			%{name}-rpath.patch
 
