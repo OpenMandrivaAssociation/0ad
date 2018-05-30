@@ -55,7 +55,7 @@ Source0:	http://releases.wildfiregames.com/%{name}-%{version}-alpha-unix-build.t
 # version field and check for extra options. Note that windows specific,
 # and disabled options were not added to the manual page.
 Source1:	%{name}.6
-Requires:	%{name}-data = 1:%{version}
+Requires:	%{name}-data = 1:%{version}-1
 BuildRequires:	desktop-file-utils
 BuildRequires:	subversion
 #BuildRequires:	devil-devel
@@ -206,6 +206,8 @@ for name in nvcore nvimage nvmath nvtt; do
     install -p -m 755 binaries/system/lib${name}.so %{buildroot}%{_libdir}/%{name}/lib${name}.so
 done
 %endif
+
+install -p -m 755 binaries/system/libmozjs38-ps-release.so %{buildroot}%{_libdir}/%{name}/
 
 install -d -m 755 %{buildroot}%{_datadir}/appdata
 install -p -m 644 build/resources/0ad.appdata.xml %{buildroot}%{_datadir}/appdata

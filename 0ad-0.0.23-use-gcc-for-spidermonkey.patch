@@ -7,7 +7,7 @@ diff -up 0ad-0.0.23-alpha/libraries/source/spidermonkey/build.sh.omv~ 0ad-0.0.23
  mkdir -p build-debug
  cd build-debug
 -CXXFLAGS="${CXXFLAGS} ${TLCXXFLAGS}" ../configure ${CONF_OPTS} --with-nspr-libs="$NSPR_LIBS" --with-nspr-cflags="$NSPR_INCLUDES" --enable-debug --disable-optimize --enable-js-diagnostics --enable-gczeal
-+CC=gcc CXX=g++ CXXFLAGS="${CXXFLAGS} ${TLCXXFLAGS}" ../configure ${CONF_OPTS} --with-nspr-libs="$NSPR_LIBS" --with-nspr-cflags="$NSPR_INCLUDES" --enable-debug --disable-optimize --enable-js-diagnostics --enable-gczeal
++CC=gcc CXX=g++ CXXFLAGS="${CXXFLAGS} ${TLCXXFLAGS}" ../configure ${CONF_OPTS} --with-nspr-libs="$NSPR_LIBS" --with-nspr-cflags="$NSPR_INCLUDES" --enable-debug --disable-optimize --enable-js-diagnostics --enable-gczeal --enable-static --disable-shared
  ${MAKE} ${MAKE_OPTS}
  cd ..
  
