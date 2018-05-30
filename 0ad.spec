@@ -88,6 +88,7 @@ BuildRequires:	pkgconfig(valgrind)
 BuildRequires:	pkgconfig(vorbisfile)
 BuildRequires:	pkgconfig(xcursor)
 BuildRequires:	pkgconfig(zlib)
+BuildRequires:	pkgconfig(libsodium)
 BuildRequires:	python2 pkgconfig(python2)
 BuildRequires:	wxgtku3.0-devel
 
@@ -115,6 +116,9 @@ Patch4:			0ad-0.0.23-use-gcc-for-spidermonkey.patch
 # results in cstdlib not finding stdlib.h with include_next
 Patch5:			0ad-0.0.23-dont-mess-with-include-dirs.patch
 
+# Don't show a scary (but ignore-able) assertion failure on startup
+Patch6:			0ad-no-assert-on-startup.patch
+
 %description
 0 A.D. (pronounced "zero ey-dee") is a free, open-source, cross-platform
 real-time strategy (RTS) game of ancient warfare. In short, it is a
@@ -141,6 +145,7 @@ hobbyist game developers, since 2001.
 %patch3 -p1
 %patch4 -p1 -b .smgcc~
 %patch5 -p1 -b .includepaths~
+%patch6 -p1 -b .crash~
 
 %if %{with_system_nvtt}
 rm -fr libraries/nvtt

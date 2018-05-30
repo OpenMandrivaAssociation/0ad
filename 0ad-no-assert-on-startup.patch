@@ -1,0 +1,22 @@
+diff -up 0ad-0.0.23-alpha/source/lib/sysdep/arch/x86_x64/cache.cpp.omv~ 0ad-0.0.23-alpha/source/lib/sysdep/arch/x86_x64/cache.cpp
+--- 0ad-0.0.23-alpha/source/lib/sysdep/arch/x86_x64/cache.cpp.omv~	2018-05-30 19:17:36.910635029 +0200
++++ 0ad-0.0.23-alpha/source/lib/sysdep/arch/x86_x64/cache.cpp	2018-05-30 19:21:54.306620846 +0200
+@@ -51,7 +51,8 @@ static void AddCache(const x86_x64::Cach
+ 
+ static void AddTLB(const x86_x64::Cache& tlb)
+ {
+-	ENSURE(tlb.Validate());
++	if(!tlb.Validate())
++		return;
+ 	ENSURE(tlb.m_Level == 1 || tlb.m_Level == 2);	// see maxTLBs
+ 
+ 	ENSURE(numTLBs < maxTLBs);
+@@ -641,7 +642,7 @@ static Status DetectCacheAndTLB()
+ 		ENSURE(caches[L1I+idxLevel].Validate() == true);
+ 	}
+ 	for(size_t i = 0; i < numTLBs; i++)
+-		ENSURE(caches[TLB+i].Validate() == true);
++		ENSURE(caches[TLB+i].Validate());
+ 
+ 	return INFO::OK;
+ }
