@@ -159,6 +159,10 @@ build/workspaces/clean-workspaces.sh
 export CFLAGS="%{optflags}"
 #export AR=binutils-ar
 # avoid warnings with gcc 4.7 due to _FORTIFY_SOURCE in CPPFLAGS
+%if %mdvver <= 3000000
+export CC=gcc
+export CXX=g++
+%endif
 
 export CPPFLAGS="`echo %{optflags} | sed -e 's/-Wp,-D_FORTIFY_SOURCE=2//'`"
 build/workspaces/update-workspaces.sh	\
