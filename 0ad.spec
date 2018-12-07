@@ -55,7 +55,7 @@ Source0:	http://releases.wildfiregames.com/%{name}-%{version}-alpha-unix-build.t
 # version field and check for extra options. Note that windows specific,
 # and disabled options were not added to the manual page.
 Source1:	%{name}.6
-Requires:	%{name}-data = 1:%{version}-1
+Requires:	%{name}-data = %{version}
 BuildRequires:	desktop-file-utils
 BuildRequires:	subversion
 #BuildRequires:	devil-devel
