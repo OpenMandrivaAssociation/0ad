@@ -155,6 +155,8 @@ build/workspaces/clean-workspaces.sh
 
 #-----------------------------------------------------------------------
 %build
+export CC=gcc
+export CXX=g++
 %setup_compile_flags
 export CFLAGS="%{optflags}"
 #export AR=binutils-ar
