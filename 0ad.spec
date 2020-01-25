@@ -115,6 +115,7 @@ Patch5:			0ad-0.0.23-dont-mess-with-include-dirs.patch
 
 # Don't show a scary (but ignore-able) assertion failure on startup
 Patch6:			0ad-no-assert-on-startup.patch
+Patch7:			0ad-0.0.23b-compile.patch
 
 %description
 0 A.D. (pronounced "zero ey-dee") is a free, open-source, cross-platform
@@ -143,6 +144,7 @@ hobbyist game developers, since 2001.
 %patch4 -p1 -b .smgcc~
 %patch5 -p1 -b .includepaths~
 %patch6 -p1 -b .crash~
+%patch7 -p1 -b .compile~
 
 %if %{with_system_nvtt}
 rm -fr libraries/nvtt
@@ -184,7 +186,7 @@ build/workspaces/update-workspaces.sh	\
 # 0ad does some very very very weird stuff to compiler flags...
 sed -i -e "s,-isystem.*,-I`pwd`/libraries/source/cxxtest-4.4 -I%{_includedir}/SDL2 -I%{_includedir}/X11 -I%{_includedir}/valgrind -I`pwd`/libraries/source/spidermonkey/include-unix-release -I`pwd`/source/third_party/tinygettext/include -I%{_includedir}/libxml2 -I%{_includedir}/wx-3.0 -I%{_libdir}/wx/include/gtk3-unicode-3.0 -I`pwd`/libraries/source/fcollada/include,g" build/workspaces/gcc/*.make
 
-%make -C build/workspaces/gcc config=%{config} verbose=1
+make -C build/workspaces/gcc config=%{config} verbose=1
 
 #-----------------------------------------------------------------------
 # Depends on availablity of nvtt

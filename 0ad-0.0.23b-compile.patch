@@ -1,0 +1,23 @@
+diff -up 0ad-0.0.23b-alpha/source/ps/CLogger.h.omv~ 0ad-0.0.23b-alpha/source/ps/CLogger.h
+--- 0ad-0.0.23b-alpha/source/ps/CLogger.h.omv~	2020-01-25 20:28:14.402085903 +0100
++++ 0ad-0.0.23b-alpha/source/ps/CLogger.h	2020-01-25 20:28:24.653086007 +0100
+@@ -22,6 +22,7 @@
+ #include <string>
+ #include <set>
+ #include <sstream>
++#include <deque>
+ 
+ #include "ps/ThreadUtil.h"
+ #include "third_party/cppformat/format.h"
+diff -up 0ad-0.0.23b-alpha/source/ps/Profiler2GPU.cpp.omv~ 0ad-0.0.23b-alpha/source/ps/Profiler2GPU.cpp
+--- 0ad-0.0.23b-alpha/source/ps/Profiler2GPU.cpp.omv~	2020-01-25 20:54:06.715101679 +0100
++++ 0ad-0.0.23b-alpha/source/ps/Profiler2GPU.cpp	2020-01-25 20:54:15.410101767 +0100
+@@ -29,6 +29,8 @@
+ #include "ps/ConfigDB.h"
+ #include "ps/Profiler2.h"
+ 
++#include <stack>
++
+ #if !CONFIG2_GLES
+ 
+ class CProfiler2GPU_base
