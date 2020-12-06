@@ -148,6 +148,7 @@ hobbyist game developers, since 2001.
 %patch5 -p1 -b .includepaths~
 %patch6 -p1 -b .crash~
 %patch7 -p1 -b .compile~
+%patch8 -p1
 
 %if %{with_system_nvtt}
 rm -fr libraries/nvtt
