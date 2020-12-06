@@ -18,7 +18,7 @@
 Name:		0ad
 Epoch:		1
 Version:	0.0.23b
-Release:	4
+Release:	5
 # BSD License:
 #	build/premake/*
 #	libraries/valgrind/*		(not built/used)
@@ -116,6 +116,9 @@ Patch5:			0ad-0.0.23-dont-mess-with-include-dirs.patch
 # Don't show a scary (but ignore-able) assertion failure on startup
 Patch6:			0ad-no-assert-on-startup.patch
 Patch7:			0ad-0.0.23b-compile.patch
+
+# As of ICU 68 identifier "TRUE" is is treated as unidentified and should be replaced by lowercase "true"
+Patch8:			0ad-0.0.23b-fix-lowercase-true-introduced-in-icu-68-openmandriva.patch
 
 %description
 0 A.D. (pronounced "zero ey-dee") is a free, open-source, cross-platform
