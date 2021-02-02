@@ -1,0 +1,13 @@
+diff -up 0ad-0.0.23b-alpha/source/lib/sysdep/arch/x86_x64/cache.cpp.omv~ 0ad-0.0.23b-alpha/source/lib/sysdep/arch/x86_x64/cache.cpp
+--- 0ad-0.0.23b-alpha/source/lib/sysdep/arch/x86_x64/cache.cpp.omv~	2021-02-02 18:29:22.444365203 +0100
++++ 0ad-0.0.23b-alpha/source/lib/sysdep/arch/x86_x64/cache.cpp	2021-02-02 18:30:02.981008426 +0100
+@@ -90,7 +90,8 @@ static x86_x64::Cache L1Cache(u32 reg, x
+ static const size_t associativityTable[16] =
+ {
+ 	0, 1, 2, 0, 4, 0, 8, 0,
+-	16, 0, 32, 48, 64, 96, 128, x86_x64::Cache::fullyAssociative
++	// TODO: The second '16' does not obey to the specifications and is only a workaround. For a correct implementation please look here: https://community.amd.com/thread/244207
++	16, 16, 32, 48, 64, 96, 128, x86_x64::Cache::fullyAssociative
+ };
+ 
+ static x86_x64::Cache L2Cache(u32 reg, x86_x64::Cache::Type type)

@@ -18,7 +18,7 @@
 Name:		0ad
 Epoch:		1
 Version:	0.0.23b
-Release:	5
+Release:	6
 # BSD License:
 #	build/premake/*
 #	libraries/valgrind/*		(not built/used)
@@ -90,7 +90,11 @@ BuildRequires:	pkgconfig(xcursor)
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(libsodium)
 BuildRequires:	python2 pkgconfig(python2)
-BuildRequires:	wxgtku3.0-devel
+# FIXME as 0f 0.23 and wxwidgets 3.1.5, if we use WxQt, the scenario editor
+# crashes on startup due to widget parenting issues.
+# Try again when new versions are released. In the mean time, WxGTK will have
+# to do.
+BuildRequires:	wxgtku3.1-devel
 
 # http://trac.wildfiregames.com/ticket/1421
 Patch0:			%{name}-rpath.patch
@@ -119,6 +123,9 @@ Patch7:			0ad-0.0.23b-compile.patch
 
 # As of ICU 68 identifier "TRUE" is is treated as unidentified and should be replaced by lowercase "true"
 Patch8:			0ad-0.0.23b-fix-lowercase-true-introduced-in-icu-68-openmandriva.patch
+
+# https://trac.wildfiregames.com/changeset/23262
+Patch9:			0ad-fix-crashes-on-startup.patch
 
 %description
 0 A.D. (pronounced "zero ey-dee") is a free, open-source, cross-platform
@@ -149,6 +156,7 @@ hobbyist game developers, since 2001.
 %patch6 -p1 -b .crash~
 %patch7 -p1 -b .compile~
 %patch8 -p1
+%patch9 -p1 -b .crash~
 
 %if %{with_system_nvtt}
 rm -fr libraries/nvtt
@@ -188,7 +196,7 @@ build/workspaces/update-workspaces.sh	\
 	%{?_smp_mflags}
 
 # 0ad does some very very very weird stuff to compiler flags...
-sed -i -e "s,-isystem.*,-I`pwd`/libraries/source/cxxtest-4.4 -I%{_includedir}/SDL2 -I%{_includedir}/X11 -I%{_includedir}/valgrind -I`pwd`/libraries/source/spidermonkey/include-unix-release -I`pwd`/source/third_party/tinygettext/include -I%{_includedir}/libxml2 -I%{_includedir}/wx-3.0 -I%{_libdir}/wx/include/gtk3-unicode-3.0 -I`pwd`/libraries/source/fcollada/include,g" build/workspaces/gcc/*.make
+sed -i -e "s,-isystem.*,-I`pwd`/libraries/source/cxxtest-4.4 -I%{_includedir}/SDL2 -I%{_includedir}/X11 -I%{_includedir}/valgrind -I`pwd`/libraries/source/spidermonkey/include-unix-release -I`pwd`/source/third_party/tinygettext/include -I%{_includedir}/libxml2 -I%{_includedir}/wx-3.1 -I%{_libdir}/wx/include/gtk3-unicode-3.1 -I`pwd`/libraries/source/fcollada/include,g" build/workspaces/gcc/*.make
 
 make -C build/workspaces/gcc config=%{config} verbose=1
 
