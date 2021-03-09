@@ -111,7 +111,7 @@ BuildRequires:	wxgtku3.1-devel
 #Patch3:			%{name}-check.patch
 
 # Spidermonkey hates clang
-Patch4:			0ad-0.0.23-use-gcc-for-spidermonkey.patch
+#Patch4:			0ad-0.0.23-use-gcc-for-spidermonkey.patch
 
 # Adding include directories in the wrong order the way 0ad likes to do
 # results in cstdlib not finding stdlib.h with include_next
@@ -151,7 +151,7 @@ hobbyist game developers, since 2001.
 #patch2 -p1
 %endif
 #patch3 -p1
-%patch4 -p1 -b .smgcc~
+#patch4 -p1 -b .smgcc~
 %patch5 -p1 -b .includepaths~
 %patch6 -p1 -b .crash~
 %patch7 -p1 -b .compile~
