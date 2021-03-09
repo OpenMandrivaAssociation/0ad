@@ -17,8 +17,8 @@
 
 Name:		0ad
 Epoch:		1
-Version:	0.0.23b
-Release:	6
+Version:	0.0.24b
+Release:	1
 # BSD License:
 #	build/premake/*
 #	libraries/valgrind/*		(not built/used)
