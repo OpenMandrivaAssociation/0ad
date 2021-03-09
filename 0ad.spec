@@ -108,7 +108,7 @@ BuildRequires:	wxgtku3.1-devel
 #Patch2:			0ad-0.0.23-mozjs52.patch
 
 # After some trial&error this corrects a %%check failure with gcc 4.9 on i686
-Patch3:			%{name}-check.patch
+#Patch3:			%{name}-check.patch
 
 # Spidermonkey hates clang
 Patch4:			0ad-0.0.23-use-gcc-for-spidermonkey.patch
@@ -150,7 +150,7 @@ hobbyist game developers, since 2001.
 %if %{with_system_mozjs}
 #patch2 -p1
 %endif
-%patch3 -p1
+#patch3 -p1
 %patch4 -p1 -b .smgcc~
 %patch5 -p1 -b .includepaths~
 %patch6 -p1 -b .crash~
