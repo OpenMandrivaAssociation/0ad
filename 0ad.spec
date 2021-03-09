@@ -118,11 +118,11 @@ BuildRequires:	wxgtku3.1-devel
 Patch5:			0ad-0.0.23-dont-mess-with-include-dirs.patch
 
 # Don't show a scary (but ignore-able) assertion failure on startup
-Patch6:			0ad-no-assert-on-startup.patch
+#Patch6:			0ad-no-assert-on-startup.patch
 Patch7:			0ad-0.0.23b-compile.patch
 
 # As of ICU 68 identifier "TRUE" is is treated as unidentified and should be replaced by lowercase "true"
-Patch8:			0ad-0.0.23b-fix-lowercase-true-introduced-in-icu-68-openmandriva.patch
+#Patch8:			0ad-0.0.23b-fix-lowercase-true-introduced-in-icu-68-openmandriva.patch
 
 # https://trac.wildfiregames.com/changeset/23262
 Patch9:			0ad-fix-crashes-on-startup.patch
@@ -153,9 +153,9 @@ hobbyist game developers, since 2001.
 #patch3 -p1
 #patch4 -p1 -b .smgcc~
 %patch5 -p1 -b .includepaths~
-%patch6 -p1 -b .crash~
+#patch6 -p1 -b .crash~
 %patch7 -p1 -b .compile~
-%patch8 -p1
+#patch8 -p1
 %patch9 -p1 -b .crash~
 
 %if %{with_system_nvtt}
