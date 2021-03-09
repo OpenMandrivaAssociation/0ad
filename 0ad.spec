@@ -125,7 +125,7 @@ Patch5:			0ad-0.0.23-dont-mess-with-include-dirs.patch
 #Patch8:			0ad-0.0.23b-fix-lowercase-true-introduced-in-icu-68-openmandriva.patch
 
 # https://trac.wildfiregames.com/changeset/23262
-Patch9:			0ad-fix-crashes-on-startup.patch
+#Patch9:			0ad-fix-crashes-on-startup.patch
 
 %description
 0 A.D. (pronounced "zero ey-dee") is a free, open-source, cross-platform
@@ -156,7 +156,7 @@ hobbyist game developers, since 2001.
 #patch6 -p1 -b .crash~
 #patch7 -p1 -b .compile~
 #patch8 -p1
-%patch9 -p1 -b .crash~
+#patch9 -p1 -b .crash~
 
 %if %{with_system_nvtt}
 rm -fr libraries/nvtt
