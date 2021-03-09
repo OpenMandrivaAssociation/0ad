@@ -101,11 +101,11 @@ BuildRequires:	wxgtku3.1-devel
 
 # Only do fcollada debug build with enabling debug maintainer mode
 # It also prevents assumption there that it is building in x86
-Patch1:			%{name}-debug.patch
+#Patch1:			%{name}-debug.patch
 
 # We want mozjs 52, not 38 with its known security bugs
 # Unfortunately, the port isn't complete yet.
-Patch2:			0ad-0.0.23-mozjs52.patch
+#Patch2:			0ad-0.0.23-mozjs52.patch
 
 # After some trial&error this corrects a %%check failure with gcc 4.9 on i686
 Patch3:			%{name}-check.patch
@@ -145,7 +145,7 @@ hobbyist game developers, since 2001.
 #patch0 -p1
 %if !%{with_debug}
 # disable debug build, and "int 0x3" to trap to debugger (x86 only)
-%patch1 -p1
+#patch1 -p1
 %endif
 %if %{with_system_mozjs}
 #patch2 -p1
