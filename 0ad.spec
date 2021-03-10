@@ -11,7 +11,7 @@
 %endif
 
 %global with_system_nvtt 0
-%global with_system_mozjs 0
+%global with_system_mozjs 1
 
 %global without_nvtt 1
 
@@ -74,7 +74,7 @@ BuildRequires:	miniupnpc-devel
 BuildRequires:	pkgconfig(IL)
 BuildRequires:	pkgconfig(libzip)
 %if %with_system_mozjs
-BuildRequires:	pkgconfig(mozjs-52)
+BuildRequires:	pkgconfig(mozjs-78)
 %endif
 BuildRequires:	pkgconfig(gloox)
 BuildRequires:	pkgconfig(libcurl)
