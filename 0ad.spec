@@ -11,7 +11,7 @@
 %endif
 
 %global with_system_nvtt 0
-%global with_system_mozjs 1
+%global with_system_mozjs 0
 
 %global without_nvtt 1
 
@@ -182,7 +182,7 @@ build/workspaces/update-workspaces.sh	\
 	--libdir=%{_libdir}/%{name}	\
 	--without-pch			\
 %if %{with_system_mozjs}
-	--with-system-mozjs52		\
+	--with-system-mozjs78		\
 %endif
 %if %{with_system_nvtt}
 	--with-system-nvtt		\
