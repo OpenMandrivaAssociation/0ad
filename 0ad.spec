@@ -75,7 +75,7 @@ BuildRequires:	miniupnpc-devel
 BuildRequires:	pkgconfig(IL)
 BuildRequires:	pkgconfig(libzip)
 %if %with_system_mozjs
-BuildRequires:	pkgconfig(mozjs-78)
+#BuildRequires:	pkgconfig(mozjs-78)
 %endif
 BuildRequires:	pkgconfig(gloox)
 BuildRequires:	pkgconfig(libcurl)
@@ -185,7 +185,7 @@ build/workspaces/update-workspaces.sh	\
 	--libdir=%{_libdir}/%{name}	\
 	--without-pch			\
 %if %{with_system_mozjs}
-	--with-system-mozjs78		\
+#	--with-system-mozjs		\
 %endif
 %if %{with_system_nvtt}
 	--with-system-nvtt		\
