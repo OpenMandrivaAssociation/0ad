@@ -56,11 +56,12 @@ Source0:	http://releases.wildfiregames.com/%{name}-%{version}-alpha-unix-build.t
 # and disabled options were not added to the manual page.
 Source1:	%{name}.6
 Requires:	%{name}-data
+BuildRequires:	rustc
+BuildRequires:	cargo
 BuildRequires:	desktop-file-utils
 BuildRequires:	subversion
 #BuildRequires:	devil-devel
 #BuildRequires:	gamin-devel
-BuildRequires:	gcc-c++
 BuildRequires:	icu-devel
 BuildRequires:	libdnet-devel
 BuildRequires:	nasm
@@ -69,7 +70,7 @@ BuildRequires:	nvidia-texture-tools-devel
 %endif
 BuildRequires:	boost-devel
 BuildRequires:	cmake
-BuildRequires:	jpeg-devel
+BuildRequires:	pkgconfig(libjpeg)
 BuildRequires:	miniupnpc-devel
 BuildRequires:	pkgconfig(IL)
 BuildRequires:	pkgconfig(libzip)
@@ -169,16 +170,12 @@ build/workspaces/clean-workspaces.sh
 
 #-----------------------------------------------------------------------
 %build
-%setup_compile_flags
+%set_build_flags
 export CFLAGS="%{optflags}"
 #export AR=binutils-ar
 # avoid warnings with gcc 4.7 due to _FORTIFY_SOURCE in CPPFLAGS
-%if %mdvver <= 3000000
-export CC=gcc
-export CXX=g++
-%endif
+export CPPFLAGS="$(echo %{optflags} | sed -e 's/-Wp,-D_FORTIFY_SOURCE=2//')"
 
-export CPPFLAGS="`echo %{optflags} | sed -e 's/-Wp,-D_FORTIFY_SOURCE=2//'`"
 build/workspaces/update-workspaces.sh	\
 	--bindir=%{_gamesbindir}	\
 	--datadir=%{_gamesdatadir}/%{name} \
@@ -198,21 +195,17 @@ build/workspaces/update-workspaces.sh	\
 # 0ad does some very very very weird stuff to compiler flags...
 sed -i -e "s,-isystem.*,-I`pwd`/libraries/source/cxxtest-4.4 -I%{_includedir}/SDL2 -I%{_includedir}/X11 -I%{_includedir}/valgrind -I`pwd`/libraries/source/spidermonkey/include-unix-release -I`pwd`/source/third_party/tinygettext/include -I%{_includedir}/libxml2 -I%{_includedir}/wx-3.1 -I%{_libdir}/wx/include/gtk3-unicode-3.1 -I`pwd`/libraries/source/fcollada/include,g" build/workspaces/gcc/*.make
 
-make -C build/workspaces/gcc config=%{config} verbose=1
+%make_build -j1 -C build/workspaces/gcc config=%{config} verbose=1
 
 #-----------------------------------------------------------------------
 # Depends on availablity of nvtt
 %if !%{without_nvtt}
 %check
-#export CC=gcc
-#export CXX=g++
 #LD_LIBRARY_PATH=binaries/system binaries/system/test%{dbg}
 %endif
 
 #-----------------------------------------------------------------------
 %install
-#export CC=gcc
-#export CXX=g++
 install -d -m 755 %{buildroot}%{_gamesbindir}
 install -m 755 binaries/system/pyrogenesis%{dbg} %{buildroot}%{_gamesbindir}/pyrogenesis%{dbg}
 
