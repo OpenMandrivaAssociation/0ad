@@ -77,6 +77,9 @@ BuildRequires:	pkgconfig(libzip)
 %if %with_system_mozjs
 #BuildRequires:	pkgconfig(mozjs-78)
 %endif
+BuildRequires:	pkgconfig(libidn)
+BuildRequires:	pkgconfig(openssl)
+BuildRequires:	pkgconfig(libcrypto)
 BuildRequires:	pkgconfig(fmt)
 BuildRequires:	pkgconfig(gloox)
 BuildRequires:	pkgconfig(libcurl)
