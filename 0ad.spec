@@ -227,7 +227,7 @@ for name in nvcore nvimage nvmath nvtt; do
 done
 %endif
 
-install -p -m 755 binaries/system/libmozjs38-ps-release.so %{buildroot}%{_libdir}/%{name}/
+install -p -m 755 binaries/system/libmozjs78-ps-release.so %{buildroot}%{_libdir}/%{name}/
 
 install -d -m 755 %{buildroot}%{_datadir}/appdata
 install -p -m 644 build/resources/0ad.appdata.xml %{buildroot}%{_datadir}/appdata
