@@ -11,7 +11,7 @@
 %endif
 
 %global with_system_nvtt 0
-%global with_system_mozjs 1
+%global with_system_mozjs 0
 
 %global without_nvtt 1
 
@@ -75,8 +75,12 @@ BuildRequires:	miniupnpc-devel
 BuildRequires:	pkgconfig(IL)
 BuildRequires:	pkgconfig(libzip)
 %if %with_system_mozjs
-BuildRequires:	pkgconfig(mozjs-78)
+#BuildRequires:	pkgconfig(mozjs-78)
 %endif
+BuildRequires:	pkgconfig(libidn)
+BuildRequires:	pkgconfig(openssl)
+BuildRequires:	pkgconfig(libcrypto)
+BuildRequires:	pkgconfig(fmt)
 BuildRequires:	pkgconfig(gloox)
 BuildRequires:	pkgconfig(libcurl)
 BuildRequires:	pkgconfig(libenet)
@@ -128,6 +132,8 @@ Patch5:			0ad-0.0.23-dont-mess-with-include-dirs.patch
 # https://trac.wildfiregames.com/changeset/23262
 #Patch9:			0ad-fix-crashes-on-startup.patch
 
+Patch10:			0ad-rust.patch
+
 %description
 0 A.D. (pronounced "zero ey-dee") is a free, open-source, cross-platform
 real-time strategy (RTS) game of ancient warfare. In short, it is a
@@ -158,6 +164,7 @@ hobbyist game developers, since 2001.
 #patch7 -p1 -b .compile~
 #patch8 -p1
 #patch9 -p1 -b .crash~
+%patch10 -p0
 
 %if %{with_system_nvtt}
 rm -fr libraries/nvtt
@@ -182,7 +189,7 @@ build/workspaces/update-workspaces.sh	\
 	--libdir=%{_libdir}/%{name}	\
 	--without-pch			\
 %if %{with_system_mozjs}
-	--with-system-mozjs52		\
+#	--with-system-mozjs		\
 %endif
 %if %{with_system_nvtt}
 	--with-system-nvtt		\
@@ -220,7 +227,7 @@ for name in nvcore nvimage nvmath nvtt; do
 done
 %endif
 
-install -p -m 755 binaries/system/libmozjs38-ps-release.so %{buildroot}%{_libdir}/%{name}/
+install -p -m 755 binaries/system/libmozjs78-ps-release.so %{buildroot}%{_libdir}/%{name}/
 
 install -d -m 755 %{buildroot}%{_datadir}/appdata
 install -p -m 644 build/resources/0ad.appdata.xml %{buildroot}%{_datadir}/appdata
