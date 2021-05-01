@@ -134,6 +134,10 @@ Patch5:			0ad-0.0.23-dont-mess-with-include-dirs.patch
 
 Patch10:			0ad-rust.patch
 
+# Fix build with zlib-ng
+Patch11:			0ad-no-ZEXPORT.patch
+
+
 %description
 0 A.D. (pronounced "zero ey-dee") is a free, open-source, cross-platform
 real-time strategy (RTS) game of ancient warfare. In short, it is a
@@ -164,7 +168,8 @@ hobbyist game developers, since 2001.
 #patch7 -p1 -b .compile~
 #patch8 -p1
 #patch9 -p1 -b .crash~
-%patch10 -p0
+%patch10 -p0 -b .p10~
+%patch11 -p1 -b .p11~
 
 %if %{with_system_nvtt}
 rm -fr libraries/nvtt

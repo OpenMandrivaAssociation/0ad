@@ -1,0 +1,12 @@
+diff -up 0ad-0.0.24b-alpha/source/lib/file/archive/codec_zlib.cpp.omv~ 0ad-0.0.24b-alpha/source/lib/file/archive/codec_zlib.cpp
+--- 0ad-0.0.24b-alpha/source/lib/file/archive/codec_zlib.cpp.omv~	2021-05-01 16:10:14.693789933 +0200
++++ 0ad-0.0.24b-alpha/source/lib/file/archive/codec_zlib.cpp	2021-05-01 16:10:19.853863558 +0200
+@@ -139,7 +139,7 @@ protected:
+ 		(void)LibError_from_zlib(zlib_ret);
+ 	}
+ 
+-	typedef int ZEXPORT (*ZLibFunc)(z_streamp strm, int flush);
++	typedef int (*ZLibFunc)(z_streamp strm, int flush);
+ 
+ 	Status CallStreamFunc(ZLibFunc func, int flush, const u8* in, const size_t inSize, u8* out, const size_t outSize, size_t& inConsumed, size_t& outProduced)
+ 	{
