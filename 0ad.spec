@@ -132,7 +132,7 @@ Patch5:			0ad-0.0.23-dont-mess-with-include-dirs.patch
 # https://trac.wildfiregames.com/changeset/23262
 #Patch9:			0ad-fix-crashes-on-startup.patch
 
-Patch10:			0ad-rust.patch
+#Patch10:			0ad-rust.patch
 
 # Fix build with zlib-ng
 Patch11:			0ad-no-ZEXPORT.patch
@@ -168,7 +168,7 @@ hobbyist game developers, since 2001.
 #patch7 -p1 -b .compile~
 #patch8 -p1
 #patch9 -p1 -b .crash~
-%patch10 -p0 -b .p10~
+#patch10 -p0 -b .p10~
 %patch11 -p1 -b .p11~
 
 %if %{with_system_nvtt}
