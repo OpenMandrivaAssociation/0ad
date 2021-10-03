@@ -281,3 +281,8 @@ export EXCLUDE_FROM_FULL_STRIP="libAtlasUI_dbg.so libCollada_dbg.so pyrogenesis_
 %{_datadir}/applications/%{name}.desktop
 %{_gamesdatadir}/%{name}
 %{_mandir}/man6/*.6*
+
+# Disable broken debug file on ARM
+%ifarch %{arm} %{amrx}
+%exclude %{_prefix}/lib/debug/core.19798
+%endif
