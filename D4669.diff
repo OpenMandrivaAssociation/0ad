@@ -1,0 +1,12 @@
+diff -up 0ad-0.0.25b-alpha/source/lib/sysdep/os/linux/lcpu.cpp.p15~ 0ad-0.0.25b-alpha/source/lib/sysdep/os/linux/lcpu.cpp
+--- 0ad-0.0.25b-alpha/source/lib/sysdep/os/linux/lcpu.cpp.p15~	2022-08-24 11:10:51.830536596 +0200
++++ 0ad-0.0.25b-alpha/source/lib/sysdep/os/linux/lcpu.cpp	2022-08-24 11:13:33.927415155 +0200
+@@ -45,7 +45,7 @@ size_t os_cpu_NumProcessors()
+ 			numProcessors = 1;
+ 		else
+ 		{
+-			long res = sysconf(_SC_NPROCESSORS_CONF);
++			long res = sysconf(_SC_NPROCESSORS_ONLN);
+ 			ENSURE(res != -1);
+ 			numProcessors = (size_t)res;
+ 		}

@@ -11,14 +11,14 @@
 %endif
 
 %global with_system_nvtt 0
-%global with_system_mozjs 0
+%global with_system_mozjs 1
 
 %global without_nvtt 1
 
 Name:		0ad
 Epoch:		1
 Version:	0.0.25b
-Release:	4
+Release:	5
 # BSD License:
 #	build/premake/*
 #	libraries/valgrind/*		(not built/used)
@@ -75,7 +75,7 @@ BuildRequires:	miniupnpc-devel
 BuildRequires:	pkgconfig(IL)
 BuildRequires:	pkgconfig(libzip)
 %if %with_system_mozjs
-#BuildRequires:	pkgconfig(mozjs-78)
+BuildRequires:	pkgconfig(mozjs-78)
 %endif
 BuildRequires:	pkgconfig(libidn)
 BuildRequires:	pkgconfig(openssl)
@@ -99,44 +99,20 @@ BuildRequires:	python2 pkgconfig(python2)
 # crashes on startup due to widget parenting issues.
 # Try again when new versions are released. In the mean time, WxGTK will have
 # to do.
-BuildRequires:	wxgtku3.1-devel
-
-# http://trac.wildfiregames.com/ticket/1421
-#Patch0:			%{name}-rpath.patch
-
-# Only do fcollada debug build with enabling debug maintainer mode
-# It also prevents assumption there that it is building in x86
-#Patch1:			%{name}-debug.patch
-
-# We want mozjs 52, not 38 with its known security bugs
-# Unfortunately, the port isn't complete yet.
-#Patch2:			0ad-0.0.23-mozjs52.patch
-
-# After some trial&error this corrects a %%check failure with gcc 4.9 on i686
-#Patch3:			%{name}-check.patch
-
-# Spidermonkey hates clang
-#Patch4:			0ad-0.0.23-use-gcc-for-spidermonkey.patch
+BuildRequires:	wxgtku3.2-devel
 
 # Adding include directories in the wrong order the way 0ad likes to do
 # results in cstdlib not finding stdlib.h with include_next
 Patch5:			0ad-0.0.23-dont-mess-with-include-dirs.patch
 
-# Don't show a scary (but ignore-able) assertion failure on startup
-#Patch6:			0ad-no-assert-on-startup.patch
-#Patch7:			0ad-0.0.23b-compile.patch
-
-# As of ICU 68 identifier "TRUE" is is treated as unidentified and should be replaced by lowercase "true"
-#Patch8:			0ad-0.0.23b-fix-lowercase-true-introduced-in-icu-68-openmandriva.patch
-
-# https://trac.wildfiregames.com/changeset/23262
-#Patch9:			0ad-fix-crashes-on-startup.patch
-
-#Patch10:			0ad-rust.patch
-
 # Fix build with zlib-ng
 Patch11:			0ad-no-ZEXPORT.patch
 
+Patch12:			https://src.fedoraproject.org/rpms/0ad/raw/rawhide/f/Fixup-compatibility-of-mozbuild-with-Python-3.10.patch
+Patch13:			0ad-allow-mozjs-78.15.patch
+Patch14:			0ad-25b-compile.patch
+Patch15:			https://code.wildfiregames.com/file/data/qxiyxomtpjjypcmnsqus/PHID-FILE-cgwijqmkik4muyj3fjlg/D4669.diff
+Patch16:			https://src.fedoraproject.org/rpms/0ad/raw/rawhide/f/0ad-debug.patch
 
 %description
 0 A.D. (pronounced "zero ey-dee") is a free, open-source, cross-platform
@@ -152,24 +128,7 @@ hobbyist game developers, since 2001.
 
 #-----------------------------------------------------------------------
 %prep
-%setup -q -n %{name}-%{version}-alpha
-#patch0 -p1
-%if !%{with_debug}
-# disable debug build, and "int 0x3" to trap to debugger (x86 only)
-#patch1 -p1
-%endif
-%if %{with_system_mozjs}
-#patch2 -p1
-%endif
-#patch3 -p1
-#patch4 -p1 -b .smgcc~
-%patch5 -p1 -b .includepaths~
-#patch6 -p1 -b .crash~
-#patch7 -p1 -b .compile~
-#patch8 -p1
-#patch9 -p1 -b .crash~
-#patch10 -p0 -b .p10~
-%patch11 -p1 -b .p11~
+%autosetup -p1 -n %{name}-%{version}-alpha
 
 %if %{with_system_nvtt}
 rm -fr libraries/nvtt
@@ -194,7 +153,7 @@ build/workspaces/update-workspaces.sh	\
 	--libdir=%{_libdir}/%{name}	\
 	--without-pch			\
 %if %{with_system_mozjs}
-#	--with-system-mozjs		\
+	--with-system-mozjs		\
 %endif
 %if %{with_system_nvtt}
 	--with-system-nvtt		\
@@ -205,9 +164,9 @@ build/workspaces/update-workspaces.sh	\
 	%{?_smp_mflags}
 
 # 0ad does some very very very weird stuff to compiler flags...
-sed -i -e "s,-isystem.*,-I`pwd`/libraries/source/cxxtest-4.4 -I%{_includedir}/SDL2 -I%{_includedir}/X11 -I%{_includedir}/valgrind -I`pwd`/libraries/source/spidermonkey/include-unix-release -I`pwd`/source/third_party/tinygettext/include -I%{_includedir}/libxml2 -I%{_includedir}/wx-3.1 -I%{_libdir}/wx/include/gtk3-unicode-3.1 -I`pwd`/libraries/source/fcollada/include,g" build/workspaces/gcc/*.make
+sed -i -e "s,-isystem.*,-I`pwd`/libraries/source/cxxtest-4.4 -I%{_includedir}/SDL2 -I%{_includedir}/X11 -I%{_includedir}/valgrind -I`pwd`/libraries/source/spidermonkey/include-unix-release -I`pwd`/source/third_party/tinygettext/include -I%{_includedir}/libxml2 -I%{_includedir}/wx-3.2 -I%{_libdir}/wx/include/gtk3-unicode-3.2 -I`pwd`/libraries/source/fcollada/include -I%{_includedir}/mozjs-78,g" build/workspaces/gcc/*.make
 
-%make_build -j1 -C build/workspaces/gcc config=%{config} verbose=1
+%make_build -C build/workspaces/gcc config=%{config} verbose=1
 
 #-----------------------------------------------------------------------
 # Depends on availablity of nvtt
@@ -232,7 +191,9 @@ for name in nvcore nvimage nvmath nvtt; do
 done
 %endif
 
+%if ! %{with_system_mozjs}
 install -p -m 755 binaries/system/libmozjs78-ps-release.so %{buildroot}%{_libdir}/%{name}/
+%endif
 
 install -d -m 755 %{buildroot}%{_datadir}/appdata
 install -p -m 644 build/resources/0ad.appdata.xml %{buildroot}%{_datadir}/appdata

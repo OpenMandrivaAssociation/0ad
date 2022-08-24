@@ -1,0 +1,31 @@
+diff -up 0ad-0.0.25b-alpha/source/scriptinterface/ScriptTypes.h.omv~ 0ad-0.0.25b-alpha/source/scriptinterface/ScriptTypes.h
+--- 0ad-0.0.25b-alpha/source/scriptinterface/ScriptTypes.h.omv~	2022-08-23 21:42:35.009597153 +0200
++++ 0ad-0.0.25b-alpha/source/scriptinterface/ScriptTypes.h	2022-08-23 21:42:46.766665321 +0200
+@@ -81,7 +81,7 @@ system-installed version. Make sure you
+ include paths.
+ #endif
+ 
+-#if MOZJS_MINOR_VERSION != 6
++#if MOZJS_MINOR_VERSION < 6
+ #error Your compiler is trying to use an untested minor version of the \
+ SpiderMonkey library. If you are a package maintainer, please make sure \
+ to check very carefully that this version does not change the behaviour \
+diff -up 0ad-0.0.25b-alpha/source/scriptinterface/ScriptContext.cpp.omv~ 0ad-0.0.25b-alpha/source/scriptinterface/ScriptContext.cpp
+--- 0ad-0.0.25b-alpha/source/scriptinterface/ScriptContext.cpp.omv~	2022-08-23 22:25:23.987872013 +0200
++++ 0ad-0.0.25b-alpha/source/scriptinterface/ScriptContext.cpp	2022-08-23 22:25:51.449024362 +0200
+@@ -143,7 +143,7 @@ void ScriptContext::UnRegisterRealm(JS::
+ 	// Schedule the zone for GC, which will destroy the realm.
+ 	if (JS::IsIncrementalGCInProgress(m_cx))
+ 		JS::FinishIncrementalGC(m_cx, JS::GCReason::API);
+-	JS::PrepareZoneForGC(js::GetRealmZone(realm));
++	JS::PrepareZoneForGC(m_cx, js::GetRealmZone(realm));
+ 	m_Realms.remove(realm);
+ }
+ 
+@@ -261,5 +261,5 @@ void ScriptContext::ShrinkingGC()
+ void ScriptContext::PrepareZonesForIncrementalGC() const
+ {
+ 	for (JS::Realm* const& realm : m_Realms)
+-		JS::PrepareZoneForGC(js::GetRealmZone(realm));
++		JS::PrepareZoneForGC(m_cx, js::GetRealmZone(realm));
+ }

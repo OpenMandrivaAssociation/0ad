@@ -1,0 +1,94 @@
+--- a/libraries/source/spidermonkey/Fixup-compatibility-of-mozbuild-with-Python-3.10.patch.orig	2021-09-27 03:12:08.748854295 -0500
++++ a/libraries/source/spidermonkey/Fixup-compatibility-of-mozbuild-with-Python-3.10.patch	2021-09-27 03:01:44.314870378 -0500
+@@ -0,0 +1,79 @@
++--- python/mach/mach/decorators.py.orig	2021-09-27 02:38:03.957906959 -0500
+++++ python/mach/mach/decorators.py	2021-09-27 02:39:29.421904758 -0500
++@@ -159,7 +159,7 @@
++               'Conditions argument must take a list ' + \
++               'of functions. Found %s instead.'
++ 
++-        if not isinstance(command.conditions, collections.Iterable):
+++        if not isinstance(command.conditions, collections.abc.Iterable):
++             msg = msg % (command.name, type(command.conditions))
++             raise MachError(msg)
++ 
++--- python/mozbuild/mozbuild/backend/configenvironment.py.orig	2021-09-27 02:41:24.180901802 -0500
+++++ python/mozbuild/mozbuild/backend/configenvironment.py	2021-09-27 02:42:48.916899620 -0500
++@@ -9,7 +9,8 @@
++ import sys
++ import json
++ 
++-from collections import Iterable, OrderedDict
+++from collections import OrderedDict
+++from collections.abc import Iterable
++ from types import ModuleType
++ 
++ import mozpack.path as mozpath
++--- python/mozbuild/mozbuild/makeutil.py.orig	2021-09-27 02:43:35.692898415 -0500
+++++ python/mozbuild/mozbuild/makeutil.py	2021-09-27 02:44:10.490897519 -0500
++@@ -7,7 +7,7 @@
++ import os
++ import re
++ import six
++-from collections import Iterable
+++from collections.abc import Iterable
++ 
++ 
++ class Makefile(object):
++--- python/mozbuild/mozbuild/util.py.orig	2021-09-27 02:45:10.018895986 -0500
+++++ python/mozbuild/mozbuild/util.py	2021-09-27 02:46:04.435894584 -0500
++@@ -782,7 +782,7 @@
++         self._strings = StrictOrderingOnAppendList()
++         self._children = {}
++ 
++-    class StringListAdaptor(collections.Sequence):
+++    class StringListAdaptor(collections.abc.Sequence):
++         def __init__(self, hsl):
++             self._hsl = hsl
++ 
++--- testing/mozbase/versioninfo.py.orig	2021-09-27 02:51:21.471886419 -0500
+++++ testing/mozbase/versioninfo.py	2021-09-27 02:52:08.151885217 -0500
++@@ -11,7 +11,7 @@
++ 
++ from __future__ import absolute_import, print_function
++ 
++-from collections import Iterable
+++from collections.abc import Iterable
++ from distutils.version import StrictVersion
++ import argparse
++ import os
++--- testing/mozbase/manifestparser/manifestparser/filters.py.orig	2021-09-27 02:49:07.604889867 -0500
+++++ testing/mozbase/manifestparser/manifestparser/filters.py	2021-09-27 02:50:20.776887982 -0500
++@@ -12,7 +12,8 @@
++ 
++ import itertools
++ import os
++-from collections import defaultdict, MutableSequence
+++from collections import defaultdict
+++from collections.abc import MutableSequence
++ 
++ import six
++ from six import string_types
++--- third_party/python/virtualenv/virtualenv.py.orig	2021-09-27 03:49:31.573796532 -0500
+++++ third_party/python/virtualenv/virtualenv.py	2021-09-27 03:49:57.956795852 -0500
++@@ -1804,7 +1804,7 @@
++         pass
++     else:
++         # noinspection PyProtectedMember
++-        if sysconfig._get_default_scheme() == "posix_local":
+++        if sysconfig.get_default_scheme() == "posix_local":
++             local_path = os.path.join(home_dir, "local")
++             if not os.path.exists(local_path):
++                 os.mkdir(local_path)
+--- a/libraries/source/spidermonkey/patch.sh.orig	2021-09-27 03:06:39.720862770 -0500
++++ a/libraries/source/spidermonkey/patch.sh	2021-09-27 03:03:32.522867591 -0500
+@@ -43,6 +43,9 @@
+ # Note that this isn't quite the upstream patch to match our version.
+ patch -p1 < ../FixRust150.diff
+ 
++# python3.10 changed an interface that broke some stuff
++patch -p0 < ../Fixup-compatibility-of-mozbuild-with-Python-3.10.patch
++
+ # Patch those separately, as they might interfere with normal behaviour.
+ if [ "$(uname -s)" = "FreeBSD" ];
+ then

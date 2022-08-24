@@ -1,0 +1,24 @@
+diff -up 0ad-0.0.25b-alpha/source/lib/sysdep/stl.h.omv~ 0ad-0.0.25b-alpha/source/lib/sysdep/stl.h
+--- 0ad-0.0.25b-alpha/source/lib/sysdep/stl.h.omv~	2022-08-23 23:59:15.540513046 +0200
++++ 0ad-0.0.25b-alpha/source/lib/sysdep/stl.h	2022-08-23 23:59:31.484569968 +0200
+@@ -29,7 +29,7 @@
+ 
+ #include "lib/config.h"
+ #include "compiler.h"
+-#include <cstdlib> // indirectly pull in bits/c++config.h on Linux, so __GLIBCXX__ is defined
++#include <cstring> // indirectly pull in bits/c++config.h on Linux, so __GLIBCXX__ is defined
+ 
+ // detect STL version
+ // .. Dinkumware
+diff -up 0ad-0.0.25b-alpha/source/tools/atlas/AtlasUI/ScenarioEditor/Sections/Environment/Environment.cpp.omv~ 0ad-0.0.25b-alpha/source/tools/atlas/AtlasUI/ScenarioEditor/Sections/Environment/Environment.cpp
+--- 0ad-0.0.25b-alpha/source/tools/atlas/AtlasUI/ScenarioEditor/Sections/Environment/Environment.cpp.omv~	2022-08-24 00:55:06.401847290 +0200
++++ 0ad-0.0.25b-alpha/source/tools/atlas/AtlasUI/ScenarioEditor/Sections/Environment/Environment.cpp	2022-08-24 00:55:08.947861484 +0200
+@@ -29,7 +29,7 @@ using AtlasMessage::Shareable;
+ 
+ static Observable<AtlasMessage::sEnvironmentSettings> g_EnvironmentSettings;
+ 
+-const float M_PIf = 3.14159265f;
++//const float M_PIf = 3.14159265f;
+ 
+ //////////////////////////////////////////////////////////////////////////
+ 
