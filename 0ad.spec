@@ -71,6 +71,8 @@ BuildRequires:	nvidia-texture-tools-devel
 BuildRequires:	boost-devel
 BuildRequires:	cmake
 BuildRequires:	pkgconfig(egl)
+BuildRequires:	pkgconfig(glu)
+BuildRequires:	pkgconfig(dri)
 BuildRequires:	pkgconfig(libjpeg)
 BuildRequires:	miniupnpc-devel
 BuildRequires:	pkgconfig(IL)
