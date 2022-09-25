@@ -110,7 +110,7 @@ Patch11:			0ad-no-ZEXPORT.patch
 
 Patch12:			https://src.fedoraproject.org/rpms/0ad/raw/rawhide/f/Fixup-compatibility-of-mozbuild-with-Python-3.10.patch
 Patch13:			0ad-allow-mozjs-78.15.patch
-Patch14:			0ad-25b-compile.patch
+#Patch14:			0ad-25b-compile.patch
 Patch15:			https://code.wildfiregames.com/file/data/qxiyxomtpjjypcmnsqus/PHID-FILE-cgwijqmkik4muyj3fjlg/D4669.diff
 Patch16:			https://src.fedoraproject.org/rpms/0ad/raw/rawhide/f/0ad-debug.patch
 
