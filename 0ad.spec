@@ -73,6 +73,7 @@ BuildRequires:	cmake
 BuildRequires:	pkgconfig(egl)
 BuildRequires:	pkgconfig(glu)
 BuildRequires:	pkgconfig(dri)
+BuildRequires:	egl-devel
 BuildRequires:	pkgconfig(libjpeg)
 BuildRequires:	miniupnpc-devel
 BuildRequires:	pkgconfig(IL)
