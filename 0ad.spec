@@ -98,7 +98,7 @@ BuildRequires:	pkgconfig(vorbisfile)
 BuildRequires:	pkgconfig(xcursor)
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(libsodium)
-BuildRequires:	python2 pkgconfig(python2)
+BuildRequires:	pkgconfig(freetype2)
 # FIXME as 0f 0.23 and wxwidgets 3.1.5, if we use WxQt, the scenario editor
 # crashes on startup due to widget parenting issues.
 # Try again when new versions are released. In the mean time, WxGTK will have
