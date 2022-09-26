@@ -168,7 +168,7 @@ build/workspaces/update-workspaces.sh	\
 	%{?_smp_mflags}
 
 # 0ad does some very very very weird stuff to compiler flags...
-sed -i -e "s,-isystem.*,-I`pwd`/libraries/source/cxxtest-4.4 -I%{_includedir}/SDL2 -I%{_includedir}/X11 -I%{_includedir}/valgrind -I`pwd`/libraries/source/spidermonkey/include-unix-release -I`pwd`/source/third_party/tinygettext/include -I%{_includedir}/libxml2 -I%{_includedir}/wx-3.2 -I%{_libdir}/wx/include/gtk3-unicode-3.2 -I`pwd`/libraries/source/fcollada/include -I%{_includedir}/mozjs-78,g" build/workspaces/gcc/*.make
+sed -i -e "s,-isystem.*,-I`pwd`/libraries/source/cxxtest-4.4 -I%{_includedir}/SDL2 -I%{_includedir}/X11 -I%{_includedir}/valgrind -I`pwd`/libraries/source/spidermonkey/include-unix-release -I`pwd`/source/third_party/tinygettext/include -I%{_includedir}/libxml2 -I%{_includedir}/wx-3.2 -I%{_libdir}/wx/include/gtk3-unicode-3.2 -I`pwd`/libraries/source/fcollada/include -I%{_includedir}/mozjs-78 -I`pwd`/libraries/source/glad/include -isystem %{_includedir}/freetype2,g" build/workspaces/gcc/*.make
 
 %make_build -C build/workspaces/gcc config=%{config} verbose=1
 
