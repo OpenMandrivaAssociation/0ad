@@ -1,0 +1,1549 @@
+diff -up 0ad-0.0.26-alpha/build/premake/premake5/contrib/libzip/mkstemp.c.omv~ 0ad-0.0.26-alpha/build/premake/premake5/contrib/libzip/mkstemp.c
+--- 0ad-0.0.26-alpha/build/premake/premake5/contrib/libzip/mkstemp.c.omv~	2023-04-18 20:37:21.856201303 +0200
++++ 0ad-0.0.26-alpha/build/premake/premake5/contrib/libzip/mkstemp.c	2023-04-18 20:37:30.554277284 +0200
+@@ -38,6 +38,7 @@
+ #include <ctype.h>
+ #include <errno.h>
+ #include <fcntl.h>
++#include <unistd.h>
+ #ifdef _WIN32
+ #include <io.h>
+ #endif
+diff -up 0ad-0.0.26-alpha/build/premake/premake5/contrib/libzip/zip_close.c.omv~ 0ad-0.0.26-alpha/build/premake/premake5/contrib/libzip/zip_close.c
+--- 0ad-0.0.26-alpha/build/premake/premake5/contrib/libzip/zip_close.c.omv~	2023-04-18 20:49:16.220250557 +0200
++++ 0ad-0.0.26-alpha/build/premake/premake5/contrib/libzip/zip_close.c	2023-04-18 20:49:56.543568157 +0200
+@@ -42,9 +42,7 @@
+ #include <strings.h>
+ #endif
+ #include <errno.h>
+-#ifdef HAVE_UNISTD_H
+ #include <unistd.h>
+-#endif
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #ifdef _WIN32
+diff -up 0ad-0.0.26-alpha/build/premake/premake5/contrib/libzip/zip_fdopen.c.omv~ 0ad-0.0.26-alpha/build/premake/premake5/contrib/libzip/zip_fdopen.c
+--- 0ad-0.0.26-alpha/build/premake/premake5/contrib/libzip/zip_fdopen.c.omv~	2023-04-18 20:52:36.779846616 +0200
++++ 0ad-0.0.26-alpha/build/premake/premake5/contrib/libzip/zip_fdopen.c	2023-04-18 20:52:46.439924419 +0200
+@@ -34,6 +34,7 @@
+ 
+ 
+ #include "zipint.h"
++#include <unistd.h>
+ 
+ 
+ 
+diff -up 0ad-0.0.26-alpha/source/lib/precompiled.h.omv~ 0ad-0.0.26-alpha/source/lib/precompiled.h
+--- 0ad-0.0.26-alpha/source/lib/precompiled.h.omv~	2023-04-18 23:41:28.504883848 +0200
++++ 0ad-0.0.26-alpha/source/lib/precompiled.h	2023-04-18 23:41:44.256994917 +0200
+@@ -36,6 +36,7 @@
+ # define MINIMAL_PCH 0
+ #endif
+ 
++#include <cstdint>
+ #include "lib/config.h"	            // CONFIG_ENABLE_BOOST, CONFIG_ENABLE_PCH
+ #include "lib/sysdep/compiler.h"    // MSC_VERSION
+ 
+diff -up 0ad-0.0.26-alpha/source/tools/atlas/AtlasUI/CustomControls/MapResizeDialog/MapResizeDialog.cpp.omv~ 0ad-0.0.26-alpha/source/tools/atlas/AtlasUI/CustomControls/MapResizeDialog/MapResizeDialog.cpp
+--- 0ad-0.0.26-alpha/source/tools/atlas/AtlasUI/CustomControls/MapResizeDialog/MapResizeDialog.cpp.omv~	2023-04-18 23:40:45.295582518 +0200
++++ 0ad-0.0.26-alpha/source/tools/atlas/AtlasUI/CustomControls/MapResizeDialog/MapResizeDialog.cpp	2023-04-18 23:40:51.609626234 +0200
+@@ -15,6 +15,7 @@
+ * along with 0 A.D.  If not, see <http://www.gnu.org/licenses/>.
+ */
+ 
++#include <cstdint>
+ #include "precompiled.h"
+ 
+ #include "MapResizeDialog.h"
+diff -up 0ad-0.0.26-alpha/source/tools/atlas/AtlasUI/CustomControls/MapResizeDialog/PseudoMiniMapPanel.cpp.omv~ 0ad-0.0.26-alpha/source/tools/atlas/AtlasUI/CustomControls/MapResizeDialog/PseudoMiniMapPanel.cpp
+--- 0ad-0.0.26-alpha/source/tools/atlas/AtlasUI/CustomControls/MapResizeDialog/PseudoMiniMapPanel.cpp.omv~	2023-04-19 00:01:52.994494137 +0200
++++ 0ad-0.0.26-alpha/source/tools/atlas/AtlasUI/CustomControls/MapResizeDialog/PseudoMiniMapPanel.cpp	2023-04-19 00:01:59.089544293 +0200
+@@ -15,6 +15,7 @@
+  * along with 0 A.D.  If not, see <http://www.gnu.org/licenses/>.
+  */
+ 
++#include <cstdint>
+ #include "precompiled.h"
+ 
+ #include "PseudoMiniMapPanel.h"
+diff -up 0ad-0.0.26-alpha/source/tools/atlas/AtlasUI/General/Observable.h.omv~ 0ad-0.0.26-alpha/source/tools/atlas/AtlasUI/General/Observable.h
+--- 0ad-0.0.26-alpha/source/tools/atlas/AtlasUI/General/Observable.h.omv~	2023-04-18 23:37:41.280363781 +0200
++++ 0ad-0.0.26-alpha/source/tools/atlas/AtlasUI/General/Observable.h	2023-04-18 23:38:19.220605400 +0200
+@@ -18,6 +18,8 @@
+ #ifndef INCLUDED_OBSERVABLE
+ #define INCLUDED_OBSERVABLE
+ 
++#include <stdint.h>
++
+ /*
+ Wrapper around Boost.Signals to make watching objects for changes more convenient.
+ 
+diff -up 0ad-0.0.26-alpha/source/tools/atlas/AtlasUI/ScenarioEditor/ScenarioEditor.h.omv~ 0ad-0.0.26-alpha/source/tools/atlas/AtlasUI/ScenarioEditor/ScenarioEditor.h
+--- 0ad-0.0.26-alpha/source/tools/atlas/AtlasUI/ScenarioEditor/ScenarioEditor.h.omv~	2023-04-19 00:08:24.761731914 +0200
++++ 0ad-0.0.26-alpha/source/tools/atlas/AtlasUI/ScenarioEditor/ScenarioEditor.h	2023-04-19 00:08:31.777790097 +0200
+@@ -18,6 +18,7 @@
+ #ifndef INCLUDED_SCENARIOEDITOR
+ #define INCLUDED_SCENARIOEDITOR
+ 
++#include <cstdint>
+ #include "wx/toolbar.h"
+ 
+ #include "General/AtlasWindowCommandProc.h"
+diff -up 0ad-0.0.26-alpha/source/tools/atlas/AtlasUI/ScenarioEditor/Sections/Cinema/Cinema.cpp.omv~ 0ad-0.0.26-alpha/source/tools/atlas/AtlasUI/ScenarioEditor/Sections/Cinema/Cinema.cpp
+--- 0ad-0.0.26-alpha/source/tools/atlas/AtlasUI/ScenarioEditor/Sections/Cinema/Cinema.cpp.omv~	2023-04-19 00:09:19.507186039 +0200
++++ 0ad-0.0.26-alpha/source/tools/atlas/AtlasUI/ScenarioEditor/Sections/Cinema/Cinema.cpp	2023-04-19 00:09:26.402243257 +0200
+@@ -15,6 +15,7 @@
+ * along with 0 A.D.  If not, see <http://www.gnu.org/licenses/>.
+ */
+ 
++#include <cstdint>
+ #include "precompiled.h"
+ 
+ #include "Cinema.h"
+diff -up 0ad-0.0.26-alpha/source/tools/atlas/AtlasUI/ScenarioEditor/Sections/Environment/LightControl.cpp.omv~ 0ad-0.0.26-alpha/source/tools/atlas/AtlasUI/ScenarioEditor/Sections/Environment/LightControl.cpp
+--- 0ad-0.0.26-alpha/source/tools/atlas/AtlasUI/ScenarioEditor/Sections/Environment/LightControl.cpp.omv~	2023-04-19 00:09:56.620494081 +0200
++++ 0ad-0.0.26-alpha/source/tools/atlas/AtlasUI/ScenarioEditor/Sections/Environment/LightControl.cpp	2023-04-19 00:10:06.883579292 +0200
+@@ -15,6 +15,7 @@
+  * along with 0 A.D.  If not, see <http://www.gnu.org/licenses/>.
+  */
+ 
++#include <cstdint>
+ #include "precompiled.h"
+ 
+ #include <algorithm>
+diff -up 0ad-0.0.26-alpha/source/tools/atlas/AtlasUI/ScenarioEditor/Tools/Common/Tools.h.omv~ 0ad-0.0.26-alpha/source/tools/atlas/AtlasUI/ScenarioEditor/Tools/Common/Tools.h
+--- 0ad-0.0.26-alpha/source/tools/atlas/AtlasUI/ScenarioEditor/Tools/Common/Tools.h.omv~	2023-04-19 00:01:18.349209210 +0200
++++ 0ad-0.0.26-alpha/source/tools/atlas/AtlasUI/ScenarioEditor/Tools/Common/Tools.h	2023-04-19 00:01:27.369283364 +0200
+@@ -18,6 +18,7 @@
+ #ifndef INCLUDED_TOOLS
+ #define INCLUDED_TOOLS
+ 
++#include <cstdint>
+ #include "General/AtlasWindowCommand.h"
+ #include "General/Observable.h"
+ 
+diff -up 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Brushes.h.omv~ 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Brushes.h
+--- 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Brushes.h.omv~	2023-04-18 21:08:05.158525501 +0200
++++ 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Brushes.h	2023-04-18 21:08:13.278593664 +0200
+@@ -33,7 +33,7 @@ public:
+ 	Brush();
+ 	~Brush();
+ 
+-	void SetData(ssize_t w, ssize_t h, const std::vector<float>& data);
++	void SetData(ssize_t w, ssize_t h, const ::std::vector<float>& data);
+ 
+ 	void SetRenderEnabled(bool enabled); // initial state is disabled
+ 
+@@ -53,7 +53,7 @@ public:
+ 	CVector3D m_Centre;
+ private:
+ 	TerrainOverlay* m_TerrainOverlay; // NULL if rendering is not enabled
+-	std::vector<float> m_Data;
++	::std::vector<float> m_Data;
+ };
+ 
+ extern Brush g_CurrentBrush;
+diff -up 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/CommandProc.h.omv~ 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/CommandProc.h
+--- 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/CommandProc.h.omv~	2023-04-18 21:11:18.304148897 +0200
++++ 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/CommandProc.h	2023-04-18 21:11:23.349191352 +0200
+@@ -54,15 +54,15 @@ public:
+ 	void Merge();
+ 
+ private:
+-	std::list<Command*> m_Commands;
+-	typedef std::list<Command*>::iterator cmdIt;
++	::std::list<Command*> m_Commands;
++	typedef ::std::list<Command*>::iterator cmdIt;
+ 	// The 'current' command is the latest one which has been executed
+ 	// (ignoring any that have been undone)
+ 	cmdIt m_CurrentCommand;
+ };
+ 
+ typedef Command* (*cmdHandler)(const void*);
+-typedef std::map<std::string, cmdHandler> cmdHandlers;
++typedef ::std::map<::std::string, cmdHandler> cmdHandlers;
+ extern cmdHandlers& GetCmdHandlers();
+ 
+ CommandProc& GetCommandProc();
+diff -up 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Handlers/CinemaHandler.cpp.omv~ 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Handlers/CinemaHandler.cpp
+--- 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Handlers/CinemaHandler.cpp.omv~	2023-04-18 21:09:20.573158875 +0200
++++ 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Handlers/CinemaHandler.cpp	2023-04-18 21:09:46.022372762 +0200
+@@ -78,21 +78,21 @@ sCinemaSplineNode ConstructCinemaNode(co
+ 	return node;
+ }
+ 
+-std::vector<sCinemaPath> GetCurrentPaths()
++::std::vector<sCinemaPath> GetCurrentPaths()
+ {
+-	std::vector<sCinemaPath> atlasPaths;
++	::std::vector<sCinemaPath> atlasPaths;
+ 	CmpPtr<ICmpCinemaManager> cmpCinemaManager(*g_Game->GetSimulation2(), SYSTEM_ENTITY);
+ 	if (!cmpCinemaManager)
+ 		return atlasPaths;
+-	const std::map<CStrW, CCinemaPath>& paths = cmpCinemaManager->GetPaths();
++	const ::std::map<CStrW, CCinemaPath>& paths = cmpCinemaManager->GetPaths();
+ 
+-	for ( std::map<CStrW, CCinemaPath>::const_iterator it=paths.begin(); it!=paths.end(); ++it  )
++	for ( ::std::map<CStrW, CCinemaPath>::const_iterator it=paths.begin(); it!=paths.end(); ++it  )
+ 	{
+ 		sCinemaPath path = ConstructCinemaPath(&it->second);
+ 		path.name = it->first;
+ 
+-		const std::vector<SplineData>& nodes = it->second.GetAllNodes();
+-		std::vector<sCinemaSplineNode> atlasNodes;
++		const ::std::vector<SplineData>& nodes = it->second.GetAllNodes();
++		::std::vector<sCinemaSplineNode> atlasNodes;
+ 
+ 		for ( size_t i=0; i<nodes.size(); ++i )
+ 			atlasNodes.push_back( ConstructCinemaNode(nodes[i]) );
+@@ -114,18 +114,18 @@ std::vector<sCinemaPath> GetCurrentPaths
+ 	return atlasPaths;
+ }
+ 
+-void SetCurrentPaths(const std::vector<sCinemaPath>& atlasPaths)
++void SetCurrentPaths(const ::std::vector<sCinemaPath>& atlasPaths)
+ {
+-	std::map<CStrW, CCinemaPath> paths;
++	::std::map<CStrW, CCinemaPath> paths;
+ 
+-	for ( std::vector<sCinemaPath>::const_iterator it=atlasPaths.begin(); it!=atlasPaths.end(); ++it )
++	for ( ::std::vector<sCinemaPath>::const_iterator it=atlasPaths.begin(); it!=atlasPaths.end(); ++it )
+ 	{
+ 		CStrW pathName(*it->name);
+ 		paths[pathName] = CCinemaPath();
+ 		paths[pathName].SetTimescale(fixed::FromFloat(it->timescale));
+ 
+ 		const sCinemaPath& atlasPath = *it;
+-		const std::vector<sCinemaSplineNode> nodes = *atlasPath.nodes;
++		const ::std::vector<sCinemaSplineNode> nodes = *atlasPath.nodes;
+ 		TNSpline spline;
+ 		CCinemaData data = ConstructCinemaData(atlasPath);
+ 
+@@ -248,7 +248,7 @@ END_COMMAND(DeleteCinemaPath)
+ 
+ BEGIN_COMMAND(SetCinemaPaths)
+ {
+-	std::vector<sCinemaPath> m_oldPaths, m_newPaths;
++	::std::vector<sCinemaPath> m_oldPaths, m_newPaths;
+ 	void Do()
+ 	{
+ 		m_oldPaths = GetCurrentPaths();
+@@ -491,7 +491,7 @@ QUERYHANDLER(PickPathNode)
+ 	CVector2D cursor;
+ 	msg->pos->GetScreenSpace(cursor.X, cursor.Y);
+ 
+-	for (const std::pair<const CStrW, CCinemaPath>& p : cmpCinemaManager->GetPaths())
++	for (const ::std::pair<const CStrW, CCinemaPath>& p : cmpCinemaManager->GetPaths())
+ 	{
+ 		const CCinemaPath& path = p.second;
+ 		if (isPathNodePicked(path, cursor, node, false) || isPathNodePicked(path.GetTargetSpline(), cursor, node, true))
+diff -up 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Handlers/ElevationHandlers.cpp.omv~ 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Handlers/ElevationHandlers.cpp
+--- 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Handlers/ElevationHandlers.cpp.omv~	2023-04-18 21:11:35.005289448 +0200
++++ 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Handlers/ElevationHandlers.cpp	2023-04-18 21:11:37.330309017 +0200
+@@ -61,9 +61,9 @@ public:
+ 
+ 		int h = get(x,y);
+ 		if (h < target)
+-			h = std::min(target, h + amount);
++			h = ::std::min(target, h + amount);
+ 		else if (h > target)
+-			h = std::max(target, h - amount);
++			h = ::std::max(target, h - amount);
+ 		else
+ 			return;
+ 
+@@ -172,10 +172,10 @@ BEGIN_COMMAND(AlterElevation)
+ 	void MergeIntoPrevious(cAlterElevation* prev)
+ 	{
+ 		prev->m_TerrainDelta.OverlayWith(m_TerrainDelta);
+-		prev->m_i0 = std::min(prev->m_i0, m_i0);
+-		prev->m_j0 = std::min(prev->m_j0, m_j0);
+-		prev->m_i1 = std::max(prev->m_i1, m_i1);
+-		prev->m_j1 = std::max(prev->m_j1, m_j1);
++		prev->m_i0 = ::std::min(prev->m_i0, m_i0);
++		prev->m_j0 = ::std::min(prev->m_j0, m_j0);
++		prev->m_i1 = ::std::max(prev->m_i1, m_i1);
++		prev->m_j1 = ::std::max(prev->m_j1, m_j1);
+ 	}
+ };
+ END_COMMAND(AlterElevation)
+@@ -224,7 +224,7 @@ BEGIN_COMMAND(SmoothElevation)
+ 
+ 		if (g_CurrentBrush.m_H > 2)
+ 		{
+-			std::vector<float> terrainDeltas;
++			::std::vector<float> terrainDeltas;
+ 			ssize_t num = (g_CurrentBrush.m_H - 2) * (g_CurrentBrush.m_W - 2);
+ 			terrainDeltas.resize(num);
+ 
+@@ -234,10 +234,10 @@ BEGIN_COMMAND(SmoothElevation)
+ 				for (ssize_t dx = 0; dx < g_CurrentBrush.m_W; ++dx)
+ 				{
+ 					float delta = m_TerrainDelta.GetVertex(x0+dx, y0+dy) / 9.0f;
+-					ssize_t x1_min = std::max((ssize_t)1, dx - 1);
+-					ssize_t x1_max = std::min(dx + 1, g_CurrentBrush.m_W - 2);
+-					ssize_t y1_min = std::max((ssize_t)1, dy - 1);
+-					ssize_t y1_max = std::min(dy + 1, g_CurrentBrush.m_H - 2);
++					ssize_t x1_min = ::std::max((ssize_t)1, dx - 1);
++					ssize_t x1_max = ::std::min(dx + 1, g_CurrentBrush.m_W - 2);
++					ssize_t y1_min = ::std::max((ssize_t)1, dy - 1);
++					ssize_t y1_max = ::std::min(dy + 1, g_CurrentBrush.m_H - 2);
+ 
+ 					for (ssize_t yy = y1_min; yy <= y1_max; ++yy)
+ 					{
+@@ -285,10 +285,10 @@ BEGIN_COMMAND(SmoothElevation)
+ 	void MergeIntoPrevious(cSmoothElevation* prev)
+ 	{
+ 		prev->m_TerrainDelta.OverlayWith(m_TerrainDelta);
+-		prev->m_i0 = std::min(prev->m_i0, m_i0);
+-		prev->m_j0 = std::min(prev->m_j0, m_j0);
+-		prev->m_i1 = std::max(prev->m_i1, m_i1);
+-		prev->m_j1 = std::max(prev->m_j1, m_j1);
++		prev->m_i0 = ::std::min(prev->m_i0, m_i0);
++		prev->m_j0 = ::std::min(prev->m_j0, m_j0);
++		prev->m_i1 = ::std::max(prev->m_i1, m_i1);
++		prev->m_j1 = ::std::max(prev->m_j1, m_j1);
+ 	}
+ };
+ END_COMMAND(SmoothElevation)
+@@ -361,10 +361,10 @@ BEGIN_COMMAND(FlattenElevation)
+ 	void MergeIntoPrevious(cFlattenElevation* prev)
+ 	{
+ 		prev->m_TerrainDelta.OverlayWith(m_TerrainDelta);
+-		prev->m_i0 = std::min(prev->m_i0, m_i0);
+-		prev->m_j0 = std::min(prev->m_j0, m_j0);
+-		prev->m_i1 = std::max(prev->m_i1, m_i1);
+-		prev->m_j1 = std::max(prev->m_j1, m_j1);
++		prev->m_i0 = ::std::min(prev->m_i0, m_i0);
++		prev->m_j0 = ::std::min(prev->m_j0, m_j0);
++		prev->m_i1 = ::std::max(prev->m_i1, m_i1);
++		prev->m_j1 = ::std::max(prev->m_j1, m_j1);
+ 	}
+ };
+ END_COMMAND(FlattenElevation)
+@@ -448,10 +448,10 @@ BEGIN_COMMAND(PikeElevation)
+ 	void MergeIntoPrevious(cPikeElevation* prev)
+ 	{
+ 		prev->m_TerrainDelta.OverlayWith(m_TerrainDelta);
+-		prev->m_i0 = std::min(prev->m_i0, m_i0);
+-		prev->m_j0 = std::min(prev->m_j0, m_j0);
+-		prev->m_i1 = std::max(prev->m_i1, m_i1);
+-		prev->m_j1 = std::max(prev->m_j1, m_j1);
++		prev->m_i0 = ::std::min(prev->m_i0, m_i0);
++		prev->m_j0 = ::std::min(prev->m_j0, m_j0);
++		prev->m_i1 = ::std::max(prev->m_i1, m_i1);
++		prev->m_j1 = ::std::max(prev->m_j1, m_j1);
+ 	}
+ };
+ END_COMMAND(PikeElevation)
+diff -up 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Handlers/EnvironmentHandlers.cpp.omv~ 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Handlers/EnvironmentHandlers.cpp
+--- 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Handlers/EnvironmentHandlers.cpp.omv~	2023-04-18 21:19:16.812183164 +0200
++++ 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Handlers/EnvironmentHandlers.cpp	2023-04-18 21:19:19.438205335 +0200
+@@ -242,15 +242,15 @@ QUERYHANDLER(GetEnvironmentSettings)
+ 
+ QUERYHANDLER(GetSkySets)
+ {
+-	std::vector<CStrW> skies = g_Renderer.GetSceneRenderer().GetSkyManager().GetSkySets();
+-	msg->skysets = std::vector<std::wstring>(skies.begin(), skies.end());
++	::std::vector<CStrW> skies = g_Renderer.GetSceneRenderer().GetSkyManager().GetSkySets();
++	msg->skysets = ::std::vector<::std::wstring>(skies.begin(), skies.end());
+ }
+ 
+ 
+ QUERYHANDLER(GetPostEffects)
+ {
+-	std::vector<CStrW> effects = g_Renderer.GetPostprocManager().GetPostEffects();
+-	msg->posteffects = std::vector<std::wstring>(effects.begin(), effects.end());
++	::std::vector<CStrW> effects = g_Renderer.GetPostprocManager().GetPostEffects();
++	msg->posteffects = ::std::vector<::std::wstring>(effects.begin(), effects.end());
+ }
+ 
+ }
+diff -up 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Handlers/MapHandlers.cpp.omv~ 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Handlers/MapHandlers.cpp
+--- 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Handlers/MapHandlers.cpp.omv~	2023-04-18 21:19:38.664367664 +0200
++++ 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Handlers/MapHandlers.cpp	2023-04-18 21:19:41.186388958 +0200
+@@ -192,7 +192,7 @@ MESSAGEHANDLER(LoadMap)
+ 
+ MESSAGEHANDLER(ImportHeightmap)
+ {
+-	std::vector<u16> heightmap_source;
++	::std::vector<u16> heightmap_source;
+ 	if (LoadHeightmapImageOs(*msg->filename, heightmap_source) != INFO::OK)
+ 	{
+ 		LOGERROR("Failed to decode heightmap.");
+@@ -209,8 +209,8 @@ MESSAGEHANDLER(ImportHeightmap)
+ 
+ 	// copy heightmap data into map
+ 	u16* heightmap = g_Game->GetWorld()->GetTerrain()->GetHeightMap();
+-	ENSURE(heightmap_source.size() == (std::size_t) SQR(g_Game->GetWorld()->GetTerrain()->GetVerticesPerSide()));
+-	std::copy(heightmap_source.begin(), heightmap_source.end(), heightmap);
++	ENSURE(heightmap_source.size() == (::std::size_t) SQR(g_Game->GetWorld()->GetTerrain()->GetVerticesPerSide()));
++	::std::copy(heightmap_source.begin(), heightmap_source.end(), heightmap);
+ 
+ 	// update simulation
+ 	CmpPtr<ICmpTerrain> cmpTerrain(*g_Game->GetSimulation2(), SYSTEM_ENTITY);
+@@ -239,9 +239,9 @@ QUERYHANDLER(GetMapSettings)
+ 
+ BEGIN_COMMAND(SetMapSettings)
+ {
+-	std::string m_OldSettings, m_NewSettings;
++	::std::string m_OldSettings, m_NewSettings;
+ 
+-	void SetSettings(const std::string& settings)
++	void SetSettings(const ::std::string& settings)
+ 	{
+ 		g_Game->GetSimulation2()->SetMapSettings(settings);
+ 	}
+@@ -292,7 +292,7 @@ QUERYHANDLER(RasterizeMinimap)
+ 	const ssize_t bpp = 24;
+ 	const ssize_t imageDataSize = dimension * dimension * (bpp / 8);
+ 
+-	std::vector<u8> imageBytes(imageDataSize);
++	::std::vector<u8> imageBytes(imageDataSize);
+ 
+ 	float shallowPassageHeight = CMiniMapTexture::GetShallowPassageHeight();
+ 
+@@ -328,7 +328,7 @@ QUERYHANDLER(RasterizeMinimap)
+ 			}
+ 			else
+ 			{
+-				u32 color = std::numeric_limits<u32>::max();
++				u32 color = ::std::numeric_limits<u32>::max();
+ 				u32 hmap = static_cast<u32>(terrain->GetHeightMap()[j * dimension + i]) >> 8;
+ 				float scale = hmap / 3.0f + 170.0f / 255.0f;
+ 
+@@ -348,7 +348,7 @@ QUERYHANDLER(RasterizeMinimap)
+ 		}
+ 	}
+ 
+-	msg->imageBytes = std::move(imageBytes);
++	msg->imageBytes = ::std::move(imageBytes);
+ 	msg->dimension = dimension;
+ }
+ 
+@@ -393,9 +393,9 @@ BEGIN_COMMAND(ResizeMap)
+ 	u16* m_Heightmap;
+ 	CPatch*	m_Patches;
+ 
+-	std::vector<DeletedObject> m_DeletedObjects;
+-	std::vector<std::pair<entity_id_t, CFixedVector3D>> m_OldPositions;
+-	std::vector<std::pair<entity_id_t, CFixedVector3D>> m_NewPositions;
++	::std::vector<DeletedObject> m_DeletedObjects;
++	::std::vector<::std::pair<entity_id_t, CFixedVector3D>> m_OldPositions;
++	::std::vector<::std::pair<entity_id_t, CFixedVector3D>> m_NewPositions;
+ 
+ 	cResizeMap() : m_Heightmap(nullptr), m_Patches(nullptr)
+ 	{
+@@ -424,7 +424,7 @@ BEGIN_COMMAND(ResizeMap)
+ 		terrain->ResizeAndOffset(patches, -offsetX, -offsetY);
+ 	}
+ 
+-	void DeleteObjects(const std::vector<DeletedObject>& deletedObjects)
++	void DeleteObjects(const ::std::vector<DeletedObject>& deletedObjects)
+ 	{
+ 		for (const DeletedObject& deleted : deletedObjects)
+ 			g_Game->GetSimulation2()->DestroyEntity(deleted.entityId);
+@@ -432,7 +432,7 @@ BEGIN_COMMAND(ResizeMap)
+ 		g_Game->GetSimulation2()->FlushDestroyedEntities();
+ 	}
+ 
+-	void RestoreObjects(const std::vector<DeletedObject>& deletedObjects)
++	void RestoreObjects(const ::std::vector<DeletedObject>& deletedObjects)
+ 	{
+ 		CSimulation2& sim = *g_Game->GetSimulation2();
+ 
+@@ -464,9 +464,9 @@ BEGIN_COMMAND(ResizeMap)
+ 		}
+ 	}
+ 
+-	void SetMovedEntitiesPosition(const std::vector<std::pair<entity_id_t, CFixedVector3D>>& movedObjects)
++	void SetMovedEntitiesPosition(const ::std::vector<::std::pair<entity_id_t, CFixedVector3D>>& movedObjects)
+ 	{
+-		for (const std::pair<entity_id_t, CFixedVector3D>& obj : movedObjects)
++		for (const ::std::pair<entity_id_t, CFixedVector3D>& obj : movedObjects)
+ 		{
+ 			const entity_id_t id = obj.first;
+ 			const CFixedVector3D position = obj.second;
+@@ -498,14 +498,14 @@ BEGIN_COMMAND(ResizeMap)
+ 
+ 			CTerrain* terrain = cmpTerrain->GetCTerrain();
+ 			m_Heightmap = new u16[(m_OldPatches * PATCH_SIZE + 1) * (m_OldPatches * PATCH_SIZE + 1)];
+-			std::copy_n(terrain->GetHeightMap(), (m_OldPatches * PATCH_SIZE + 1) * (m_OldPatches * PATCH_SIZE + 1), m_Heightmap);
++			::std::copy_n(terrain->GetHeightMap(), (m_OldPatches * PATCH_SIZE + 1) * (m_OldPatches * PATCH_SIZE + 1), m_Heightmap);
+ 			m_Patches = new CPatch[m_OldPatches * m_OldPatches];
+ 			for (ssize_t j = 0; j < m_OldPatches; ++j)
+ 				for (ssize_t i = 0; i < m_OldPatches; ++i)
+ 				{
+ 					CPatch& src = *(terrain->GetPatch(i, j));
+ 					CPatch& dst = m_Patches[j * m_OldPatches + i];
+-					std::copy_n(&src.m_MiniPatches[0][0], PATCH_SIZE * PATCH_SIZE, &dst.m_MiniPatches[0][0]);
++					::std::copy_n(&src.m_MiniPatches[0][0], PATCH_SIZE * PATCH_SIZE, &dst.m_MiniPatches[0][0]);
+ 				}
+ 		}
+ 
+@@ -519,7 +519,7 @@ BEGIN_COMMAND(ResizeMap)
+ 		const CFixedVector3D offset = CFixedVector3D(fixed::FromInt(offsetX), fixed::FromInt(0), fixed::FromInt(offsetZ));
+ 
+ 		const CSimulation2::InterfaceListUnordered& ents = sim.GetEntitiesWithInterfaceUnordered(IID_Selectable);
+-		for (const std::pair<const entity_id_t, IComponent*>& ent : ents)
++		for (const ::std::pair<const entity_id_t, IComponent*>& ent : ents)
+ 		{
+ 			const entity_id_t entityId = ent.first;
+ 			CmpPtr<ICmpPosition> cmpPosition(sim, entityId);
+@@ -582,7 +582,7 @@ BEGIN_COMMAND(ResizeMap)
+ 				{
+ 					CPatch& src = m_Patches[j * m_OldPatches + i];
+ 					CPatch& dst = *(terrain->GetPatch(i, j));
+-					std::copy_n(&src.m_MiniPatches[0][0], PATCH_SIZE * PATCH_SIZE, &dst.m_MiniPatches[0][0]);
++					::std::copy_n(&src.m_MiniPatches[0][0], PATCH_SIZE * PATCH_SIZE, &dst.m_MiniPatches[0][0]);
+ 				}
+ 		}
+ 		RestoreObjects(m_DeletedObjects);
+@@ -617,7 +617,7 @@ QUERYHANDLER(VFSFileRealPath)
+ 
+ static Status AddToFilenames(const VfsPath& pathname, const CFileInfo& UNUSED(fileInfo), const uintptr_t cbData)
+ {
+-	std::vector<std::wstring>& filenames = *(std::vector<std::wstring>*)cbData;
++	::std::vector<::std::wstring>& filenames = *(::std::vector<::std::wstring>*)cbData;
+ 	filenames.push_back(pathname.string().c_str());
+ 	return INFO::OK;
+ }
+@@ -625,7 +625,7 @@ static Status AddToFilenames(const VfsPa
+ QUERYHANDLER(GetMapList)
+ {
+ #define GET_FILE_LIST(path, list) \
+-	std::vector<std::wstring> list; \
++	::std::vector<::std::wstring> list; \
+ 	vfs::ForEachFile(g_VFS, path, AddToFilenames, (uintptr_t)&list, L"*.xml", vfs::DIR_RECURSIVE); \
+ 	msg->list = list;
+ 
+diff -up 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Handlers/MessageHandler.h.omv~ 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Handlers/MessageHandler.h
+--- 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Handlers/MessageHandler.h.omv~	2023-04-18 21:04:18.742628910 +0200
++++ 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Handlers/MessageHandler.h	2023-04-18 21:04:36.855780306 +0200
+@@ -27,7 +27,7 @@ namespace AtlasMessage
+ {
+ 
+ typedef void (*msgHandler)(IMessage*);
+-typedef std::map<std::string, msgHandler> msgHandlers;
++typedef ::std::map<::std::string, msgHandler> msgHandlers;
+ extern msgHandlers& GetMsgHandlers();
+ 
+ #define THINGHANDLER(prefix, expectedtype, t) \
+diff -up 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Handlers/ObjectHandlers.cpp.omv~ 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Handlers/ObjectHandlers.cpp
+--- 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Handlers/ObjectHandlers.cpp.omv~	2023-04-18 21:21:27.063196935 +0200
++++ 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Handlers/ObjectHandlers.cpp	2023-04-18 21:21:29.237210676 +0200
+@@ -90,16 +90,16 @@ void CheckObstructionAndUpdateVisual(ent
+ 
+ QUERYHANDLER(GetObjectsList)
+ {
+-	std::vector<sObjectsListItem> objects;
++	::std::vector<sObjectsListItem> objects;
+ 
+ 	CmpPtr<ICmpTemplateManager> cmpTemplateManager(*g_Game->GetSimulation2(), SYSTEM_ENTITY);
+ 	if (cmpTemplateManager)
+ 	{
+-		std::vector<std::string> names = cmpTemplateManager->FindAllTemplates(true);
++		::std::vector<::std::string> names = cmpTemplateManager->FindAllTemplates(true);
+ 
+-		for (std::vector<std::string>::iterator it = names.begin(); it != names.end(); ++it)
++		for (::std::vector<::std::string>::iterator it = names.begin(); it != names.end(); ++it)
+ 		{
+-			std::wstring name(it->begin(), it->end());
++			::std::wstring name(it->begin(), it->end());
+ 
+ 			sObjectsListItem e;
+ 			e.id = name;
+@@ -117,13 +117,13 @@ QUERYHANDLER(GetObjectsList)
+ 		}
+ 	}
+ 
+-	std::sort(objects.begin(), objects.end(), SortObjectsList);
++	::std::sort(objects.begin(), objects.end(), SortObjectsList);
+ 	msg->objects = objects;
+ }
+ 
+ 
+-static std::vector<entity_id_t> g_Selection;
+-typedef std::map<player_id_t, CColor> PlayerColorMap;
++static ::std::vector<entity_id_t> g_Selection;
++typedef ::std::map<player_id_t, CColor> PlayerColorMap;
+ 
+ // Helper function to find color of player owning the given entity,
+ //	returns white if entity has no owner. Uses caching to avoid
+@@ -207,18 +207,18 @@ QUERYHANDLER(GetObjectSettings)
+ 
+ /*
+ 	// Get the unit's possible variants and selected variants
+-	std::vector<std::vector<CStr> > groups = unit->GetObject().m_Base->GetVariantGroups();
+-	const std::set<CStr>& selections = unit->GetActorSelections();
++	::std::vector<::std::vector<CStr> > groups = unit->GetObject().m_Base->GetVariantGroups();
++	const ::std::set<CStr>& selections = unit->GetActorSelections();
+ 
+ 	// Iterate over variant groups
+-	std::vector<std::vector<std::wstring> > variantgroups;
+-	std::set<std::wstring> selections_set;
++	::std::vector<::std::vector<::std::wstring> > variantgroups;
++	::std::set<::std::wstring> selections_set;
+ 	variantgroups.reserve(groups.size());
+ 	for (size_t i = 0; i < groups.size(); ++i)
+ 	{
+ 		// Copy variants into output structure
+ 
+-		std::vector<std::wstring> group;
++		::std::vector<::std::wstring> group;
+ 		group.reserve(groups[i].size());
+ 		int choice = -1;
+ 
+@@ -242,7 +242,7 @@ QUERYHANDLER(GetObjectSettings)
+ 	}
+ 
+ 	settings.variantgroups = variantgroups;
+-	settings.selections = std::vector<std::wstring> (selections_set.begin(), selections_set.end()); // convert set->vector
++	settings.selections = ::std::vector<::std::wstring> (selections_set.begin(), selections_set.end()); // convert set->vector
+ */
+ 
+ 	msg->settings = settings;
+@@ -250,7 +250,7 @@ QUERYHANDLER(GetObjectSettings)
+ 
+ QUERYHANDLER(GetObjectMapSettings)
+ {
+-	std::vector<entity_id_t> ids = *msg->ids;
++	::std::vector<entity_id_t> ids = *msg->ids;
+ 
+ 	CmpPtr<ICmpTemplateManager> cmpTemplateManager(*g_Game->GetSimulation2(), SYSTEM_ENTITY);
+ 	ENSURE(cmpTemplateManager);
+@@ -307,7 +307,7 @@ QUERYHANDLER(GetObjectMapSettings)
+ BEGIN_COMMAND(SetObjectSettings)
+ {
+ 	player_id_t m_PlayerOld, m_PlayerNew;
+-	std::set<CStr> m_SelectionsOld, m_SelectionsNew;
++	::std::set<CStr> m_SelectionsOld, m_SelectionsNew;
+ 
+ 	void Do()
+ 	{
+@@ -330,8 +330,8 @@ BEGIN_COMMAND(SetObjectSettings)
+ 
+ 		m_PlayerNew = (player_id_t)settings.player;
+ 
+-		std::vector<std::wstring> selections = *settings.selections;
+-		for (std::vector<std::wstring>::iterator it = selections.begin(); it != selections.end(); ++it)
++		::std::vector<::std::wstring> selections = *settings.selections;
++		for (::std::vector<::std::wstring>::iterator it = selections.begin(); it != selections.end(); ++it)
+ 		{
+ 			m_SelectionsNew.insert(CStrW(*it).ToUTF8());
+ 		}
+@@ -350,7 +350,7 @@ BEGIN_COMMAND(SetObjectSettings)
+ 	}
+ 
+ private:
+-	void Set(player_id_t player, const std::set<CStr>& UNUSED(selections))
++	void Set(player_id_t player, const ::std::set<CStr>& UNUSED(selections))
+ 	{
+ 		AtlasView* view = AtlasView::GetView(msg->view);
+ 		CSimulation2* simulation = view->GetSimulation2();
+@@ -369,7 +369,7 @@ END_COMMAND(SetObjectSettings);
+ 
+ static CStrW g_PreviewUnitName;
+ static entity_id_t g_PreviewEntityID = INVALID_ENTITY;
+-static std::vector<entity_id_t> g_PreviewEntitiesID;
++static ::std::vector<entity_id_t> g_PreviewEntitiesID;
+ 
+ static CVector3D GetUnitPos(const Position& pos, bool floating)
+ {
+@@ -419,7 +419,7 @@ MESSAGEHANDLER(ObjectPreviewToEntity)
+ 	for (entity_id_t ent : g_PreviewEntitiesID)
+ 	{
+ 		//Get template name (without the "preview|" prefix)
+-		std::wstring wTemplateName = wstring_from_utf8(cmpTemplateManager->GetCurrentTemplateName(ent).substr(8));
++		::std::wstring wTemplateName = wstring_from_utf8(cmpTemplateManager->GetCurrentTemplateName(ent).substr(8));
+ 		//Create new entity
+ 		entity_id_t new_ent = g_Game->GetSimulation2()->AddEntity(wTemplateName);
+ 		if (new_ent == INVALID_ENTITY)
+@@ -694,7 +694,7 @@ QUERYHANDLER(PickSimilarObjects)
+ 	ENSURE(cmpTemplateManager);
+ 
+ 	entity_id_t ent = msg->id;
+-	std::string templateName = cmpTemplateManager->GetCurrentTemplateName(ent);
++	::std::string templateName = cmpTemplateManager->GetCurrentTemplateName(ent);
+ 
+ 	// If unit has ownership, only pick units from the same player
+ 	player_id_t owner = INVALID_PLAYER;
+@@ -720,11 +720,11 @@ MESSAGEHANDLER(ResetSelectionColor)
+ BEGIN_COMMAND(MoveObjects)
+ {
+ 	// Mapping from object to position
+-	std::map<entity_id_t, CVector3D> m_PosOld, m_PosNew;
++	::std::map<entity_id_t, CVector3D> m_PosOld, m_PosNew;
+ 
+ 	void Do()
+ 	{
+-		std::vector<entity_id_t> ids = *msg->ids;
++		::std::vector<entity_id_t> ids = *msg->ids;
+ 
+ 		// All selected objects move relative to a pivot object,
+ 		//	so get its position and whether it's floating
+@@ -765,9 +765,9 @@ BEGIN_COMMAND(MoveObjects)
+ 		SetPos(m_PosNew);
+ 	}
+ 
+-	void SetPos(const std::map<entity_id_t, CVector3D>& map)
++	void SetPos(const ::std::map<entity_id_t, CVector3D>& map)
+ 	{
+-		for (const std::pair<const entity_id_t, CVector3D>& p : map)
++		for (const ::std::pair<const entity_id_t, CVector3D>& p : map)
+ 		{
+ 			CmpPtr<ICmpPosition> cmpPosition(*g_Game->GetSimulation2(), p.first);
+ 			if (!cmpPosition)
+@@ -801,14 +801,14 @@ END_COMMAND(MoveObjects)
+ 
+ BEGIN_COMMAND(RotateObjectsFromCenterPoint)
+ {
+-	std::map<entity_id_t, CVector3D> m_PosOld, m_PosNew;
+-	std::map<entity_id_t, float> m_AngleOld, m_AngleNew;
++	::std::map<entity_id_t, CVector3D> m_PosOld, m_PosNew;
++	::std::map<entity_id_t, float> m_AngleOld, m_AngleNew;
+ 	CVector3D m_CenterPoint;
+ 	float m_AngleInitialRotation;
+ 
+ 	void Do()
+ 	{
+-		std::vector<entity_id_t> ids = *msg->ids;
++		::std::vector<entity_id_t> ids = *msg->ids;
+ 
+ 		CVector3D minPos;
+ 		CVector3D maxPos;
+@@ -857,9 +857,9 @@ BEGIN_COMMAND(RotateObjectsFromCenterPoi
+ 		m_AngleInitialRotation = atan2(target.X-m_CenterPoint.X, target.Z-m_CenterPoint.Z);
+ 	}
+ 
+-	void SetPos(const std::map<entity_id_t, CVector3D>& position, const std::map<entity_id_t, float>& angle)
++	void SetPos(const ::std::map<entity_id_t, CVector3D>& position, const ::std::map<entity_id_t, float>& angle)
+ 	{
+-		for (const std::pair<const entity_id_t, CVector3D>& p : position)
++		for (const ::std::pair<const entity_id_t, CVector3D>& p : position)
+ 		{
+ 			CmpPtr<ICmpPosition> cmpPosition(*g_Game->GetSimulation2(), p.first);
+ 			if (!cmpPosition)
+@@ -873,7 +873,7 @@ BEGIN_COMMAND(RotateObjectsFromCenterPoi
+ 
+ 		}
+ 
+-		for (const std::pair<const entity_id_t, CVector3D>& p : position)
++		for (const ::std::pair<const entity_id_t, CVector3D>& p : position)
+ 			CheckObstructionAndUpdateVisual(p.first);
+ 	}
+ 
+@@ -884,7 +884,7 @@ BEGIN_COMMAND(RotateObjectsFromCenterPoi
+ 
+ 	void RecalculateRotation(Position newPoint)
+ 	{
+-		std::vector<entity_id_t> ids = *msg->ids;
++		::std::vector<entity_id_t> ids = *msg->ids;
+ 
+ 		CVector3D target = newPoint.GetWorldSpace(m_CenterPoint.Y);
+ 		float newAngle = atan2(target.X-m_CenterPoint.X, target.Z-m_CenterPoint.Z);
+@@ -938,11 +938,11 @@ END_COMMAND(RotateObjectsFromCenterPoint
+ 
+ BEGIN_COMMAND(RotateObject)
+ {
+-	std::map<entity_id_t, float> m_AngleOld, m_AngleNew;
++	::std::map<entity_id_t, float> m_AngleOld, m_AngleNew;
+ 
+ 	void Do()
+ 	{
+-		std::vector<entity_id_t> ids = *msg->ids;
++		::std::vector<entity_id_t> ids = *msg->ids;
+ 
+ 		for (entity_id_t id : ids)
+ 		{
+@@ -961,9 +961,9 @@ BEGIN_COMMAND(RotateObject)
+ 		SetAngle(m_AngleNew);
+ 	}
+ 
+-	void SetAngle(const std::map<entity_id_t, float>& angles)
++	void SetAngle(const ::std::map<entity_id_t, float>& angles)
+ 	{
+-		for (const std::pair<const entity_id_t, float>& p : angles)
++		for (const ::std::pair<const entity_id_t, float>& p : angles)
+ 		{
+ 			CmpPtr<ICmpPosition> cmpPosition(*g_Game->GetSimulation2(), p.first);
+ 			if (!cmpPosition)
+@@ -1006,7 +1006,7 @@ BEGIN_COMMAND(DeleteObjects)
+ 		u32 actorSeed;
+ 	};
+ 
+-	std::vector<OldObject> oldObjects;
++	::std::vector<OldObject> oldObjects;
+ 
+ 	cDeleteObjects()
+ 	{
+@@ -1023,7 +1023,7 @@ BEGIN_COMMAND(DeleteObjects)
+ 		CmpPtr<ICmpTemplateManager> cmpTemplateManager(sim, SYSTEM_ENTITY);
+ 		ENSURE(cmpTemplateManager);
+ 
+-		std::vector<entity_id_t> ids = *msg->ids;
++		::std::vector<entity_id_t> ids = *msg->ids;
+ 		for (size_t i = 0; i < ids.size(); ++i)
+ 		{
+ 			OldObject obj;
+@@ -1090,7 +1090,7 @@ END_COMMAND(DeleteObjects)
+ 
+ QUERYHANDLER(GetPlayerObjects)
+ {
+-	std::vector<entity_id_t> ids;
++	::std::vector<entity_id_t> ids;
+ 	player_id_t playerID = msg->player;
+ 
+ 	const CSimulation2::InterfaceListUnordered& cmps = g_Game->GetSimulation2()->GetEntitiesWithInterfaceUnordered(IID_Ownership);
+@@ -1112,8 +1112,8 @@ MESSAGEHANDLER(SetBandbox)
+ 
+ QUERYHANDLER(GetSelectedObjectsTemplateNames)
+ {
+-	std::vector<entity_id_t> ids = *msg->ids;
+-	std::vector<std::string> names;
++	::std::vector<entity_id_t> ids = *msg->ids;
++	::std::vector<::std::string> names;
+ 
+ 	CmpPtr<ICmpTemplateManager> cmpTemplateManager(*g_Game->GetSimulation2(), SYSTEM_ENTITY);
+ 	ENSURE(cmpTemplateManager);
+@@ -1121,11 +1121,11 @@ QUERYHANDLER(GetSelectedObjectsTemplateN
+ 	for (size_t i = 0; i < ids.size(); ++i)
+ 	{
+ 		entity_id_t id = (entity_id_t)ids[i];
+-		std::string templateName = cmpTemplateManager->GetCurrentTemplateName(id);
++		::std::string templateName = cmpTemplateManager->GetCurrentTemplateName(id);
+ 		names.push_back(templateName);
+ 	}
+ 
+-	std::sort(names.begin(), names.end());
++	::std::sort(names.begin(), names.end());
+ 	msg->names = names;
+ }
+ 
+diff -up 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Handlers/TerrainHandlers.cpp.omv~ 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Handlers/TerrainHandlers.cpp
+--- 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Handlers/TerrainHandlers.cpp.omv~	2023-04-18 21:21:42.975297902 +0200
++++ 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Handlers/TerrainHandlers.cpp	2023-04-18 21:21:45.315312828 +0200
+@@ -50,7 +50,7 @@ namespace
+ sTerrainTexturePreview MakeEmptyTerrainTexturePreview()
+ {
+ 	sTerrainTexturePreview preview{};
+-	preview.name = std::wstring();
++	preview.name = ::std::wstring();
+ 	preview.loaded = false;
+ 	preview.imageHeight = 0;
+ 	preview.imageWidth = 0;
+@@ -69,14 +69,14 @@ sTerrainTexturePreview GetPreview(CTerra
+ 	preview.name = tex->GetTag().FromUTF8();
+ 
+ 	const size_t previewBPP = 3;
+-	std::vector<u8> buffer(width * height * previewBPP);
++	::std::vector<u8> buffer(width * height * previewBPP);
+ 
+ 	// It's not good to shrink the entire texture to fit the small preview
+ 	// window, since it's the fine details in the texture that are
+ 	// interesting; so just go down one mipmap level, then crop a chunk
+ 	// out of the middle.
+ 
+-	std::shared_ptr<u8> fileData;
++	::std::shared_ptr<u8> fileData;
+ 	size_t fileSize;
+ 	Tex texture;
+ 	const bool canUsePreview =
+@@ -137,7 +137,7 @@ sTerrainTexturePreview GetPreview(CTerra
+ QUERYHANDLER(GetTerrainGroups)
+ {
+ 	const CTerrainTextureManager::TerrainGroupMap &groups = g_TexMan.GetGroups();
+-	std::vector<std::wstring> groupNames;
++	::std::vector<::std::wstring> groupNames;
+ 	for (CTerrainTextureManager::TerrainGroupMap::const_iterator it = groups.begin(); it != groups.end(); ++it)
+ 		groupNames.push_back(it->first.FromUTF8());
+ 	msg->groupNames = groupNames;
+@@ -145,30 +145,30 @@ QUERYHANDLER(GetTerrainGroups)
+ 
+ QUERYHANDLER(GetTerrainGroupTextures)
+ {
+-	std::vector<std::wstring> names;
++	::std::vector<::std::wstring> names;
+ 
+ 	CTerrainGroup* group = g_TexMan.FindGroup(CStrW(*msg->groupName).ToUTF8());
+ 	if (group)
+ 	{
+-		for (std::vector<CTerrainTextureEntry*>::const_iterator it = group->GetTerrains().begin(); it != group->GetTerrains().end(); ++it)
++		for (::std::vector<CTerrainTextureEntry*>::const_iterator it = group->GetTerrains().begin(); it != group->GetTerrains().end(); ++it)
+ 			names.emplace_back((*it)->GetTag().FromUTF8());
+ 	}
+-	std::sort(names.begin(), names.end());
++	::std::sort(names.begin(), names.end());
+ 	msg->names = names;
+ }
+ 
+ QUERYHANDLER(GetTerrainGroupPreviews)
+ {
+-	std::vector<sTerrainTexturePreview> previews;
++	::std::vector<sTerrainTexturePreview> previews;
+ 
+ 	CTerrainGroup* group = g_TexMan.FindGroup(CStrW(*msg->groupName).ToUTF8());
+-	for (std::vector<CTerrainTextureEntry*>::const_iterator it = group->GetTerrains().begin(); it != group->GetTerrains().end(); ++it)
++	for (::std::vector<CTerrainTextureEntry*>::const_iterator it = group->GetTerrains().begin(); it != group->GetTerrains().end(); ++it)
+ 	{
+ 		previews.push_back(GetPreview(*it, msg->imageWidth, msg->imageHeight));
+  	}
+ 
+ 	// Sort the list alphabetically by name
+-	std::sort(previews.begin(), previews.end(), CompareTerrain);
++	::std::sort(previews.begin(), previews.end(), CompareTerrain);
+ 	msg->previews = previews;
+ }
+ 
+@@ -177,11 +177,11 @@ QUERYHANDLER(GetTerrainPassabilityClasse
+ 	CmpPtr<ICmpPathfinder> cmpPathfinder(*AtlasView::GetView_Game()->GetSimulation2(), SYSTEM_ENTITY);
+ 	if (cmpPathfinder)
+ 	{
+-		std::map<std::string, pass_class_t> nonPathfindingClasses, pathfindingClasses;
++		::std::map<::std::string, pass_class_t> nonPathfindingClasses, pathfindingClasses;
+ 		cmpPathfinder->GetPassabilityClasses(nonPathfindingClasses, pathfindingClasses);
+ 
+-		std::vector<std::wstring> classNames;
+-		for (std::map<std::string, pass_class_t>::iterator it = nonPathfindingClasses.begin(); it != nonPathfindingClasses.end(); ++it)
++		::std::vector<::std::wstring> classNames;
++		for (::std::map<::std::string, pass_class_t>::iterator it = nonPathfindingClasses.begin(); it != nonPathfindingClasses.end(); ++it)
+ 			classNames.push_back(CStr(it->first).FromUTF8());
+ 		msg->classNames = classNames;
+ 	}
+@@ -202,7 +202,7 @@ QUERYHANDLER(GetTerrainTexture)
+ 	}
+ 	else
+ 	{
+-		msg->texture = std::wstring();
++		msg->texture = ::std::wstring();
+ 	}
+ }
+ 
+@@ -245,9 +245,9 @@ public:
+ 		// If this tile matches the current texture, we just want to match its
+ 		// priority; otherwise we want to exceed its priority
+ 		if (tile->GetTextureEntry() == tex)
+-			priority = std::max(priority, tile->GetPriority()*priorityScale);
++			priority = ::std::max(priority, tile->GetPriority()*priorityScale);
+ 		else
+-			priority = std::max(priority, tile->GetPriority()*priorityScale + 1);
++			priority = ::std::max(priority, tile->GetPriority()*priorityScale + 1);
+ 	}
+ 
+ 	CTerrainTextureEntry* GetTexEntry(ssize_t x, ssize_t y)
+@@ -377,10 +377,10 @@ BEGIN_COMMAND(PaintTerrain)
+ 	void MergeIntoPrevious(cPaintTerrain* prev)
+ 	{
+ 		prev->m_TerrainDelta.OverlayWith(m_TerrainDelta);
+-		prev->m_i0 = std::min(prev->m_i0, m_i0);
+-		prev->m_j0 = std::min(prev->m_j0, m_j0);
+-		prev->m_i1 = std::max(prev->m_i1, m_i1);
+-		prev->m_j1 = std::max(prev->m_j1, m_j1);
++		prev->m_i0 = ::std::min(prev->m_i0, m_i0);
++		prev->m_j0 = ::std::min(prev->m_j0, m_j0);
++		prev->m_i1 = ::std::max(prev->m_i1, m_i1);
++		prev->m_j1 = ::std::max(prev->m_j1, m_j1);
+ 	}
+ };
+ END_COMMAND(PaintTerrain)
+@@ -435,10 +435,10 @@ BEGIN_COMMAND(ReplaceTerrain)
+ 			{
+ 				if (m_TerrainDelta.GetTexEntry(i, j) == replacedTex)
+ 				{
+-					m_i0 = std::min(m_i0, i-1);
+-					m_j0 = std::min(m_j0, j-1);
+-					m_i1 = std::max(m_i1, i+2);
+-					m_j1 = std::max(m_j1, j+2);
++					m_i0 = ::std::min(m_i0, i-1);
++					m_j0 = ::std::min(m_j0, j-1);
++					m_i1 = ::std::max(m_i1, i+2);
++					m_j1 = ::std::max(m_j1, j+2);
+ 					m_TerrainDelta.PaintTile(i, j, texentry, m_TerrainDelta.GetPriority(i, j));
+ 				}
+ 			}
+@@ -508,16 +508,16 @@ BEGIN_COMMAND(FillTerrain)
+ 		// Simple 4-way flood fill algorithm using queue and a grid to keep track of visited tiles,
+ 		//	almost as fast as loop for filling whole map, much faster for small patches
+ 		SparseGrid<bool> visited(tiles, tiles);
+-		std::queue<std::pair<u16, u16> > queue;
++		::std::queue<::std::pair<u16, u16> > queue;
+ 
+ 		// Initial tile
+-		queue.push(std::make_pair((u16)x0, (u16)y0));
++		queue.push(::std::make_pair((u16)x0, (u16)y0));
+ 		visited.set(x0, y0, true);
+ 
+ 		while(!queue.empty())
+ 		{
+ 			// Check front of queue
+-			std::pair<u16, u16> t = queue.front();
++			::std::pair<u16, u16> t = queue.front();
+ 			queue.pop();
+ 			u16 i = t.first;
+ 			u16 j = t.second;
+@@ -525,32 +525,32 @@ BEGIN_COMMAND(FillTerrain)
+ 			if (m_TerrainDelta.GetTexEntry(i, j) == replacedTex)
+ 			{
+ 				// Found a tile to replace: adjust bounds and paint it
+-				m_i0 = std::min(m_i0, (ssize_t)i-1);
+-				m_j0 = std::min(m_j0, (ssize_t)j-1);
+-				m_i1 = std::max(m_i1, (ssize_t)i+2);
+-				m_j1 = std::max(m_j1, (ssize_t)j+2);
++				m_i0 = ::std::min(m_i0, (ssize_t)i-1);
++				m_j0 = ::std::min(m_j0, (ssize_t)j-1);
++				m_i1 = ::std::max(m_i1, (ssize_t)i+2);
++				m_j1 = ::std::max(m_j1, (ssize_t)j+2);
+ 				m_TerrainDelta.PaintTile(i, j, texentry, m_TerrainDelta.GetPriority(i, j));
+ 
+ 				// Visit 4 adjacent tiles (could visit 8 if we want to count diagonal adjacency)
+ 				if (i > 0 && !visited.get(i-1, j))
+ 				{
+ 					visited.set(i-1, j, true);
+-					queue.push(std::make_pair(i-1, j));
++					queue.push(::std::make_pair(i-1, j));
+ 				}
+ 				if (i < (tiles-1) && !visited.get(i+1, j))
+ 				{
+ 					visited.set(i+1, j, true);
+-					queue.push(std::make_pair(i+1, j));
++					queue.push(::std::make_pair(i+1, j));
+ 				}
+ 				if (j > 0 && !visited.get(i, j-1))
+ 				{
+ 					visited.set(i, j-1, true);
+-					queue.push(std::make_pair(i, j-1));
++					queue.push(::std::make_pair(i, j-1));
+ 				}
+ 				if (j < (tiles-1) && !visited.get(i, j+1))
+ 				{
+ 					visited.set(i, j+1, true);
+-					queue.push(std::make_pair(i, j+1));
++					queue.push(::std::make_pair(i, j+1));
+ 				}
+ 			}
+ 		}
+diff -up 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Messages.h.omv~ 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Messages.h
+--- 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Messages.h.omv~	2023-04-18 20:59:56.791448253 +0200
++++ 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Messages.h	2023-04-18 21:28:03.970932208 +0200
+@@ -24,6 +24,7 @@
+ 
+ #include <vector>
+ #include <string>
++#include <stdint.h>
+ 
+ // TODO: organisation, documentation, etc
+ 
+@@ -61,33 +62,33 @@ MESSAGE(RenderEnable,
+ // unrecognised param names are ignored
+ MESSAGE(SetViewParamB,
+ 		((int, view)) // eRenderView
+-		((std::wstring, name))
++		((::std::wstring, name))
+ 		((bool, value))
+ 		);
+ MESSAGE(SetViewParamI,
+ 		((int, view)) // eRenderView
+-		((std::wstring, name))
++		((::std::wstring, name))
+ 		((int, value))
+ 		);
+ MESSAGE(SetViewParamC,
+ 		((int, view)) // eRenderView
+-		((std::wstring, name))
++		((::std::wstring, name))
+ 		((Color, value))
+ 		);
+ MESSAGE(SetViewParamS,
+ 		((int, view)) // eRenderView
+-		((std::wstring, name))
+-		((std::wstring, value))
++		((::std::wstring, name))
++		((::std::wstring, value))
+ 		);
+ 
+ MESSAGE(JavaScript,
+-		((std::string, command))
++		((::std::string, command))
+ 		);
+ 
+ //////////////////////////////////////////////////////////////////////////
+ 
+ MESSAGE(GuiSwitchPage,
+-		((std::wstring, page))
++		((::std::wstring, page))
+ 		);
+ 
+ MESSAGE(GuiMouseButtonEvent,
+@@ -117,17 +118,17 @@ MESSAGE(GuiCharEvent,
+ MESSAGE(SimStopMusic, );
+ 
+ MESSAGE(SimStateSave,
+-		((std::wstring, label)) // named slot to store saved data
++		((::std::wstring, label)) // named slot to store saved data
+ 		);
+ 
+ MESSAGE(SimStateRestore,
+-		((std::wstring, label)) // named slot to find saved data
++		((::std::wstring, label)) // named slot to find saved data
+ 		);
+ 
+ QUERY(SimStateDebugDump,
+ 		((bool, binary))
+ 		,
+-		((std::wstring, dump))
++		((::std::wstring, dump))
+ 		);
+ 
+ MESSAGE(SimPlay,
+@@ -161,38 +162,38 @@ QUERY(RenderLoop, ,
+ // Messages for map panel
+ 
+ QUERY(GenerateMap,
+-		((std::wstring, filename))				// random map script filename
+-		((std::string, settings))				// map settings as JSON string
++		((::std::wstring, filename))				// random map script filename
++		((::std::string, settings))				// map settings as JSON string
+ 		,
+ 		((int, status))
+ 		);
+ 
+ MESSAGE(ImportHeightmap,
+-		((std::wstring, filename))
++		((::std::wstring, filename))
+ 		);
+ 
+ MESSAGE(LoadMap,
+-		((std::wstring, filename))
++		((::std::wstring, filename))
+ 		);
+ 
+ MESSAGE(SaveMap,
+-		((std::wstring, filename))
++		((::std::wstring, filename))
+ 		);
+ 
+ QUERY(GetMapList,
+ 		,
+-		((std::vector<std::wstring>, scenarioFilenames))
+-		((std::vector<std::wstring>, skirmishFilenames))
+-		((std::vector<std::wstring>, tutorialFilenames))
++		((::std::vector<::std::wstring>, scenarioFilenames))
++		((::std::vector<::std::wstring>, skirmishFilenames))
++		((::std::vector<::std::wstring>, tutorialFilenames))
+ 		);
+ 
+ QUERY(GetMapSettings,
+ 		,
+-		((std::string, settings))
++		((::std::string, settings))
+ 		);
+ 
+ COMMAND(SetMapSettings, MERGE,
+-		((std::string, settings))
++		((::std::string, settings))
+ 		);
+ 
+ MESSAGE(LoadPlayerSettings,
+@@ -201,7 +202,7 @@ MESSAGE(LoadPlayerSettings,
+ 
+ QUERY(GetMapSizes,
+ 		,
+-		((std::string, sizes))
++		((::std::string, sizes))
+ 		);
+ 
+ QUERY(GetCurrentMapSize,
+@@ -212,12 +213,12 @@ QUERY(GetCurrentMapSize,
+ QUERY(RasterizeMinimap,
+ 		,
+ 		((int, dimension))
+-		((std::vector<uint8_t>, imageBytes))
++		((::std::vector<uint8_t>, imageBytes))
+ 		);
+ 
+ QUERY(GetRMSData,
+ 		,
+-		((std::vector<std::string>, data))
++		((::std::vector<::std::string>, data))
+ 		);
+ 
+ COMMAND(ResizeMap, NOMERGE,
+@@ -227,15 +228,15 @@ COMMAND(ResizeMap, NOMERGE,
+ 		);
+ 
+ QUERY(VFSFileExists,
+-		((std::wstring, path))
++		((::std::wstring, path))
+ 		,
+ 		((bool, exists))
+ 		);
+ 
+ QUERY(VFSFileRealPath,
+-		((std::wstring, path))
++		((::std::wstring, path))
+ 		,
+-		((std::wstring, realPath))
++		((::std::wstring, realPath))
+ 		);
+ 
+ //////////////////////////////////////////////////////////////////////////
+@@ -243,22 +244,22 @@ QUERY(VFSFileRealPath,
+ 
+ QUERY(GetCivData,
+ 		,
+-		((std::vector<std::vector<std::wstring>>, data))
++		((::std::vector<::std::vector<::std::wstring>>, data))
+ 		);
+ 
+ QUERY(GetVictoryConditionData,
+ 		,
+-		((std::vector<std::string>, data))
++		((::std::vector<::std::string>, data))
+ 		);
+ 
+ QUERY(GetPlayerDefaults,
+ 		,
+-		((std::string, defaults))
++		((::std::string, defaults))
+ 		);
+ 
+ QUERY(GetAIData,
+ 		,
+-		((std::string, data))
++		((::std::string, data))
+ 		);
+ 
+ //////////////////////////////////////////////////////////////////////////
+@@ -280,7 +281,7 @@ MESSAGE(Screenshot,
+ MESSAGE(Brush,
+ 		((int, width)) // number of vertices
+ 		((int, height))
+-		((std::vector<float>, data)) // width*height array
++		((::std::vector<float>, data)) // width*height array
+ 		);
+ 
+ MESSAGE(BrushPreview,
+@@ -293,41 +294,41 @@ MESSAGE(BrushPreview,
+ 
+ QUERY(GetTerrainGroups,
+ 	  , // no inputs
+-	  ((std::vector<std::wstring>, groupNames))
++	  ((::std::vector<::std::wstring>, groupNames))
+ 	  );
+ 
+ QUERY(GetTerrainGroupTextures,
+-	  ((std::wstring, groupName)),
+-	  ((std::vector<std::wstring>, names))
++	  ((::std::wstring, groupName)),
++	  ((::std::vector<::std::wstring>, names))
+ 	  );
+ 
+ #ifndef MESSAGES_SKIP_STRUCTS
+ struct sTerrainTexturePreview
+ {
+-	Shareable<std::wstring> name;
++	Shareable<::std::wstring> name;
+ 	Shareable<bool> loaded;
+ 	Shareable<int> imageWidth;
+ 	Shareable<int> imageHeight;
+-	Shareable<std::vector<unsigned char>> imageData; // RGB*width*height
++	Shareable<::std::vector<unsigned char>> imageData; // RGB*width*height
+ };
+ SHAREABLE_STRUCT(sTerrainTexturePreview);
+ #endif
+ 
+ QUERY(GetTerrainGroupPreviews,
+-	  ((std::wstring, groupName))
++	  ((::std::wstring, groupName))
+ 	  ((int, imageWidth))
+ 	  ((int, imageHeight))
+ 	  ,
+-	  ((std::vector<sTerrainTexturePreview>, previews))
++	  ((::std::vector<sTerrainTexturePreview>, previews))
+ 	  );
+ 
+ QUERY(GetTerrainPassabilityClasses,
+ 	  , // no inputs
+-	  ((std::vector<std::wstring>, classNames))
++	  ((::std::vector<::std::wstring>, classNames))
+ 	  );
+ 
+ QUERY(GetTerrainTexturePreview,
+-		((std::wstring, name))
++		((::std::wstring, name))
+ 		((int, imageWidth))
+ 		((int, imageHeight))
+ 		,
+@@ -339,8 +340,8 @@ QUERY(GetTerrainTexturePreview,
+ #ifndef MESSAGES_SKIP_STRUCTS
+ struct sObjectsListItem
+ {
+-	Shareable<std::wstring> id;
+-	Shareable<std::wstring> name;
++	Shareable<::std::wstring> id;
++	Shareable<::std::wstring> name;
+ 	Shareable<int> type; // 0 = entity, 1 = actor
+ };
+ SHAREABLE_STRUCT(sObjectsListItem);
+@@ -348,19 +349,19 @@ SHAREABLE_STRUCT(sObjectsListItem);
+ 
+ QUERY(GetObjectsList,
+ 	  , // no inputs
+-	  ((std::vector<sObjectsListItem>, objects)) // sorted by .name
++	  ((::std::vector<sObjectsListItem>, objects)) // sorted by .name
+ 	  );
+ 
+ #ifndef MESSAGES_SKIP_STRUCTS
+ struct sObjectSettings
+ {
+ 	Shareable<int> player;
+-	Shareable<std::vector<std::wstring> > selections;
++	Shareable<::std::vector<::std::wstring> > selections;
+ 
+ 	// Some settings are immutable and therefore are ignored (and should be left
+ 	// empty) when passed from the editor to the game:
+ 
+-	Shareable<std::vector<std::vector<std::wstring> > > variantGroups;
++	Shareable<::std::vector<::std::vector<::std::wstring> > > variantGroups;
+ };
+ SHAREABLE_STRUCT(sObjectSettings);
+ #endif
+@@ -371,7 +372,7 @@ MESSAGE(ObjectPreviewToEntity,);
+ //Query for get selected objects
+ QUERY(GetCurrentSelection,
+ 	, //No inputs
+-	((std::vector<ObjectID>, ids))
++	((::std::vector<ObjectID>, ids))
+ 	);
+ 
+ // Moving Preview(s) object together, default is using the firs element in vector
+@@ -382,7 +383,7 @@ MESSAGE(MoveObjectPreview,
+ // Preview object in the game world - creates a temporary unit at the given
+ // position, and removes it when the preview is next changed
+ MESSAGE(ObjectPreview,
+-		((std::wstring, id)) // or empty string => disable
++		((::std::wstring, id)) // or empty string => disable
+ 		((sObjectSettings, settings))
+ 		((Position, pos))
+ 		((bool, usetarget)) // true => use 'target' for orientation; false => use 'angle'
+@@ -393,7 +394,7 @@ MESSAGE(ObjectPreview,
+ 		);
+ 
+ COMMAND(CreateObject, NOMERGE,
+-		((std::wstring, id))
++		((::std::wstring, id))
+ 		((sObjectSettings, settings))
+ 		((Position, pos))
+ 		((bool, usetarget)) // true => use 'target' for orientation; false => use 'angle'
+@@ -405,8 +406,8 @@ COMMAND(CreateObject, NOMERGE,
+ // Set an actor to be previewed on its own (i.e. without the game world).
+ // (Use RenderEnable to make it visible.)
+ MESSAGE(SetActorViewer,
+-		((std::wstring, id))
+-		((std::string, animation))
++		((::std::wstring, id))
++		((::std::string, animation))
+ 		((int, playerID))
+ 		((float, speed))
+ 		((bool, flushcache)) // true => unload all actor files before starting the preview (because we don't have proper hotloading yet)
+@@ -467,7 +468,7 @@ MESSAGE(SetView,
+ #ifndef MESSAGES_SKIP_STRUCTS
+ struct sEnvironmentSettings
+ {
+-	Shareable<std::wstring> watertype; // range 0..1 corresponds to min..max terrain height; out-of-bounds values allowed
++	Shareable<::std::wstring> watertype; // range 0..1 corresponds to min..max terrain height; out-of-bounds values allowed
+ 	Shareable<float> waterheight; // range 0..1 corresponds to min..max terrain height; out-of-bounds values allowed
+ 	Shareable<float> waterwaviness; // range ???
+ 	Shareable<float> watermurkiness; // range ???
+@@ -486,9 +487,9 @@ struct sEnvironmentSettings
+ 
+ 	// support different lighting models ("old" for the version compatible with old scenarios,
+ 	// "standard" for the new normal model that supports much brighter lighting)
+-	Shareable<std::wstring> posteffect;
++	Shareable<::std::wstring> posteffect;
+ 
+-	Shareable<std::wstring> skyset;
++	Shareable<::std::wstring> skyset;
+ 
+ 	Shareable<Color> suncolor;
+ 	Shareable<Color> ambientcolor;
+@@ -522,13 +523,13 @@ COMMAND(PickWaterHeight, NOMERGE, ((Posi
+ QUERY(GetSkySets,
+ 	  // no inputs
+ 	  ,
+-	  ((std::vector<std::wstring>, skysets))
++	  ((::std::vector<::std::wstring>, skysets))
+ 	  );
+ 
+ QUERY(GetPostEffects,
+ 	  // no inputs
+ 	  ,
+-	  ((std::vector<std::wstring>, posteffects))
++	  ((::std::vector<::std::wstring>, posteffects))
+ 	  );
+ 
+ 
+@@ -558,24 +559,24 @@ COMMAND(PikeElevation, MERGE,
+ struct ePaintTerrainPriority { enum { HIGH, LOW }; };
+ COMMAND(PaintTerrain, MERGE,
+ 		((Position, pos))
+-		((std::wstring, texture))
++		((::std::wstring, texture))
+ 		((int, priority)) // ePaintTerrainPriority
+ 		);
+ 
+ COMMAND(ReplaceTerrain, NOMERGE,
+ 		((Position, pos))
+-		((std::wstring, texture))
++		((::std::wstring, texture))
+ 		);
+ 
+ COMMAND(FillTerrain, NOMERGE,
+ 		((Position, pos))
+-		((std::wstring, texture))
++		((::std::wstring, texture))
+ 		);
+ 
+ QUERY(GetTerrainTexture,
+ 		((Position, pos))
+ 		,
+-		((std::wstring, texture))
++		((::std::wstring, texture))
+ 		);
+ 
+ //////////////////////////////////////////////////////////////////////////
+@@ -594,40 +595,40 @@ QUERY(PickObjectsInRect,
+ 		((Position, end))
+ 		((bool, selectActors))
+ 		,
+-		((std::vector<ObjectID>, ids))
++		((::std::vector<ObjectID>, ids))
+ 		);
+ 
+ QUERY(PickSimilarObjects,
+ 		((ObjectID, id))
+ 		,
+-		((std::vector<ObjectID>, ids))
++		((::std::vector<ObjectID>, ids))
+ 		);
+ 
+ MESSAGE(ResetSelectionColor, );
+ 
+ COMMAND(MoveObjects, MERGE,
+-		((std::vector<ObjectID>, ids))
++		((::std::vector<ObjectID>, ids))
+ 		((ObjectID, pivot))
+ 		((Position, pos))
+ 		);
+ 
+ COMMAND(RotateObjectsFromCenterPoint, MERGE,
+-		((std::vector<ObjectID>, ids))
++		((::std::vector<ObjectID>, ids))
+ 		((Position, target))
+ 		((bool, rotateObject))
+ 		);
+ 
+ COMMAND(RotateObject, MERGE,
+-		((std::vector<ObjectID>, ids))
++		((::std::vector<ObjectID>, ids))
+ 		((Position, target))
+ 		);
+ 
+ COMMAND(DeleteObjects, NOMERGE,
+-		((std::vector<ObjectID>, ids))
++		((::std::vector<ObjectID>, ids))
+ 		);
+ 
+ MESSAGE(SetSelectionPreview,
+-		((std::vector<ObjectID>, ids))
++		((::std::vector<ObjectID>, ids))
+ 		);
+ 
+ QUERY(GetObjectSettings,
+@@ -644,16 +645,16 @@ COMMAND(SetObjectSettings, NOMERGE,
+ 		);
+ 
+ QUERY(GetObjectMapSettings,
+-		((std::vector<ObjectID>, ids))
++		((::std::vector<ObjectID>, ids))
+ 		,
+-		((std::wstring, xmldata))
++		((::std::wstring, xmldata))
+ 		);
+ 
+ 
+ QUERY(GetPlayerObjects,
+ 		((int, player))
+ 		,
+-		((std::vector<ObjectID>, ids))
++		((::std::vector<ObjectID>, ids))
+ 		);
+ 
+ MESSAGE(SetBandbox,
+@@ -668,7 +669,7 @@ MESSAGE(SetBandbox,
+ 
+ QUERY(GetCinemaPaths,
+ 	  , // no inputs
+-	  ((std::vector<AtlasMessage::sCinemaPath> , paths))
++	  ((::std::vector<AtlasMessage::sCinemaPath> , paths))
+ 	  );
+ 
+ QUERY(GetCameraInfo,
+@@ -704,18 +705,18 @@ COMMAND(MovePathNode, NOMERGE,
+ 	((Position, to))
+ 	);
+ 
+-COMMAND(AddCinemaPath, NOMERGE, ((std::wstring, pathName)));
++COMMAND(AddCinemaPath, NOMERGE, ((::std::wstring, pathName)));
+ 
+-COMMAND(DeleteCinemaPath, NOMERGE, ((std::wstring, pathName)));
++COMMAND(DeleteCinemaPath, NOMERGE, ((::std::wstring, pathName)));
+ 
+ COMMAND(SetCinemaPaths, NOMERGE,
+-		((std::vector<AtlasMessage::sCinemaPath>, paths))
++		((::std::vector<AtlasMessage::sCinemaPath>, paths))
+ 		);
+ 
+ COMMAND(SetCinemaPathsDrawing, NOMERGE, ((bool, drawPaths)));
+ 
+ MESSAGE(CinemaEvent,
+-		((std::wstring, path))
++		((::std::wstring, path))
+ 		((int, mode))
+ 		((float, t))
+ 		((bool, drawCurrent))
+@@ -727,9 +728,9 @@ MESSAGE(ClearPathNodePreview,);
+ //////////////////////////////////////////////////////////////////////////
+ 
+ QUERY(GetSelectedObjectsTemplateNames,
+-		((std::vector<ObjectID>, ids))
++		((::std::vector<ObjectID>, ids))
+ 		,
+-		((std::vector<std::string>, names))
++		((::std::vector<::std::string>, names))
+ 		);
+ 
+ 
+diff -up 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/MessagesSetup.h.omv~ 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/MessagesSetup.h
+diff -up 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Register.cpp.omv~ 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Register.cpp
+--- 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Register.cpp.omv~	2023-04-18 21:25:23.469779140 +0200
++++ 0ad-0.0.26-alpha/source/tools/atlas/GameInterface/Register.cpp	2023-04-18 21:25:32.123839939 +0200
+@@ -39,15 +39,15 @@ namespace AtlasMessage
+ 
+ #define MESSAGE(name, vals) \
+ 	extern void f##name##_wrapper(AtlasMessage::IMessage*); \
+-	AtlasMessage::GetMsgHandlers().insert(std::pair<std::string, AtlasMessage::msgHandler>(#name, &f##name##_wrapper));
++	AtlasMessage::GetMsgHandlers().insert(::std::pair<::std::string, AtlasMessage::msgHandler>(#name, &f##name##_wrapper));
+ 
+ #define QUERY(name, in_vals, out_vals) \
+ 	extern void f##name##_wrapper(AtlasMessage::IMessage*); \
+-	AtlasMessage::GetMsgHandlers().insert(std::pair<std::string, AtlasMessage::msgHandler>(#name, &f##name##_wrapper));
++	AtlasMessage::GetMsgHandlers().insert(::std::pair<::std::string, AtlasMessage::msgHandler>(#name, &f##name##_wrapper));
+ 
+ #define COMMAND(name, merge, vals) \
+ 	extern cmdHandler c##name##_create(); \
+-	GetCmdHandlers().insert(std::pair<std::string, cmdHandler>("c"#name, c##name##_create()));
++	GetCmdHandlers().insert(::std::pair<::std::string, cmdHandler>("c"#name, c##name##_create()));
+ 
+ #undef SHAREABLE_STRUCT
+ #define SHAREABLE_STRUCT(name)

@@ -18,7 +18,7 @@
 Name:		0ad
 Epoch:		1
 Version:	0.0.26
-Release:	4
+Release:	5
 # BSD License:
 #	build/premake/*
 #	libraries/valgrind/*		(not built/used)
@@ -105,9 +105,11 @@ BuildRequires:	pkgconfig(freetype2)
 # to do.
 BuildRequires:	wxgtku3.2-devel
 
+Patch0:				0ad-0.0.26-compile.patch
+
 # Adding include directories in the wrong order the way 0ad likes to do
 # results in cstdlib not finding stdlib.h with include_next
-Patch5:			0ad-0.0.23-dont-mess-with-include-dirs.patch
+Patch5:				0ad-0.0.23-dont-mess-with-include-dirs.patch
 
 # Fix build with zlib-ng
 Patch11:			0ad-no-ZEXPORT.patch
@@ -150,6 +152,8 @@ export CFLAGS="%{optflags}"
 #export AR=binutils-ar
 # avoid warnings with gcc 4.7 due to _FORTIFY_SOURCE in CPPFLAGS
 export CPPFLAGS="$(echo %{optflags} | sed -e 's/-Wp,-D_FORTIFY_SOURCE=2//')"
+
+export WX_CONFIG=wx-config-3.2
 
 build/workspaces/update-workspaces.sh	\
 	--bindir=%{_gamesbindir}	\
