@@ -1,0 +1,24 @@
+diff -up 0ad-0.0.26-alpha/source/network/NetMessage.cpp.omv~ 0ad-0.0.26-alpha/source/network/NetMessage.cpp
+--- 0ad-0.0.26-alpha/source/network/NetMessage.cpp.omv~	2023-08-15 20:40:39.437954255 +0200
++++ 0ad-0.0.26-alpha/source/network/NetMessage.cpp	2023-08-15 20:40:59.860133284 +0200
+@@ -216,7 +216,7 @@ CNetMessage* CNetMessageFactory::CreateM
+ 		break;
+ 
+ 	default:
+-		LOGERROR("CNetMessageFactory::CreateMessage(): Unknown message type '%d' received", header.GetType());
++		LOGERROR("CNetMessageFactory::CreateMessage(): Unknown message type '%d' received", static_cast<int>(header.GetType()));
+ 		break;
+ 	}
+ 
+diff -up 0ad-0.0.26-alpha/source/simulation2/serialization/BinarySerializer.cpp.omv~ 0ad-0.0.26-alpha/source/simulation2/serialization/BinarySerializer.cpp
+--- 0ad-0.0.26-alpha/source/simulation2/serialization/BinarySerializer.cpp.omv~	2023-08-15 20:41:25.335356963 +0200
++++ 0ad-0.0.26-alpha/source/simulation2/serialization/BinarySerializer.cpp	2023-08-15 20:41:33.990433042 +0200
+@@ -52,7 +52,7 @@ static u8 GetArrayType(js::Scalar::Type
+ 	case js::Scalar::Uint8Clamped:
+ 		return SCRIPT_TYPED_ARRAY_UINT8_CLAMPED;
+ 	default:
+-		LOGERROR("Cannot serialize unrecognized typed array view: %d", arrayType);
++		LOGERROR("Cannot serialize unrecognized typed array view: %d", static_cast<int>(arrayType));
+ 		throw PSERROR_Serialize_InvalidScriptValue();
+ 	}
+ }
