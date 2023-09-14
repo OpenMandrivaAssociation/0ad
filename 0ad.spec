@@ -37,7 +37,7 @@ Release:	9
 License:	GPLv2+ and BSD and MIT and IBM
 Group:		Games/Strategy
 Summary:	Cross-Platform RTS Game of Ancient Warfare
-Url:		http://play0ad.com
+Url:		https://play0ad.com/
 
 %if %{without_nvtt}
 # wget http://releases.wildfiregames.com/%%{name}-%%{version}-alpha-unix-build.tar.xz
