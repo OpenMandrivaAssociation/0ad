@@ -1,0 +1,106 @@
+diff -uraN 0ad-0.0.26-alpha/libraries/source/fcollada/src/FCollada/FUtils/FUXmlDocument.cpp omv-0ad-0.0.26-alpha/libraries/source/fcollada/src/FCollada/FUtils/FUXmlDocument.cpp
+--- 0ad-0.0.26-alpha/libraries/source/fcollada/src/FCollada/FUtils/FUXmlDocument.cpp	2022-09-23 22:37:03.000000000 +0200
++++ omv-0ad-0.0.26-alpha/libraries/source/fcollada/src/FCollada/FUtils/FUXmlDocument.cpp	2023-12-23 16:38:12.772929027 +0100
+@@ -13,6 +13,8 @@
+ #include "FUFile.h"
+ #include "FCDocument/FCDocument.h"
+ 
++#include <libxml/parser.h>
++
+ #define MAX_FILE_SIZE 10240000
+ //
+ // FUXmlDocument
+diff -uraN 0ad-0.0.26-alpha/source/collada/CommonConvert.cpp omv-0ad-0.0.26-alpha/source/collada/CommonConvert.cpp
+--- 0ad-0.0.26-alpha/source/collada/CommonConvert.cpp	2022-08-21 14:45:47.000000000 +0200
++++ omv-0ad-0.0.26-alpha/source/collada/CommonConvert.cpp	2023-12-23 16:42:19.404612169 +0100
+@@ -1,4 +1,4 @@
+-/* Copyright (C) 2018 Wildfire Games.
++/* Copyright (C) 2023 Wildfire Games.
+  * This file is part of 0 A.D.
+  *
+  * 0 A.D. is free software: you can redistribute it and/or modify
+@@ -28,8 +28,9 @@
+ #include "FUtils/FUDaeSyntax.h"
+ #include "FUtils/FUFileManager.h"
+ 
+-#include <cassert>
+ #include <algorithm>
++#include <cassert>
++#include <libxml/xmlerror.h>
+ 
+ void require_(int line, bool value, const char* type, const char* message)
+ {
+diff -uraN 0ad-0.0.26-alpha/source/collada/XMLFix.cpp omv-0ad-0.0.26-alpha/source/collada/XMLFix.cpp
+--- 0ad-0.0.26-alpha/source/collada/XMLFix.cpp	2022-08-21 14:45:47.000000000 +0200
++++ omv-0ad-0.0.26-alpha/source/collada/XMLFix.cpp	2023-12-23 16:42:54.247979410 +0100
+@@ -1,4 +1,4 @@
+-/* Copyright (C) 2009 Wildfire Games.
++/* Copyright (C) 2023 Wildfire Games.
+  * This file is part of 0 A.D.
+  *
+  * 0 A.D. is free software: you can redistribute it and/or modify
+@@ -23,6 +23,8 @@
+ 
+ #include "FUtils/FUXmlParser.h"
+ 
++#include <libxml/parser.h>
++
+ /*
+ 
+ Things that are fixed here:
+diff -uraN 0ad-0.0.26-alpha/source/ps/XML/RelaxNG.cpp omv-0ad-0.0.26-alpha/source/ps/XML/RelaxNG.cpp
+--- 0ad-0.0.26-alpha/source/ps/XML/RelaxNG.cpp	2022-08-21 14:45:04.000000000 +0200
++++ omv-0ad-0.0.26-alpha/source/ps/XML/RelaxNG.cpp	2023-12-23 16:44:28.124978383 +0100
+@@ -1,4 +1,4 @@
+-/* Copyright (C) 2021 Wildfire Games.
++/* Copyright (C) 2023 Wildfire Games.
+  * This file is part of 0 A.D.
+  *
+  * 0 A.D. is free software: you can redistribute it and/or modify
+@@ -25,9 +25,11 @@
+ #include "ps/CStr.h"
+ #include "ps/Filesystem.h"
+ 
++#include <libxml/parser.h>
+ #include <libxml/relaxng.h>
+ #include <map>
+ #include <mutex>
++#include <type_traits>
+ 
+ TIMER_ADD_CLIENT(xml_validation);
+ 
+@@ -46,7 +48,8 @@
+ 	g_SchemaCache.clear();
+ }
+ 
+-static void relaxNGErrorHandler(void* UNUSED(userData), xmlErrorPtr error)
++static void relaxNGErrorHandler(void* UNUSED(userData),
++	std::conditional_t<LIBXML_VERSION >= 21200, const xmlError, xmlError>* error)
+ {
+ 	// Strip a trailing newline
+ 	std::string message = error->message;
+diff -uraN 0ad-0.0.26-alpha/source/ps/XML/Xeromyces.cpp omv-0ad-0.0.26-alpha/source/ps/XML/Xeromyces.cpp
+--- 0ad-0.0.26-alpha/source/ps/XML/Xeromyces.cpp	2022-08-21 14:45:04.000000000 +0200
++++ omv-0ad-0.0.26-alpha/source/ps/XML/Xeromyces.cpp	2023-12-23 16:45:26.968650787 +0100
+@@ -1,4 +1,4 @@
+-/* Copyright (C) 2021 Wildfire Games.
++/* Copyright (C) 2023 Wildfire Games.
+  * This file is part of 0 A.D.
+  *
+  * 0 A.D. is free software: you can redistribute it and/or modify
+@@ -33,12 +33,14 @@
+ #include "Xeromyces.h"
+ 
+ #include <libxml/parser.h>
++#include <type_traits>
+ 
+ static std::mutex g_ValidatorCacheLock;
+ static std::map<const std::string, RelaxNGValidator> g_ValidatorCache;
+ static bool g_XeromycesStarted = false;
+ 
+-static void errorHandler(void* UNUSED(userData), xmlErrorPtr error)
++static void errorHandler(void* UNUSED(userData),
++	std::conditional_t<LIBXML_VERSION >= 21200, const xmlError, xmlError>* error)
+ {
+ 	// Strip a trailing newline
+ 	std::string message = error->message;

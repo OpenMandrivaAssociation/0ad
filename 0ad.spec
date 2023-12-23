@@ -120,6 +120,7 @@ Patch13:			0ad-allow-mozjs-78.15.patch
 #Patch15:			https://code.wildfiregames.com/file/data/qxiyxomtpjjypcmnsqus/PHID-FILE-cgwijqmkik4muyj3fjlg/D4669.diff
 Patch16:			https://src.fedoraproject.org/rpms/0ad/raw/rawhide/f/0ad-debug.patch
 Patch17:			0ad-fmt-10.patch
+Patch18:			fix-build-with-libxml2.12.patch
 
 %description
 0 A.D. (pronounced "zero ey-dee") is a free, open-source, cross-platform
