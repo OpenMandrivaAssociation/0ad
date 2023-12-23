@@ -10,39 +10,6 @@ diff -uraN 0ad-0.0.26-alpha/libraries/source/fcollada/src/FCollada/FUtils/FUXmlD
  #define MAX_FILE_SIZE 10240000
  //
  // FUXmlDocument
-diff -uraN 0ad-0.0.26-alpha/libraries/source/fcollada/src/FColladaPlugins/FArchiveXML/FArchiveXML.cpp omv-0ad-0.0.26-alpha/libraries/source/fcollada/src/FColladaPlugins/FArchiveXML/FArchiveXML.cpp
---- 0ad-0.0.26-alpha/libraries/source/fcollada/src/FColladaPlugins/FArchiveXML/FArchiveXML.cpp	2022-09-23 22:37:04.000000000 +0200
-+++ omv-0ad-0.0.26-alpha/libraries/source/fcollada/src/FColladaPlugins/FArchiveXML/FArchiveXML.cpp	2023-12-23 16:41:15.113525167 +0100
-@@ -77,6 +77,8 @@
- #include "FCDocument/FCDVersion.h"
- #include "FUtils/FUXmlDocument.h"
- 
-+#include <libxml/xmlIO.h>
-+
- 
- //
- // Constants
-@@ -515,13 +517,13 @@
- 	xmlOutputBufferPtr buf = xmlAllocOutputBuffer(NULL);
- 	xmlNodeDumpOutput(buf, rootNode->doc, rootNode, 0, 0, NULL);
- 
--#ifdef LIBXML2_NEW_BUFFER
--	outData.resize(xmlOutputBufferGetSize(buf) * sizeof(xmlChar));
--	memcpy(outData.begin(), xmlOutputBufferGetContent(buf), outData.size());
--#else
--	outData.resize(buf->buffer->use * sizeof(xmlChar));
--	memcpy(outData.begin(), buf->buffer->content, outData.size());
--#endif
-+#ifdef LIBXML2_NEW_BUFFER
-+	outData.resize(xmlOutputBufferGetSize(buf) * sizeof(xmlChar));
-+	memcpy(outData.begin(), xmlOutputBufferGetContent(buf), outData.size());
-+#else
-+	outData.resize(buf->buffer->use * sizeof(xmlChar));
-+	memcpy(outData.begin(), buf->buffer->content, outData.size());
-+#endif
- 
- 	xmlOutputBufferClose(buf);
- 	daeDocument.ReleaseXmlData();
 diff -uraN 0ad-0.0.26-alpha/source/collada/CommonConvert.cpp omv-0ad-0.0.26-alpha/source/collada/CommonConvert.cpp
 --- 0ad-0.0.26-alpha/source/collada/CommonConvert.cpp	2022-08-21 14:45:47.000000000 +0200
 +++ omv-0ad-0.0.26-alpha/source/collada/CommonConvert.cpp	2023-12-23 16:42:19.404612169 +0100
