@@ -18,7 +18,7 @@
 Name:		0ad
 Epoch:		1
 Version:	0.0.26
-Release:	10
+Release:	11
 # BSD License:
 #	build/premake/*
 #	libraries/valgrind/*		(not built/used)
@@ -47,7 +47,7 @@ Url:		https://play0ad.com/
 # tar Jcf %%{name}-%%{version}-alpha-unix-build.tar.xz %%{name}-%%{version}-alpha
 Source0:	%{name}-%{version}-alpha-unix-build.tar.xz
 %else
-Source0:	http://releases.wildfiregames.com/%{name}-%{version}-alpha-unix-build.tar.xz
+Source0:	https://releases.wildfiregames.com/%{name}-%{version}-alpha-unix-build.tar.xz
 %endif
 
 # adapted from binaries/system/readme.txt
