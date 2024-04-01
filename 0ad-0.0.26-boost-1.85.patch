@@ -1,0 +1,24 @@
+diff -up 0ad-0.0.26-alpha/source/graphics/TextureManager.cpp.omv~ 0ad-0.0.26-alpha/source/graphics/TextureManager.cpp
+--- 0ad-0.0.26-alpha/source/graphics/TextureManager.cpp.omv~	2024-04-01 20:48:10.533515214 +0200
++++ 0ad-0.0.26-alpha/source/graphics/TextureManager.cpp	2024-04-01 20:48:27.389720016 +0200
+@@ -785,7 +785,7 @@ public:
+ 				files.push_back(f);
+ 			p = p / GetWstringFromWpath(*it);
+ 		}
+-		return m_TextureConverter.ComputeSettings(GetWstringFromWpath(srcPath.leaf()), files);
++		return m_TextureConverter.ComputeSettings(GetWstringFromWpath(srcPath.filename()), files);
+ 	}
+ 
+ 	/**
+diff -up 0ad-0.0.26-alpha/source/lib/file/file_system.cpp.omv~ 0ad-0.0.26-alpha/source/lib/file/file_system.cpp
+--- 0ad-0.0.26-alpha/source/lib/file/file_system.cpp.omv~	2024-04-01 20:53:26.213196792 +0200
++++ 0ad-0.0.26-alpha/source/lib/file/file_system.cpp	2024-04-01 20:53:39.997351496 +0200
+@@ -218,7 +218,7 @@ Status CopyFile(const OsPath& path, cons
+ 	try
+ 	{
+ 		if(override_if_exists)
+-			fs::copy_file(fs::path(path.string()), fs::path(newPath.string()), boost::filesystem::copy_option::overwrite_if_exists);
++			fs::copy_file(fs::path(path.string()), fs::path(newPath.string()), boost::filesystem::copy_options::overwrite_existing);
+ 		else
+ 			fs::copy_file(fs::path(path.string()), fs::path(newPath.string()));
+ 	}

@@ -106,6 +106,7 @@ BuildRequires:	pkgconfig(freetype2)
 BuildRequires:	wxgtku3.2-devel
 
 Patch0:				0ad-0.0.26-compile.patch
+Patch1:				0ad-0.0.26-boost-1.85.patch
 
 # Adding include directories in the wrong order the way 0ad likes to do
 # results in cstdlib not finding stdlib.h with include_next
