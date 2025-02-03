@@ -167,6 +167,12 @@ export CPPFLAGS="$(echo %{optflags} | sed -e 's/-Wp,-D_FORTIFY_SOURCE=2//')"
 
 export WX_CONFIG=wx-config-3.2
 
+export CFLAGS="%{optflags}"
+# bundled Collada uses CCFLAGS
+export CCFLAGS="%{optflags}"
+export CPPFLAGS="%{optflags} -fpermissive"
+# Copied from macros.cmake.
+export LDFLAGS="-Wl,--as-needed -Wl,--no-undefined -Wl,-z,now"
 cp %{S:2} libraries/source/premake-core/
 libraries/source/cxxtest-4.4/build.sh
 libraries/source/fcollada/build.sh
