@@ -152,10 +152,10 @@ hobbyist game developers, since 2001.
 rm -fr libraries/nvtt
 %endif
 
-sed -i 's/"0"/"-1"/' build/workspaces/update-workspaces.sh
+#sed -i 's/"0"/"-1"/' build/workspaces/update-workspaces.sh
 #sed -i 's/@ar/binutils-ar/' libraries/source/fcollada/src/Makefile
 
-build/workspaces/clean-workspaces.sh
+#build/workspaces/clean-workspaces.sh
 
 #-----------------------------------------------------------------------
 %build
