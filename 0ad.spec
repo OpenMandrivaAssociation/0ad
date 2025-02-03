@@ -50,15 +50,16 @@ Source0:	%{name}-%{version}-unix-build.tar.xz
 Source0:	https://releases.wildfiregames.com/%{name}-%{version}-unix-build.tar.xz
 %endif
 
-#grep PV= libraries/source/premake-core/build.sh
-%define         premake_version 5.0.0-beta3
-Source1:        https://github.com/premake/premake-core/archive/refs/tags/v%{premake_version}.tar.gz#/premake-core-%{premake_version}.tar.gz
-
 # adapted from binaries/system/readme.txt
 # It is advisable to review this file at on newer versions, to update the
 # version field and check for extra options. Note that windows specific,
 # and disabled options were not added to the manual page.
 Source1:	%{name}.6
+
+#grep PV= libraries/source/premake-core/build.sh
+%define         premake_version 5.0.0-beta3
+Source2:        https://github.com/premake/premake-core/archive/refs/tags/v%{premake_version}.tar.gz#/premake-core-%{premake_version}.tar.gz
+
 Requires:	%{name}-data
 BuildRequires:	rustc
 BuildRequires:	cargo
@@ -162,7 +163,7 @@ export CPPFLAGS="$(echo %{optflags} | sed -e 's/-Wp,-D_FORTIFY_SOURCE=2//')"
 
 export WX_CONFIG=wx-config-3.2
 
-cp %{S:1} libraries/source/premake-core/
+cp %{S:2} libraries/source/premake-core/
 libraries/source/cxxtest-4.4/build.sh
 libraries/source/fcollada/build.sh
 libraries/source/premake-core/build.sh
