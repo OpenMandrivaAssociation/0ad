@@ -49,7 +49,6 @@ Source0:	%{name}-%{version}-unix-build.tar.xz
 %else
 Source0:	https://releases.wildfiregames.com/%{name}-%{version}-unix-build.tar.xz
 %endif
-Source0:        https://releases.wildfiregames.com/%{name}-%{version}-unix-build.tar.xz
 
 #grep PV= libraries/source/premake-core/build.sh
 %define         premake_version 5.0.0-beta3
