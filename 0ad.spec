@@ -174,9 +174,11 @@ export CPPFLAGS="%{optflags} -fpermissive"
 # Copied from macros.cmake.
 export LDFLAGS="-Wl,--as-needed -Wl,--no-undefined -Wl,-z,now"
 cp %{S:2} libraries/source/premake-core/
-libraries/source/cxxtest-4.4/build.sh
-libraries/source/fcollada/build.sh
-libraries/source/premake-core/build.sh
+#libraries/source/cxxtest-4.4/build.sh
+#libraries/source/fcollada/build.sh
+#libraries/source/premake-core/build.sh
+libraries/build-source-libs.sh
+
 
 build/workspaces/update-workspaces.sh	\
 	--bindir=%{_gamesbindir}	\
