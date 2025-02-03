@@ -70,6 +70,7 @@ BuildRequires:	subversion
 BuildRequires:	icu-devel
 BuildRequires:	libdnet-devel
 BuildRequires:	nasm
+BuildRequires:  m4
 %if %{with_system_nvtt}
 BuildRequires:	nvidia-texture-tools-devel
 %endif
@@ -104,6 +105,7 @@ BuildRequires:	pkgconfig(xcursor)
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(libsodium)
 BuildRequires:	pkgconfig(freetype2)
+BuildRequires:  pkgconfig(uuid)
 # FIXME as 0f 0.23 and wxwidgets 3.1.5, if we use WxQt, the scenario editor
 # crashes on startup due to widget parenting issues.
 # Try again when new versions are released. In the mean time, WxGTK will have
