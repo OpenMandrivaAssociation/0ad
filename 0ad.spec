@@ -17,8 +17,8 @@
 
 Name:		0ad
 Epoch:		1
-Version:	0.0.26
-Release:	17
+Version:	0.27.0
+Release:	1
 # BSD License:
 #	build/premake/*
 #	libraries/valgrind/*		(not built/used)
@@ -45,9 +45,9 @@ Url:		https://play0ad.com/
 # rm -fr %%{name}-%%{version}-alpha/libraries/nvtt
 # rm -f %%{name}-%%{version}-alpha-unix-build.tar.xz
 # tar Jcf %%{name}-%%{version}-alpha-unix-build.tar.xz %%{name}-%%{version}-alpha
-Source0:	%{name}-%{version}-alpha-unix-build.tar.xz
+Source0:	%{name}-%{version}-unix-build.tar.xz
 %else
-Source0:	https://releases.wildfiregames.com/%{name}-%{version}-alpha-unix-build.tar.xz
+Source0:	https://releases.wildfiregames.com/%{name}-%{version}-unix-build.tar.xz
 %endif
 
 # adapted from binaries/system/readme.txt
@@ -79,7 +79,7 @@ BuildRequires:	miniupnpc-devel
 BuildRequires:	pkgconfig(IL)
 BuildRequires:	pkgconfig(libzip)
 %if %with_system_mozjs
-BuildRequires:	pkgconfig(mozjs-78)
+BuildRequires:	pkgconfig(mozjs-115)
 %endif
 BuildRequires:	pkgconfig(libidn)
 BuildRequires:	pkgconfig(openssl)
@@ -105,23 +105,23 @@ BuildRequires:	pkgconfig(freetype2)
 # to do.
 BuildRequires:	wxgtku3.2-devel
 
-Patch0:				0ad-0.0.26-compile.patch
-Patch1:				0ad-0.0.26-boost-1.85.patch
+#Patch0:				0ad-0.0.26-compile.patch
+#Patch1:				0ad-0.0.26-boost-1.85.patch
 
 # Adding include directories in the wrong order the way 0ad likes to do
 # results in cstdlib not finding stdlib.h with include_next
-Patch5:				0ad-0.0.23-dont-mess-with-include-dirs.patch
+#Patch5:				0ad-0.0.23-dont-mess-with-include-dirs.patch
 
 # Fix build with zlib-ng
-Patch11:			0ad-no-ZEXPORT.patch
+#Patch11:			0ad-no-ZEXPORT.patch
 
-Patch12:			https://src.fedoraproject.org/rpms/0ad/raw/rawhide/f/Fixup-compatibility-of-mozbuild-with-Python-3.10.patch
-Patch13:			0ad-allow-mozjs-78.15.patch
+#Patch12:			https://src.fedoraproject.org/rpms/0ad/raw/rawhide/f/Fixup-compatibility-of-mozbuild-with-Python-3.10.patch
+#Patch13:			0ad-allow-mozjs-78.15.patch
 #Patch14:			0ad-25b-compile.patch
 #Patch15:			https://code.wildfiregames.com/file/data/qxiyxomtpjjypcmnsqus/PHID-FILE-cgwijqmkik4muyj3fjlg/D4669.diff
-Patch16:			https://src.fedoraproject.org/rpms/0ad/raw/rawhide/f/0ad-debug.patch
-Patch17:			0ad-fmt-10.patch
-Patch18:			fix-build-with-libxml2.12.patch
+#Patch16:			https://src.fedoraproject.org/rpms/0ad/raw/rawhide/f/0ad-debug.patch
+#Patch17:			0ad-fmt-10.patch
+#Patch18:			fix-build-with-libxml2.12.patch
 
 %description
 0 A.D. (pronounced "zero ey-dee") is a free, open-source, cross-platform
@@ -137,7 +137,7 @@ hobbyist game developers, since 2001.
 
 #-----------------------------------------------------------------------
 %prep
-%autosetup -p1 -n %{name}-%{version}-alpha
+%autosetup -p1 -n %{name}-%{version}
 
 %if %{with_system_nvtt}
 rm -fr libraries/nvtt
