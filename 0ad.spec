@@ -265,7 +265,7 @@ export EXCLUDE_FROM_FULL_STRIP="libAtlasUI_dbg.so libCollada_dbg.so pyrogenesis_
 
 #-----------------------------------------------------------------------
 %files
-%doc README.txt LICENSE.txt
+#doc README.txt LICENSE.txt
 %doc license_gpl-2.0.txt license_lgpl-2.1.txt
 %{_gamesbindir}/0ad
 %{_gamesbindir}/pyrogenesis%{dbg}
