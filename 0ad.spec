@@ -17,8 +17,8 @@
 
 Name:		0ad
 Epoch:		1
-Version:	0.0.26
-Release:	17
+Version:	0.27.0
+Release:	1
 # BSD License:
 #	build/premake/*
 #	libraries/valgrind/*		(not built/used)
@@ -45,9 +45,9 @@ Url:		https://play0ad.com/
 # rm -fr %%{name}-%%{version}-alpha/libraries/nvtt
 # rm -f %%{name}-%%{version}-alpha-unix-build.tar.xz
 # tar Jcf %%{name}-%%{version}-alpha-unix-build.tar.xz %%{name}-%%{version}-alpha
-Source0:	%{name}-%{version}-alpha-unix-build.tar.xz
+Source0:	%{name}-%{version}-unix-build.tar.xz
 %else
-Source0:	https://releases.wildfiregames.com/%{name}-%{version}-alpha-unix-build.tar.xz
+Source0:	https://releases.wildfiregames.com/%{name}-%{version}-unix-build.tar.xz
 %endif
 
 # adapted from binaries/system/readme.txt
@@ -55,6 +55,11 @@ Source0:	https://releases.wildfiregames.com/%{name}-%{version}-alpha-unix-build.
 # version field and check for extra options. Note that windows specific,
 # and disabled options were not added to the manual page.
 Source1:	%{name}.6
+
+#grep PV= libraries/source/premake-core/build.sh
+%define         premake_version 5.0.0-beta3
+Source2:        https://github.com/premake/premake-core/archive/refs/tags/v%{premake_version}.tar.gz#/premake-core-%{premake_version}.tar.gz
+
 Requires:	%{name}-data
 BuildRequires:	rustc
 BuildRequires:	cargo
@@ -65,6 +70,7 @@ BuildRequires:	subversion
 BuildRequires:	icu-devel
 BuildRequires:	libdnet-devel
 BuildRequires:	nasm
+BuildRequires:  m4
 %if %{with_system_nvtt}
 BuildRequires:	nvidia-texture-tools-devel
 %endif
@@ -79,7 +85,7 @@ BuildRequires:	miniupnpc-devel
 BuildRequires:	pkgconfig(IL)
 BuildRequires:	pkgconfig(libzip)
 %if %with_system_mozjs
-BuildRequires:	pkgconfig(mozjs-78)
+BuildRequires:	pkgconfig(mozjs-115)
 %endif
 BuildRequires:	pkgconfig(libidn)
 BuildRequires:	pkgconfig(openssl)
@@ -92,6 +98,8 @@ BuildRequires:	pkgconfig(libpng)
 BuildRequires:	pkgconfig(libxml-2.0)
 BuildRequires:	pkgconfig(nspr)
 BuildRequires:	pkgconfig(openal)
+BuildRequires:	pkgconfig(python)
+BuildRequires:	python3dist(glad2)
 BuildRequires:	pkgconfig(sdl2)
 BuildRequires:	pkgconfig(valgrind)
 BuildRequires:	pkgconfig(vorbisfile)
@@ -99,29 +107,12 @@ BuildRequires:	pkgconfig(xcursor)
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(libsodium)
 BuildRequires:	pkgconfig(freetype2)
+BuildRequires:  pkgconfig(uuid)
 # FIXME as 0f 0.23 and wxwidgets 3.1.5, if we use WxQt, the scenario editor
 # crashes on startup due to widget parenting issues.
 # Try again when new versions are released. In the mean time, WxGTK will have
 # to do.
-BuildRequires:	wxgtku3.2-devel
-
-Patch0:				0ad-0.0.26-compile.patch
-Patch1:				0ad-0.0.26-boost-1.85.patch
-
-# Adding include directories in the wrong order the way 0ad likes to do
-# results in cstdlib not finding stdlib.h with include_next
-Patch5:				0ad-0.0.23-dont-mess-with-include-dirs.patch
-
-# Fix build with zlib-ng
-Patch11:			0ad-no-ZEXPORT.patch
-
-Patch12:			https://src.fedoraproject.org/rpms/0ad/raw/rawhide/f/Fixup-compatibility-of-mozbuild-with-Python-3.10.patch
-Patch13:			0ad-allow-mozjs-78.15.patch
-#Patch14:			0ad-25b-compile.patch
-#Patch15:			https://code.wildfiregames.com/file/data/qxiyxomtpjjypcmnsqus/PHID-FILE-cgwijqmkik4muyj3fjlg/D4669.diff
-Patch16:			https://src.fedoraproject.org/rpms/0ad/raw/rawhide/f/0ad-debug.patch
-Patch17:			0ad-fmt-10.patch
-Patch18:			fix-build-with-libxml2.12.patch
+BuildRequires:	wxwidgets-devel
 
 %description
 0 A.D. (pronounced "zero ey-dee") is a free, open-source, cross-platform
@@ -137,16 +128,16 @@ hobbyist game developers, since 2001.
 
 #-----------------------------------------------------------------------
 %prep
-%autosetup -p1 -n %{name}-%{version}-alpha
+%autosetup -p1 -n %{name}-%{version}
 
 %if %{with_system_nvtt}
 rm -fr libraries/nvtt
 %endif
 
-sed -i 's/"0"/"-1"/' build/workspaces/update-workspaces.sh
+#sed -i 's/"0"/"-1"/' build/workspaces/update-workspaces.sh
 #sed -i 's/@ar/binutils-ar/' libraries/source/fcollada/src/Makefile
 
-build/workspaces/clean-workspaces.sh
+#build/workspaces/clean-workspaces.sh
 
 #-----------------------------------------------------------------------
 %build
@@ -157,6 +148,19 @@ export CFLAGS="%{optflags}"
 export CPPFLAGS="$(echo %{optflags} | sed -e 's/-Wp,-D_FORTIFY_SOURCE=2//')"
 
 export WX_CONFIG=wx-config-3.2
+
+export CFLAGS="%{optflags}"
+# bundled Collada uses CCFLAGS
+export CCFLAGS="%{optflags}"
+export CPPFLAGS="%{optflags} -fpermissive"
+# Copied from macros.cmake.
+export LDFLAGS="-Wl,--as-needed -Wl,--no-undefined -Wl,-z,now"
+cp %{S:2} libraries/source/premake-core/
+#libraries/source/cxxtest-4.4/build.sh
+#libraries/source/fcollada/build.sh
+#libraries/source/premake-core/build.sh
+libraries/build-source-libs.sh
+
 
 build/workspaces/update-workspaces.sh	\
 	--bindir=%{_gamesbindir}	\
@@ -174,8 +178,9 @@ build/workspaces/update-workspaces.sh	\
 %endif
 	%{?_smp_mflags}
 
+# angry. disable that sed because it cause compilation problems in 0.27.0
 # 0ad does some very very very weird stuff to compiler flags...
-sed -i -e "s,-isystem.*,-I`pwd`/libraries/source/cxxtest-4.4 -I%{_includedir}/SDL2 -I%{_includedir}/X11 -I%{_includedir}/valgrind -I`pwd`/libraries/source/spidermonkey/include-unix-release -I`pwd`/source/third_party/tinygettext/include -I%{_includedir}/libxml2 -I%{_includedir}/wx-3.2 -I%{_libdir}/wx/include/gtk3-unicode-3.2 -I`pwd`/libraries/source/fcollada/include -I%{_includedir}/mozjs-78 -I`pwd`/libraries/source/glad/include -isystem %{_includedir}/freetype2,g" build/workspaces/gcc/*.make
+#sed -i -e "s,-isystem.*,-I`pwd`/libraries/source/cxxtest-4.4 -I%{_includedir}/SDL2 -I%{_includedir}/X11 -I%{_includedir}/valgrind -I`pwd`/libraries/source/spidermonkey/include-unix-release -I`pwd`/source/third_party/tinygettext/include -I%{_includedir}/libxml2 -I%{_includedir}/wx-3.2 -I%{_libdir}/wx/include/gtk3-unicode-3.2 -I`pwd`/libraries/source/fcollada/include -I%{_includedir}/mozjs-78 -I`pwd`/libraries/source/glad/include -isystem %{_includedir}/freetype2,g" build/workspaces/gcc/*.make
 
 %make_build -C build/workspaces/gcc config=%{config} verbose=1
 
@@ -243,7 +248,7 @@ export EXCLUDE_FROM_FULL_STRIP="libAtlasUI_dbg.so libCollada_dbg.so pyrogenesis_
 
 #-----------------------------------------------------------------------
 %files
-%doc README.txt LICENSE.txt
+#doc README.txt LICENSE.txt
 %doc license_gpl-2.0.txt license_lgpl-2.1.txt
 %{_gamesbindir}/0ad
 %{_gamesbindir}/pyrogenesis%{dbg}
