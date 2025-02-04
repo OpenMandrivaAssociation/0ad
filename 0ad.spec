@@ -112,25 +112,7 @@ BuildRequires:  pkgconfig(uuid)
 # crashes on startup due to widget parenting issues.
 # Try again when new versions are released. In the mean time, WxGTK will have
 # to do.
-BuildRequires:	wxgtku3.2-devel
-
-#Patch0:				0ad-0.0.26-compile.patch
-#Patch1:				0ad-0.0.26-boost-1.85.patch
-
-# Adding include directories in the wrong order the way 0ad likes to do
-# results in cstdlib not finding stdlib.h with include_next
-#Patch5:				0ad-0.0.23-dont-mess-with-include-dirs.patch
-
-# Fix build with zlib-ng
-#Patch11:			0ad-no-ZEXPORT.patch
-
-#Patch12:			https://src.fedoraproject.org/rpms/0ad/raw/rawhide/f/Fixup-compatibility-of-mozbuild-with-Python-3.10.patch
-#Patch13:			0ad-allow-mozjs-78.15.patch
-#Patch14:			0ad-25b-compile.patch
-#Patch15:			https://code.wildfiregames.com/file/data/qxiyxomtpjjypcmnsqus/PHID-FILE-cgwijqmkik4muyj3fjlg/D4669.diff
-#Patch16:			https://src.fedoraproject.org/rpms/0ad/raw/rawhide/f/0ad-debug.patch
-#Patch17:			0ad-fmt-10.patch
-#Patch18:			fix-build-with-libxml2.12.patch
+BuildRequires:	wxwidgets-devel
 
 %description
 0 A.D. (pronounced "zero ey-dee") is a free, open-source, cross-platform
@@ -196,6 +178,7 @@ build/workspaces/update-workspaces.sh	\
 %endif
 	%{?_smp_mflags}
 
+# angry. disable that sed because it cause compilation problems in 0.27.0
 # 0ad does some very very very weird stuff to compiler flags...
 #sed -i -e "s,-isystem.*,-I`pwd`/libraries/source/cxxtest-4.4 -I%{_includedir}/SDL2 -I%{_includedir}/X11 -I%{_includedir}/valgrind -I`pwd`/libraries/source/spidermonkey/include-unix-release -I`pwd`/source/third_party/tinygettext/include -I%{_includedir}/libxml2 -I%{_includedir}/wx-3.2 -I%{_libdir}/wx/include/gtk3-unicode-3.2 -I`pwd`/libraries/source/fcollada/include -I%{_includedir}/mozjs-78 -I`pwd`/libraries/source/glad/include -isystem %{_includedir}/freetype2,g" build/workspaces/gcc/*.make
 
