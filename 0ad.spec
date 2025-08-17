@@ -59,6 +59,8 @@ Source1:	%{name}.6
 #grep PV= libraries/source/premake-core/build.sh
 %define         premake_version 5.0.0-beta3
 Source2:        https://github.com/premake/premake-core/archive/refs/tags/v%{premake_version}.tar.gz#/premake-core-%{premake_version}.tar.gz
+# fix build with boost 1.89
+Patch0:			boost-1.89.patch
 
 Requires:	%{name}-data
 BuildRequires:	rustc
