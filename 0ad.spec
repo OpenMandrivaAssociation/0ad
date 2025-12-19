@@ -63,6 +63,7 @@ Source2:        https://github.com/premake/premake-core/archive/refs/tags/v%{pre
 Patch0:			boost-1.89.patch
 
 Requires:	%{name}-data
+BuildRequires:	make
 BuildRequires:	rustc
 BuildRequires:	cargo
 BuildRequires:	desktop-file-utils
