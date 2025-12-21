@@ -45,7 +45,7 @@ Url:		https://play0ad.com/
 # rm -fr %%{name}-%%{version}-alpha/libraries/nvtt
 # rm -f %%{name}-%%{version}-alpha-unix-build.tar.xz
 # tar Jcf %%{name}-%%{version}-alpha-unix-build.tar.xz %%{name}-%%{version}-alpha
-Source0:	%{name}-%{version}-unix-build.tar.xz
+Source0:	%{name}-0.28.0-rc1-unix-build.tar.xz
 %else
 Source0:	https://releases.wildfiregames.com/rc/%{name}-0.28.0-rc1-unix-build.tar.xz
 %endif
