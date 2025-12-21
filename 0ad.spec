@@ -66,6 +66,7 @@ Requires:	%{name}-data
 BuildRequires:	make
 BuildRequires:	rustc
 BuildRequires:	cargo
+BuildRequires:	cbindgen
 BuildRequires:	desktop-file-utils
 BuildRequires:	subversion
 #BuildRequires:	devil-devel
