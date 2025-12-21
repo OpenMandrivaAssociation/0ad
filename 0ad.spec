@@ -89,7 +89,7 @@ BuildRequires:	miniupnpc-devel
 BuildRequires:	pkgconfig(IL)
 BuildRequires:	pkgconfig(libzip)
 %if %with_system_mozjs
-BuildRequires:	pkgconfig(mozjs-115)
+BuildRequires:	pkgconfig(mozjs-128)
 %endif
 BuildRequires:	pkgconfig(libidn)
 BuildRequires:	pkgconfig(openssl)
