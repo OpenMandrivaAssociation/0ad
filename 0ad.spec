@@ -17,8 +17,8 @@
 
 Name:		0ad
 Epoch:		1
-Version:	0.27.1
-Release:	3
+Version:	0.28.0~rc1
+Release:	1
 # BSD License:
 #	build/premake/*
 #	libraries/valgrind/*		(not built/used)
@@ -47,7 +47,7 @@ Url:		https://play0ad.com/
 # tar Jcf %%{name}-%%{version}-alpha-unix-build.tar.xz %%{name}-%%{version}-alpha
 Source0:	%{name}-%{version}-unix-build.tar.xz
 %else
-Source0:	https://releases.wildfiregames.com/%{name}-%{version}-unix-build.tar.xz
+Source0:	https://releases.wildfiregames.com/rc/%{name}-0.28.0-rc1-unix-build.tar.xz
 %endif
 
 # adapted from binaries/system/readme.txt
@@ -131,7 +131,7 @@ hobbyist game developers, since 2001.
 
 #-----------------------------------------------------------------------
 %prep
-%autosetup -p1 -n %{name}-%{version}
+%autosetup -p1 -n %{name}-0.28.0-rc1
 
 %if %{with_system_nvtt}
 rm -fr libraries/nvtt
