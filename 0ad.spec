@@ -131,7 +131,7 @@ hobbyist game developers, since 2001.
 
 #-----------------------------------------------------------------------
 %prep
-%autosetup -p1 -n %{name}-0.28.0-rc1
+%autosetup -p1 -n %{name}-0.28.0
 
 %if %{with_system_nvtt}
 rm -fr libraries/nvtt
