@@ -17,8 +17,8 @@
 
 Name:		0ad
 Epoch:		1
-Version:	0.27.1
-Release:	3
+Version:	0.28.0~rc1
+Release:	1
 # BSD License:
 #	build/premake/*
 #	libraries/valgrind/*		(not built/used)
@@ -45,9 +45,9 @@ Url:		https://play0ad.com/
 # rm -fr %%{name}-%%{version}-alpha/libraries/nvtt
 # rm -f %%{name}-%%{version}-alpha-unix-build.tar.xz
 # tar Jcf %%{name}-%%{version}-alpha-unix-build.tar.xz %%{name}-%%{version}-alpha
-Source0:	%{name}-%{version}-unix-build.tar.xz
+Source0:	%{name}-0.28.0-rc1-unix-build.tar.xz
 %else
-Source0:	https://releases.wildfiregames.com/%{name}-%{version}-unix-build.tar.xz
+Source0:	https://releases.wildfiregames.com/rc/%{name}-0.28.0-rc1-unix-build.tar.xz
 %endif
 
 # adapted from binaries/system/readme.txt
@@ -60,12 +60,13 @@ Source1:	%{name}.6
 %define         premake_version 5.0.0-beta3
 Source2:        https://github.com/premake/premake-core/archive/refs/tags/v%{premake_version}.tar.gz#/premake-core-%{premake_version}.tar.gz
 # fix build with boost 1.89
-Patch0:			boost-1.89.patch
+#Patch0:			boost-1.89.patch
 
 Requires:	%{name}-data
 BuildRequires:	make
 BuildRequires:	rustc
 BuildRequires:	cargo
+BuildRequires:	cbindgen
 BuildRequires:	desktop-file-utils
 BuildRequires:	subversion
 #BuildRequires:	devil-devel
@@ -88,7 +89,7 @@ BuildRequires:	miniupnpc-devel
 BuildRequires:	pkgconfig(IL)
 BuildRequires:	pkgconfig(libzip)
 %if %with_system_mozjs
-BuildRequires:	pkgconfig(mozjs-115)
+BuildRequires:	pkgconfig(mozjs-128)
 %endif
 BuildRequires:	pkgconfig(libidn)
 BuildRequires:	pkgconfig(openssl)
@@ -131,7 +132,7 @@ hobbyist game developers, since 2001.
 
 #-----------------------------------------------------------------------
 %prep
-%autosetup -p1 -n %{name}-%{version}
+%autosetup -p1 -n %{name}-0.28.0
 
 %if %{with_system_nvtt}
 rm -fr libraries/nvtt
