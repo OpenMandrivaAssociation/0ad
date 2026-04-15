@@ -47,7 +47,7 @@ Url:		https://play0ad.com/
 # tar Jcf %%{name}-%%{version}-alpha-unix-build.tar.xz %%{name}-%%{version}-alpha
 Source0:	%{name}-%{version}-unix-build.tar.xz
 %else
-Source0:	https://releases.wildfiregames.com/rc/%{name}-%{version}-unix-build.tar.xz
+Source0:	https://releases.wildfiregames.com/%{name}-%{version}-unix-build.tar.xz
 %endif
 
 # adapted from binaries/system/readme.txt
