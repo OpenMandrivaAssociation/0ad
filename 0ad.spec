@@ -168,6 +168,16 @@ cp %{S:2} libraries/source/premake-core/
 #libraries/source/cxxtest-4.4/build.sh
 #libraries/source/fcollada/build.sh
 #libraries/source/premake-core/build.sh
+%if %{with_system_mozjs}
+# build-source-libs.sh still compiles bundled mozjs-128; that
+# configure dies on clang's x86_64-pc-linux-gnu rust host.
+if [ -f libraries/source/spidermonkey/build.sh ]; then
+	printf '%s\n' '#!/bin/sh' \
+		'echo "Skipping bundled SpiderMonkey (system mozjs-128)"' \
+		'exit 0' > libraries/source/spidermonkey/build.sh
+	chmod +x libraries/source/spidermonkey/build.sh
+fi
+%endif
 libraries/build-source-libs.sh
 
 
