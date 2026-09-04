@@ -146,6 +146,11 @@ rm -fr libraries/nvtt
 #-----------------------------------------------------------------------
 %build
 %set_build_flags
+# clang's default triple is x86_64-pc-linux-gnu; bundled mozjs only
+# maps x86_64-unknown-linux-gnu for rustc.
+%ifarch %{x86_64}
+export HOST=x86_64-unknown-linux-gnu
+%endif
 export CFLAGS="%{optflags}"
 #export AR=binutils-ar
 # avoid warnings with gcc 4.7 due to _FORTIFY_SOURCE in CPPFLAGS
